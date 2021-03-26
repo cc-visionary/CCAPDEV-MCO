@@ -1,0 +1,25 @@
+@import './variables.scss';
+@import './App.scss';
+@import './components/BoxButton.scss';
+@import './components/Footer.scss';
+@import './components/Navigation.scss';
+@import './pages/LandingPage.scss';
+@import './pages/Profile.scss';
+@import '~antd/dist/antd.css';
+
+body {
+  margin: 0;
+  font-family: 'Open Sans', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  background-color: $background-color;
+  color: $primary;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}

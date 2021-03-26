@@ -1,0 +1,36 @@
+#box-button {
+  color: $primary;
+  display: block;
+  width: 200px;
+  line-height: 40px;
+  font-size: 18px;
+  text-decoration: none;
+  border: 2px solid $primary;
+  text-align: center;
+  position: relative;
+  transition: all .35s;
+
+  span {
+    position: relative;
+    z-index: 2;
+  }
+}
+
+#box-button:after{
+  position: absolute;
+  content: "";
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 100%;
+  background: $primary;
+  transition: all .35s;
+}
+
+#box-button:hover{
+  color: #fff;
+}
+
+#box-button:hover:after{
+  width: 100%;
+}
