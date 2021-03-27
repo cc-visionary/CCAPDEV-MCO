@@ -1,13 +1,17 @@
 import React, {useState, useCallback}  from 'react';
-import { Button, Typography, Form } from 'antd';
-import { SearchOutlined, HeartOutlined, ShoppingCartOutlined, UserOutlined } from '@ant-design/icons';
+import { Button, Typography, Form, Dropdown } from 'antd';
+import { SearchOutlined, ShoppingCartOutlined, UserOutlined } from '@ant-design/icons';
+import { Link } from 'react-router-dom';
 import { AiOutlineMenu } from 'react-icons/ai';
 
 import BoxButton from './BoxButton';
 import Login from './Login';
 import Cart from './Cart';
+import ProfileMenu from './ProfileMenu';
 
 const { Title } = Typography;
+
+
 
 const Navigation = () => {
   const [loginVisible, setLoginVisible] = useState(false);
@@ -45,24 +49,30 @@ const Navigation = () => {
     setCartVisible(false);
   };
 
-  const loggedIn = false;
+  const loggedIn = true;
+  const user = 'buyer';
 
   return (
     <div id="navigation">
       <div class="left">
         <div class="menu-button"><Button type="text" icon={<AiOutlineMenu />} /></div>
-        <Title class="shop-name">TechShop.</Title>
+        <Link to='/'><Title class="shop-name">TechShop.</Title></Link>
       </div>
       <div class="right">
-        <Button size="large" type="text" icon={<SearchOutlined />} />
-        { loggedIn ? <Button size="large" type="text" icon={<ShoppingCartOutlined />} onClick={() => setCartVisible(true)} /> : null }
-        { !loggedIn ? <BoxButton onClick={() => setLoginVisible(true)}>Login</BoxButton> : <Button size="large" type="text" icon={<UserOutlined />} /> }
+        { user == 'buyer' ? <Button size="large" type="text" icon={<SearchOutlined />}  /> : null }
+        { loggedIn && user == 'buyer' ? <Button size="large" type="text" icon={<ShoppingCartOutlined />} onClick={() => setCartVisible(true)} /> : null }
+        { !loggedIn ? 
+          <BoxButton onClick={() => setLoginVisible(true)}>Login</BoxButton> : 
+          <Dropdown overlay={<ProfileMenu />} placement="bottomRight">
+            <Button size="large" type="text" icon={<UserOutlined />} /> 
+          </Dropdown>
+        }
       </div>
       <Login 
         form={form}
         visible={loginVisible} 
         onCancel={() => closePopup()}
-        onOk={() => onOk()} 
+        onOk={() => onOk()}
       />
       <Cart visible={cartVisible} onClose={() => onCloseCart()} checkout={() => checkout()} />
     </div>
