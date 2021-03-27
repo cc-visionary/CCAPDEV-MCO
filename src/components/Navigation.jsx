@@ -49,8 +49,8 @@ const Navigation = () => {
     setCartVisible(false);
   };
 
-  const loggedIn = false;
-  const user = 'buyer';
+  const loggedIn = true;
+  const user = 'seller';
 
   return (
     <div id="navigation">

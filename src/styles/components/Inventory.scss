@@ -1,0 +1,13 @@
+#inventory {
+  .table-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .actions {
+    * {
+      margin: 2.5px;
+    }
+  }
+}

@@ -6,6 +6,7 @@ import Navigation from './components/Navigation';
 import Footer from './components/Footer';
 import Profile from './pages/Profile';
 import Register from './pages/Register';
+import Dashboard from './pages/seller/Dashboard';
 
 const App = () => {
   return (
@@ -19,7 +20,8 @@ const App = () => {
           <Register />
         </Route>
         <Route path="/">
-          <LandingPage />
+          <Dashboard />
+          {/* <LandingPage /> */}
         </Route>
       </Switch>
       <Footer />
