@@ -20,6 +20,9 @@ with subcategories of Laptops, Monitors, Data Storage, Peripherals, Networking, 
 - Login and Logout
 - View, Edit and Delete Profile
 
+## Bugs:
+- <Redirect to="/" /> and history.push() through function is not working
+
 ## Screenshots
 
 ## Credits

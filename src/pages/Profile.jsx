@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Form, Input, Button, DatePicker, Upload, Popconfirm, message } from 'antd';
+import { Form, Input, Button, DatePicker, Upload, Select, message } from 'antd';
 import { Redirect } from 'react-router-dom';
 import { UploadOutlined } from '@ant-design/icons';
 import moment from 'moment';
@@ -12,6 +12,8 @@ const layout = {
     span: 8,
   },
 };
+
+const { Option } = Select;
 
 const editedSuccessfully = () => {
   message.success('Changes were made successfully');
@@ -66,14 +68,17 @@ export default class Profile extends Component {
         <Form.Item name='fullname' label="Fullname" rules={[{ required: true, message: 'Please input your fullname!' }]}>
           <Input onChange={() => this.onChange()}/>
         </Form.Item>
-        <Form.Item name='email' label="Email" rules={[{ type: 'email', message: 'Please input your email!' }]}>
+        <Form.Item name='email' label="Email" rules={[{ required: true, type: 'email', message: 'Please input your email!' }]}>
           <Input onChange={() => this.onChange()}/>
         </Form.Item>
         <Form.Item name='birthday' label="Birthday" rules={[{ required: true, message: 'Please input your birthday!' }]}>
           <DatePicker onChange={() => this.onChange()} format='MM-DD-YYYY' />
         </Form.Item>
         <Form.Item name='role' label="Role" rules={[{ required: true, message: 'Please input your role!' }]}>
-          <Input disabled />
+          <Select defaultValue='buyer' disabled>
+            <Option value='buyer'>Buyer</Option>
+            <Option value='seller'>Seller</Option>
+          </Select>
         </Form.Item>
         <Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 8 }}>
           <Button type="primary" htmlType="submit" disabled={!this.state.hasChanged}>

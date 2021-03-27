@@ -49,7 +49,7 @@ const Navigation = () => {
     setCartVisible(false);
   };
 
-  const loggedIn = true;
+  const loggedIn = false;
   const user = 'buyer';
 
   return (
