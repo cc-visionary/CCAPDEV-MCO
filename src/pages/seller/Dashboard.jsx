@@ -3,6 +3,7 @@ import { Statistic, Row, Col } from 'antd';
 import { DollarOutlined, UserOutlined, TagOutlined, ShoppingOutlined } from '@ant-design/icons';
 
 import Inventory from '../../components/Inventory';
+import OrderList from '../../components/OrderList';
 
 const Dashboard = () => {
   return (
@@ -22,6 +23,7 @@ const Dashboard = () => {
         </Col>
       </Row>
       <Inventory />
+      <OrderList />
     </div>
   );
 }

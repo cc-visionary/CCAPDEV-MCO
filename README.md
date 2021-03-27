@@ -22,6 +22,8 @@ with subcategories of Laptops, Monitors, Data Storage, Peripherals, Networking, 
 
 ## Bugs:
 - <Redirect to="/" /> and history.push() through function is not working
+- destroyOnClose on AddProduct and EditProduct Drawer is not working
+- Running a const is not working with this. function
 
 ## Screenshots
 

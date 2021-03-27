@@ -1,6 +1,9 @@
-import React, { Component } from 'react';
-import { Table, Popconfirm, Drawer, Button, Input, InputNumber, Form, Typography, Select } from 'antd';
+import React, { Component, useCallback } from 'react';
+import { Table, Popconfirm, Drawer, Button, Typography } from 'antd';
 import { PlusOutlined } from '@ant-design/icons'
+
+import AddProduct from './AddProduct';
+import EditProduct from './EditProduct';
 
 const { Title } = Typography;
 
@@ -44,7 +47,8 @@ class Inventory extends Component {
         },
       ],
       addDrawerVisible: false,
-      editDrawerVisible: false
+      editDrawerVisible: false,
+      key: -1
     };
   }
 
@@ -55,12 +59,38 @@ class Inventory extends Component {
     });
   }
 
-  handleAddProduct() {
+  handleAddProduct(values) {
+    console.log(values)
     this.closeAddDrawer();
   }
 
-  handleEditProduct() {
+  onSubmitAddProduct(form) {
+    form
+      .validateFields()
+      .then(values => {
+        form.resetFields();
+        this.handleAddProduct(values)
+      })
+      .catch(info => {
+        console.log('Validate Failed:', info);
+      });
+  }
+
+  handleEditProduct(values) {
+    console.log(values)
     this.closeEditDrawer();
+  }
+
+  onSubmitEditProduct(form) {
+    form
+      .validateFields()
+      .then(values => {
+        form.resetFields();
+        this.handleEditProduct(values);
+      })
+      .catch(info => {
+        console.log('Validate Failed:', info);
+      });
   }
 
   showAddDrawer() {
@@ -72,11 +102,11 @@ class Inventory extends Component {
   }
 
   showEditDrawer(key) {
-    this.setState({ editDrawerVisible: true })
+    this.setState({ editDrawerVisible: true, key: key })
   }
 
   closeEditDrawer() {
-    this.setState({ editDrawerVisible: false })
+    this.setState({ editDrawerVisible: false, key: -1 })
   }
 
   render() {
@@ -135,50 +165,8 @@ class Inventory extends Component {
     return (
       <div id="inventory">
         <Table title={() => <div class="table-title"><Title level={3}>Inventory</Title><div><Button onClick={() => this.showAddDrawer()}><PlusOutlined /> New Product</Button></div></div>} columns={columns} dataSource={this.state.data} />
-        <Drawer 
-          title="Add a New Product" 
-          visible={this.state.addDrawerVisible} 
-          onClose={() => this.closeAddDrawer()} 
-          width={720}
-          footer={
-            <div
-              style={{
-                textAlign: 'right',
-              }}
-            >
-              <Button onClick={() => this.closeAddDrawer()} style={{ marginRight: 8 }}>
-                Cancel
-              </Button>
-              <Button onClick={() => this.handleAddProduct()} type="primary">
-                Submit
-              </Button>
-            </div>
-          }
-        >
-          
-        </Drawer>
-        <Drawer 
-          title="Edit Product" 
-          visible={this.state.editDrawerVisible} 
-          onClose={() => this.closeEditDrawer()}
-          width={720}
-          footer={
-            <div
-              style={{
-                textAlign: 'right',
-              }}
-            >
-              <Button onClick={() => this.closeEditDrawer()} style={{ marginRight: 8 }}>
-                Cancel
-              </Button>
-              <Button onClick={() => this.handleEditProduct()} type="primary">
-                Submit
-              </Button>
-            </div>
-          }
-        >
-
-        </Drawer>
+        <AddProduct visible={this.state.addDrawerVisible} onClose={() => this.closeAddDrawer()} onSubmit={this.onSubmitAddProduct} />
+        <EditProduct visible={this.state.editDrawerVisible} onClose={() => this.closeEditDrawer()} onSubmit={this.onSubmitEditProduct} initialValues={this.state.data[this.state.key - 1]} />
       </div>
     );
   }

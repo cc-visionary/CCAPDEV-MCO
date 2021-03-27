@@ -54,13 +54,7 @@ export default class Profile extends Component {
     return (
       <Form {...layout} id="profile" name="profile" onFinish={(e) => this.onFinish(e)} initialValues={this.initialValues} >
         <Form.Item name='avatar' label="Avatar" rules={[{ required: true, message: 'Please add an avatar!' }]}>
-          <Upload
-            listType="picture"
-            maxCount={1}
-            onChange={() => this.onChange()}
-          >
-            <Button icon={<UploadOutlined />}>Change Avatar</Button>
-          </Upload>
+          <Upload listType="picture-card" maxCount={1} onChange={() => this.onChange()} ><UploadOutlined /> Update</Upload>
         </Form.Item>
         <Form.Item name='username' label="Username" rules={[{ required: true, message: 'Please input your username!' }]}>
           <Input disabled />
@@ -75,7 +69,7 @@ export default class Profile extends Component {
           <DatePicker onChange={() => this.onChange()} format='MM-DD-YYYY' />
         </Form.Item>
         <Form.Item name='role' label="Role" rules={[{ required: true, message: 'Please input your role!' }]}>
-          <Select defaultValue='buyer' disabled>
+          <Select disabled>
             <Option value='buyer'>Buyer</Option>
             <Option value='seller'>Seller</Option>
           </Select>
