@@ -14,6 +14,7 @@ import ProductPage from './pages/buyer/ProductPage';
 const products = [
   {
     key: '1',
+    product_image: '',
     name: 'Deathadder',
     category: 'Peripherals',
     brand: 'Razer',
@@ -22,6 +23,7 @@ const products = [
   },
   {
     key: '2',
+    product_image: '',
     name: 'Mouse',
     category: 'Peripherals',
     brand: 'Dell',
@@ -30,6 +32,7 @@ const products = [
   },
   {
     key: '3',
+    product_image: '',
     name: 'Epson Scan',
     category: 'Scanner',
     brand: 'Epson',
@@ -38,6 +41,7 @@ const products = [
   },
   {
     key: '4',
+    product_image: '',
     name: 'Epson Print',
     category: 'Printer',
     brand: 'Epson',
@@ -78,9 +82,12 @@ const orderList = [
 ];
 
 const App = () => {
+  const loggedIn = true;
+  const user = 'buyer';
+
   return (
     <Router>
-      <Navigation />
+      <Navigation loggedIn={loggedIn} user={user} />
       <Switch>
         <Route path="/profile">
           <Profile />
@@ -89,7 +96,7 @@ const App = () => {
           <Register />
         </Route>
         <Route path="/">
-          <ProductCatalog />
+          <ProductCatalog products={products} />
           {/* <Dashboard products={products} orderList={orderList} /> */}
           {/* <LandingPage /> */}
         </Route>

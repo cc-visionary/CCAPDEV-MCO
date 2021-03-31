@@ -13,7 +13,7 @@ const { Title } = Typography;
 
 
 
-const Navigation = () => {
+const Navigation = ({ loggedIn, user }) => {
   const [loginVisible, setLoginVisible] = useState(false);
   const [cartVisible, setCartVisible] = useState(false);
   const [form] = Form.useForm();
@@ -48,9 +48,6 @@ const Navigation = () => {
   const onCloseCart = () => {
     setCartVisible(false);
   };
-
-  const loggedIn = true;
-  const user = 'seller';
 
   return (
     <div id="navigation">
