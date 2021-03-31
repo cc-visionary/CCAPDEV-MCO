@@ -12,40 +12,7 @@ class Inventory extends Component {
     super(props);
 
     this.state = {
-      data: [
-        {
-          key: '1',
-          name: 'Deathadder',
-          category: 'Peripherals',
-          brand: 'Razer',
-          price: 32,
-          description: 'Good Mouse',
-        },
-        {
-          key: '2',
-          name: 'Mouse',
-          category: 'Peripherals',
-          brand: 'Dell',
-          price: 42,
-          description: 'Bad Mouse',
-        },
-        {
-          key: '3',
-          name: 'Epson Scan',
-          category: 'Scanner',
-          brand: 'Epson',
-          price: 32,
-          description: 'Cool Scan',
-        },
-        {
-          key: '4',
-          name: 'Epson Print',
-          category: 'Printer',
-          brand: 'Epson',
-          price: 32,
-          description: 'Cool Print',
-        },
-      ],
+      data: props.products,
       addDrawerVisible: false,
       editDrawerVisible: false,
       key: -1

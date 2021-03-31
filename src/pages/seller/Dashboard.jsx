@@ -2,10 +2,10 @@ import React from 'react';
 import { Statistic, Row, Col } from 'antd';
 import { DollarOutlined, UserOutlined, TagOutlined, ShoppingOutlined } from '@ant-design/icons';
 
-import Inventory from '../../components/Inventory';
-import OrderList from '../../components/OrderList';
+import Inventory from '../../components/seller/Inventory';
+import OrderList from '../../components/seller/OrderList';
 
-const Dashboard = () => {
+const Dashboard = ({ products, orderList }) => {
   return (
     <div id="dashboard">
       <Row gutter={[16, 16]}>
@@ -22,8 +22,8 @@ const Dashboard = () => {
           <Statistic title="Total Earned" value={10000} prefix={<DollarOutlined />} />
         </Col>
       </Row>
-      <Inventory />
-      <OrderList />
+      <Inventory products={products} />
+      <OrderList orderList={orderList} />
     </div>
   );
 }
