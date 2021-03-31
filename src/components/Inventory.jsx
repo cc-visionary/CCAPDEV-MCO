@@ -97,7 +97,7 @@ class Inventory extends Component {
     this.setState({ addDrawerVisible: true })
   }
 
-  closeAddDrawer() {
+  closeAddDrawer(deleteForm) {
     this.setState({ addDrawerVisible: false })
   }
 
@@ -105,7 +105,8 @@ class Inventory extends Component {
     this.setState({ editDrawerVisible: true, key: key })
   }
 
-  closeEditDrawer() {
+  closeEditDrawer(deleteForm) {
+    // deleteForm()
     this.setState({ editDrawerVisible: false, key: -1 })
   }
 
@@ -165,8 +166,8 @@ class Inventory extends Component {
     return (
       <div id="inventory">
         <Table title={() => <div class="table-title"><Title level={3}>Inventory</Title><div><Button onClick={() => this.showAddDrawer()}><PlusOutlined /> New Product</Button></div></div>} columns={columns} dataSource={this.state.data} />
-        <AddProduct visible={this.state.addDrawerVisible} onClose={() => this.closeAddDrawer()} onSubmit={this.onSubmitAddProduct} />
-        <EditProduct visible={this.state.editDrawerVisible} onClose={() => this.closeEditDrawer()} onSubmit={this.onSubmitEditProduct} initialValues={this.state.data[this.state.key - 1]} />
+        <AddProduct visible={this.state.addDrawerVisible} onClose={(deleteForm) => this.closeAddDrawer(deleteForm)} onSubmit={this.onSubmitAddProduct} />
+        <EditProduct visible={this.state.editDrawerVisible} onClose={(deleteForm) => this.closeEditDrawer(deleteForm)} onSubmit={this.onSubmitEditProduct} initialValues={this.state.data[this.state.key - 1]} />
       </div>
     );
   }

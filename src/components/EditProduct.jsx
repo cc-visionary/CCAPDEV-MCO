@@ -1,15 +1,17 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { Drawer, Button, Form, Row, Col, Input, InputNumber, Select, Upload } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
 
 const EditProduct = ({ visible, onClose, onSubmit, initialValues }) => {
   const [form] = Form.useForm();
 
+  form.setFieldsValue(initialValues)
+
   return(
     <Drawer 
       title="Edit" 
       visible={visible} 
-      onClose={onClose} 
+      onClose={() => onClose()} 
       width={720}
       footer={
         <div
@@ -26,7 +28,7 @@ const EditProduct = ({ visible, onClose, onSubmit, initialValues }) => {
         </div>
       }
     >
-      <Form layout="vertical" form={form} initialValues={initialValues} hideRequiredMark>
+      <Form layout="vertical" form={form} hideRequiredMark>
         <Row gutter={16}>
           <Col span={12}>
             <Form.Item

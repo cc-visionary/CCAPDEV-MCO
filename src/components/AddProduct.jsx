@@ -7,6 +7,8 @@ const { Option } = Select;
 const AddProduct = ({ visible, onClose, onSubmit }) => {
   const [form] = Form.useForm();
 
+  form.setFieldsValue({name: '', category: '', brand: '', price:'', 'product-image': '', description: ''})
+
   return(
     <Drawer 
       title="Add a New Product" 
