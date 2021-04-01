@@ -1,6 +1,6 @@
-import React, { useState, useCallback } from 'react';
-import { Table, Popconfirm, Form, Button, Typography } from 'antd';
-import { PlusOutlined } from '@ant-design/icons'
+import React, { useState } from 'react';
+import { Table, Popconfirm, Form, Button, Typography, Input, Space, Highlighter } from 'antd';
+import { SearchOutlined, PlusOutlined } from '@ant-design/icons'
 
 import AddProduct from './AddProduct';
 import EditProduct from './EditProduct';
@@ -11,7 +11,8 @@ const Inventory = ({ products }) => {
   const [items, setItems] = useState(products);
   const [addDrawerVisible, setAddDrawerVisible] = useState(false);
   const [editDrawerVisible, setEditDrawerVisible] = useState(false);
-  const [uniqueKey, setUniqueKey] = useState(items.length)
+  const [uniqueKey, setUniqueKey] = useState(items.length);
+  const [searchText, setSearchText] = useState('');
   const [editForm] = Form.useForm();
   const [addForm] = Form.useForm();
 
@@ -77,6 +78,10 @@ const Inventory = ({ products }) => {
     closeEditDrawer();
   }
 
+  const handleSearch = (e) => {
+    setSearchText(() => e.target.value)
+  }
+
   let categories = []
   let brands = []
   items.map((record) => {
@@ -89,6 +94,7 @@ const Inventory = ({ products }) => {
       title: 'Name',
       dataIndex: 'name',
       key: 'name',
+      width: '20%'
     },
     {
       title: 'Category',
@@ -115,7 +121,7 @@ const Inventory = ({ products }) => {
       title: 'Stock',
       dataIndex: 'stock',
       key: 'stock',
-      sorter: (a, b) => a.price - b.price,
+      sorter: (a, b) => a.stock - b.stock,
       ellipsis: true,
     },
     {
@@ -138,7 +144,19 @@ const Inventory = ({ products }) => {
 
   return (
     <div id="inventory">
-      <Table title={() => <div class="table-title"><Title level={3}>Inventory</Title><div><Button onClick={() => showAddDrawer()}><PlusOutlined /> New Product</Button></div></div>} columns={columns} dataSource={items} />
+      <Table 
+        title={() => 
+          <div class="table-title">
+            <Title level={3}>Inventory</Title>
+            <div class="add-search">
+              <Input value={searchText} placeholder="Search item by name" onChange={(e) => handleSearch(e)} />
+              <Button onClick={() => showAddDrawer()}><PlusOutlined /> New Product</Button>
+            </div>
+          </div>
+        } 
+        columns={columns} 
+        dataSource={searchText ? items.filter((data) => data['name'].toLowerCase().includes(searchText.toLowerCase())) : items} 
+      />
       <AddProduct form={addForm} visible={addDrawerVisible} onClose={closeAddDrawer} onSubmit={onSubmitAddProduct} />
       <EditProduct form={editForm} visible={editDrawerVisible} onClose={closeEditDrawer} onSubmit={onSubmitEditProduct} />
     </div>

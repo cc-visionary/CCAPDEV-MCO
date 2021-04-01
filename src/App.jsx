@@ -14,7 +14,7 @@ import ProductPage from './pages/buyer/ProductPage';
 const products = [
   {
     key: 1,
-    product_image: '',
+    product_image: 'https://www.evetech.co.za/repository/ProductImages/razer-deathadder-elite-chroma-gaming-mouse-0004.jpg',
     name: 'Deathadder',
     category: 'Peripherals',
     brand: 'Razer',
@@ -24,8 +24,8 @@ const products = [
   },
   {
     key: 2,
-    product_image: '',
-    name: 'Mouse',
+    product_image: 'https://www.wishhub.pk/theme/image/product/1239/dell_wm123_wireless_mousewm1231529498160.jpg',
+    name: 'WM123 Wireless Mouse',
     category: 'Peripherals',
     brand: 'Dell',
     price: 42,
@@ -34,8 +34,8 @@ const products = [
   },
   {
     key: 3,
-    product_image: '',
-    name: 'Epson Scan',
+    product_image: 'https://www.epson.eu/files/assets/converted/1500m-1500m/b/1/1/b/b11b189-epson-perfection-v500-photo-3.jpg.jpg',
+    name: 'V500 Photo Scanner',
     category: 'Scanner',
     brand: 'Epson',
     price: 32,
@@ -44,8 +44,8 @@ const products = [
   },
   {
     key: 4,
-    product_image: '',
-    name: 'Epson Print',
+    product_image: 'https://app.skufetch.com/images.tmp/Epson_WorkForce_WF_2_5717_0_res.jpeg',
+    name: 'WF-2850 Printer',
     category: 'Printer',
     brand: 'Epson',
     price: 32,
