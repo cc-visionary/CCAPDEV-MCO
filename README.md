@@ -32,5 +32,5 @@ with subcategories of Laptops, Monitors, Data Storage, Peripherals, Networking, 
 
 ## Author(s)
 - ![Christopher Lim](https://github.com/cc-visionary)
-- ![Jethro Lambert Tsai]()
-- ![Paul Benhur Agregado]()
+- ![Jethro Lambert Tsai](https://github.com/JethroTsai)
+- ![Paul Benhur Agregado](https://github.com/BenhurAgregado)

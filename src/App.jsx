@@ -100,10 +100,10 @@ const App = () => {
           <Register />
         </Route>
         <Route path="/products">
-          <ProductCatalog products={products} />
         </Route>
         <Route path="/">
-          <Dashboard products={products} orderList={orderList} />
+          {/* <Dashboard products={products} orderList={orderList} /> */}
+          <ProductCatalog products={products} />
           {/* <LandingPage /> */}
         </Route>
       </Switch>

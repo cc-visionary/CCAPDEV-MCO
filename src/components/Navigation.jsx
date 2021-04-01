@@ -1,6 +1,6 @@
 import React, {useState, useCallback}  from 'react';
 import { Button, Typography, Form, Dropdown } from 'antd';
-import { SearchOutlined, ShoppingCartOutlined, UserOutlined } from '@ant-design/icons';
+import { ShoppingCartOutlined, UserOutlined } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
 import { AiOutlineMenu } from 'react-icons/ai';
 
@@ -56,7 +56,6 @@ const Navigation = ({ loggedIn, user }) => {
         <Link to='/'><Title class="shop-name">TechShop.</Title></Link>
       </div>
       <div class="right">
-        { user == 'buyer' ? <Button size="large" type="text" icon={<SearchOutlined />}  /> : null }
         { loggedIn && user == 'buyer' ? <Button size="large" type="text" icon={<ShoppingCartOutlined />} onClick={() => setCartVisible(true)} /> : null }
         { !loggedIn ? 
           <BoxButton onClick={() => setLoginVisible(true)}>Login</BoxButton> : 
