@@ -2,16 +2,12 @@ import React, { useCallback } from 'react';
 import { Drawer, Button, Form, Row, Col, Input, InputNumber, Select, Upload } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
 
-const EditProduct = ({ visible, onClose, onSubmit, initialValues }) => {
-  const [form] = Form.useForm();
-
-  form.setFieldsValue(initialValues)
-
+const EditProduct = ({ form, visible, onClose, onSubmit }) => {
   return(
     <Drawer 
       title="Edit" 
       visible={visible} 
-      onClose={() => onClose()} 
+      onClose={onClose} 
       width={720}
       footer={
         <div
@@ -22,7 +18,7 @@ const EditProduct = ({ visible, onClose, onSubmit, initialValues }) => {
           <Button onClick={onClose} style={{ marginRight: 8 }}>
             Cancel
           </Button>
-          <Button onClick={() => onSubmit(form)} type="primary">
+          <Button onClick={onSubmit} type="primary">
             Submit
           </Button>
         </div>
@@ -82,13 +78,22 @@ const EditProduct = ({ visible, onClose, onSubmit, initialValues }) => {
               </Select>
             </Form.Item>
           </Col>
-          <Col span={12}>
+          <Col span={6}>
             <Form.Item
               name="price"
               label="Price"
               rules={[{ required: true, message: 'Please enter the price' }]}
             >
-              <Input />
+              <InputNumber />
+            </Form.Item>
+          </Col>
+          <Col span={6}>
+            <Form.Item
+              name="stock"
+              label="Stock"
+              rules={[{ required: true, message: 'Please enter the number of stocks' }]}
+            >
+              <InputNumber />
             </Form.Item>
           </Col>
         </Row>
@@ -97,7 +102,6 @@ const EditProduct = ({ visible, onClose, onSubmit, initialValues }) => {
             <Form.Item
               name="product-image"
               label="Product Image"
-              rules={[{ required: true, message: 'Please add a product image' }]}
             >
               <Upload maxCount={1} listType="picture-card"><UploadOutlined /> Update</Upload>
             </Form.Item>
@@ -117,6 +121,9 @@ const EditProduct = ({ visible, onClose, onSubmit, initialValues }) => {
             </Form.Item>
           </Col>
         </Row>
+        <Form.Item name="key">
+          <Input hidden />
+        </Form.Item>
       </Form>
     </Drawer>
   )

@@ -1,5 +1,5 @@
-import React, { Component, useCallback } from 'react';
-import { Table, Popconfirm, Drawer, Button, Typography } from 'antd';
+import React, { useState, useCallback } from 'react';
+import { Table, Popconfirm, Form, Button, Typography } from 'antd';
 import { PlusOutlined } from '@ant-design/icons'
 
 import AddProduct from './AddProduct';
@@ -7,137 +7,142 @@ import EditProduct from './EditProduct';
 
 const { Title } = Typography;
 
-class Inventory extends Component {
-  constructor(props) {
-    super(props);
+const Inventory = ({ products }) => {
+  const [items, setItems] = useState(products);
+  const [addDrawerVisible, setAddDrawerVisible] = useState(false);
+  const [editDrawerVisible, setEditDrawerVisible] = useState(false);
+  const [uniqueKey, setUniqueKey] = useState(items.length)
+  const [editForm] = Form.useForm();
+  const [addForm] = Form.useForm();
 
-    this.state = {
-      data: props.products,
-      addDrawerVisible: false,
-      editDrawerVisible: false,
-      key: -1
-    };
+  const handleDelete = (key) => {
+    const data = [...data];
+    setItems(currItems => currItems.filter((item) => item.key !== key))
   }
 
-  handleDelete(key) {
-    const data = [...this.state.data];
-    this.setState({
-      data: data.filter((item) => item.key !== key),
+  const onSubmitAddProduct = () => {
+    addForm
+      .validateFields()
+      .then(values => {
+        addForm.resetFields();
+        handleAddProduct(values)
+      })
+      .catch(info => {
+        console.log('Validate Failed:', info);
+      });
+  }
+
+  const handleAddProduct = (values) => {
+    values['key'] = uniqueKey + 1;
+    setUniqueKey(currKey => currKey + 1);
+    setItems(currItems => [...currItems, values]);
+    closeAddDrawer();
+  }
+
+  const showAddDrawer = () => {
+    setAddDrawerVisible(() => true);
+  }
+
+  const closeAddDrawer = () => {
+    setAddDrawerVisible(() => false);
+    addForm.resetFields()
+  }
+
+  const showEditDrawer = (key) => {
+    editForm.setFieldsValue(items[key - 1])
+    setEditDrawerVisible(() => true);
+  }
+
+  const closeEditDrawer = () => {
+    setEditDrawerVisible(() => false);
+    editForm.resetFields()
+  }
+
+  const onSubmitEditProduct = () => {
+    editForm
+    .validateFields()
+    .then(values => {
+      editForm.resetFields();
+      handleEditProduct(values);
+    })
+    .catch(info => {
+      console.log('Validate Failed:', info);
     });
   }
 
-  handleAddProduct(values) {
-    console.log(values)
-    this.closeAddDrawer();
+  const handleEditProduct = (values) => {
+    const newItems = [...items];
+    newItems[values.key - 1] = values;
+    setItems(() => newItems)
+    closeEditDrawer();
   }
 
-  onSubmitAddProduct(form) {
-    form
-      .validateFields()
-      .then(values => {
-        form.resetFields();
-        this.handleAddProduct(values)
-      })
-      .catch(info => {
-        console.log('Validate Failed:', info);
-      });
-  }
+  let categories = []
+  let brands = []
+  items.map((record) => {
+    if(!categories.includes(record.category)) categories.push(record.category)
+    if(!brands.includes(record.brand)) brands.push(record.brand)
+  })
 
-  handleEditProduct(values) {
-    console.log(values)
-    this.closeEditDrawer();
-  }
+  const columns = [
+    {
+      title: 'Name',
+      dataIndex: 'name',
+      key: 'name',
+    },
+    {
+      title: 'Category',
+      dataIndex: 'category',
+      key: 'category',
+      filters: categories.map((val) => ({text: val, value : val})),
+      onFilter: (value, record) => record.category.includes(value),
+    },
+    {
+      title: 'Brand',
+      dataIndex: 'brand',
+      key: 'brand',
+      filters: brands.map((val) => ({text: val, value : val})),
+      onFilter: (value, record) => record.brand.includes(value),
+    },
+    {
+      title: 'Price',
+      dataIndex: 'price',
+      key: 'price',
+      sorter: (a, b) => a.price - b.price,
+      ellipsis: true,
+    },
+    {
+      title: 'Stock',
+      dataIndex: 'stock',
+      key: 'stock',
+      sorter: (a, b) => a.price - b.price,
+      ellipsis: true,
+    },
+    {
+      title: 'Description',
+      dataIndex: 'description',
+      key: 'description',
+    },
+    {
+      title: 'Reviews',
+      dataIndex: 'reviews',
+      key: 'reviews',
+    },
+    {
+      title: 'Actions',
+      dataIndex: 'actions',
+      key: 'actions',
+      render: (_, record) => items.length >= 1 ? (<div class="actions"><a onClick={() => showEditDrawer(record.key)}>Edit</a><Popconfirm title="Are you sure you want to delete?" onConfirm={() => handleDelete(record.key)}><a>Delete</a></Popconfirm></div>) : null
+    }
+  ];
 
-  onSubmitEditProduct(form) {
-    form
-      .validateFields()
-      .then(values => {
-        form.resetFields();
-        this.handleEditProduct(values);
-      })
-      .catch(info => {
-        console.log('Validate Failed:', info);
-      });
-  }
-
-  showAddDrawer() {
-    this.setState({ addDrawerVisible: true })
-  }
-
-  closeAddDrawer(deleteForm) {
-    this.setState({ addDrawerVisible: false })
-  }
-
-  showEditDrawer(key) {
-    this.setState({ editDrawerVisible: true, key: key })
-  }
-
-  closeEditDrawer(deleteForm) {
-    // deleteForm()
-    this.setState({ editDrawerVisible: false, key: -1 })
-  }
-
-  render() {
-    let categories = []
-    let brands = []
-    this.state.data.map((record) => {
-      if(!categories.includes(record.category)) categories.push(record.category)
-      if(!brands.includes(record.brand)) brands.push(record.brand)
-    })
-
-    const columns = [
-      {
-        title: 'Name',
-        dataIndex: 'name',
-        key: 'name',
-      },
-      {
-        title: 'Category',
-        dataIndex: 'category',
-        key: 'category',
-        filters: categories.map((val) => ({text: val, value : val})),
-        onFilter: (value, record) => record.category.includes(value),
-      },
-      {
-        title: 'Brand',
-        dataIndex: 'brand',
-        key: 'brand',
-        filters: brands.map((val) => ({text: val, value : val})),
-        onFilter: (value, record) => record.brand.includes(value),
-      },
-      {
-        title: 'Price',
-        dataIndex: 'price',
-        key: 'price',
-        sorter: (a, b) => a.price - b.price,
-        ellipsis: true,
-      },
-      {
-        title: 'Description',
-        dataIndex: 'description',
-        key: 'description',
-      },
-      {
-        title: 'Reviews',
-        dataIndex: 'reviews',
-        key: 'reviews',
-      },
-      {
-        title: 'Actions',
-        dataIndex: 'actions',
-        key: 'actions',
-        render: (_, record) => this.state.data.length >= 1 ? (<div class="actions"><a onClick={() => this.showEditDrawer(record.key)}>Edit</a><Popconfirm title="Are you sure you want to delete?" onConfirm={() => this.handleDelete(record.key)}><a>Delete</a></Popconfirm></div>) : null
-      }
-    ];
-
-    return (
-      <div id="inventory">
-        <Table title={() => <div class="table-title"><Title level={3}>Inventory</Title><div><Button onClick={() => this.showAddDrawer()}><PlusOutlined /> New Product</Button></div></div>} columns={columns} dataSource={this.state.data} />
-        <AddProduct visible={this.state.addDrawerVisible} onClose={(deleteForm) => this.closeAddDrawer(deleteForm)} onSubmit={this.onSubmitAddProduct} />
-        <EditProduct visible={this.state.editDrawerVisible} onClose={(deleteForm) => this.closeEditDrawer(deleteForm)} onSubmit={this.onSubmitEditProduct} initialValues={this.state.data[this.state.key - 1]} />
-      </div>
-    );
-  }
+  return (
+    <div id="inventory">
+      <Table title={() => <div class="table-title"><Title level={3}>Inventory</Title><div><Button onClick={() => showAddDrawer()}><PlusOutlined /> New Product</Button></div></div>} columns={columns} dataSource={items} />
+      <AddProduct form={addForm} visible={addDrawerVisible} onClose={closeAddDrawer} onSubmit={onSubmitAddProduct} />
+      <EditProduct form={editForm} visible={editDrawerVisible} onClose={closeEditDrawer} onSubmit={onSubmitEditProduct} />
+    </div>
+  );
 }
 
 export default Inventory;

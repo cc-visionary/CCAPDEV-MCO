@@ -4,11 +4,7 @@ import { UploadOutlined } from '@ant-design/icons';
 
 const { Option } = Select;
 
-const AddProduct = ({ visible, onClose, onSubmit }) => {
-  const [form] = Form.useForm();
-
-  form.setFieldsValue({name: '', category: '', brand: '', price:'', 'product-image': '', description: ''})
-
+const AddProduct = ({ form, visible, onClose, onSubmit }) => {
   return(
     <Drawer 
       title="Add a New Product" 
@@ -24,7 +20,7 @@ const AddProduct = ({ visible, onClose, onSubmit }) => {
           <Button onClick={onClose} style={{ marginRight: 8 }}>
             Cancel
           </Button>
-          <Button onClick={() => onSubmit(form)} type="primary">
+          <Button onClick={onSubmit} type="primary">
             Submit
           </Button>
         </div>
@@ -85,13 +81,22 @@ const AddProduct = ({ visible, onClose, onSubmit }) => {
               </Select>
             </Form.Item>
           </Col>
-          <Col span={12}>
+          <Col span={6}>
             <Form.Item
               name="price"
               label="Price"
               rules={[{ required: true, message: 'Please enter the price' }]}
             >
-              <Input />
+              <InputNumber />
+            </Form.Item>
+          </Col>
+          <Col span={6}>
+            <Form.Item
+              name="stock"
+              label="Stock"
+              rules={[{ required: true, message: 'Please enter the number of stocks' }]}
+            >
+              <InputNumber />
             </Form.Item>
           </Col>
         </Row>
@@ -100,7 +105,6 @@ const AddProduct = ({ visible, onClose, onSubmit }) => {
             <Form.Item
               name="product-image"
               label="Product Image"
-              rules={[{ required: true, message: 'Please add a product image' }]}
             >
               <Upload maxCount={1} listType="picture-card"><UploadOutlined /> Update</Upload>
             </Form.Item>
