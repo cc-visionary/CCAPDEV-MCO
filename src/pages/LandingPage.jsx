@@ -14,10 +14,10 @@ import BoxButton from '../components/BoxButton'
 import mainImage from '../assets/images/landing_page_main_image.png'; 
 
 const categories = [
-  {'icon': <AiOutlineLaptop />, 'category': 'Laptops'},
-  {'icon': <FiMonitor />, 'category': 'Monitors'},
+  {'icon': <AiOutlineLaptop />, 'category': 'Laptop'},
+  {'icon': <FiMonitor />, 'category': 'Monitor'},
   {'icon': <AiFillDatabase />, 'category': 'Data Storage'},
-  {'icon': <BiMouseAlt />, 'category': 'Peripherals'},
+  {'icon': <BiMouseAlt />, 'category': 'Peripheral'},
   {'icon': <FaNetworkWired />, 'category': 'Networking'},
   {'icon': <AiOutlinePrinter />, 'category': 'Printer'},
   {'icon': <MdScanner />, 'category': 'Scanner'},

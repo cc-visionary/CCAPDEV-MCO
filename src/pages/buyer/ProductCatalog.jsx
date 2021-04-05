@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import { Card, Pagination, Typography, Row, Col, Image, Input, Select } from 'antd';
 import { Link } from 'react-router-dom';
+import { useParams } from 'react-router-dom'
 
 const { Text, Title } = Typography;
 const { Option } = Select;
 
-export default class ProductCatalog extends Component {
+class ProductCatalog extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -14,18 +15,31 @@ export default class ProductCatalog extends Component {
       elementsPerPage: 12,  //change as per your need
       pagesCount: 1,
       allElements: [],
-      totalElementsCount: 0
+      totalElementsCount: 0,
     }
   }
 
   componentDidMount() {
+    const { category } = this.props.params;
+
+    if(category) {
+      const filteredProducts = this.props.products.filter(data => data.category == category);
+      this.setState({
+        allElements: filteredProducts,
+        totalElementsCount: filteredProducts.length
+      }, () => {
+        this.setPaginationStates();
+      });
+    } else {
+      this.setState({
+        allElements: this.props.products,
+        totalElementsCount: this.props.products.length
+      }, () => {
+        this.setPaginationStates();
+      });
+    }
     // this.getAllElements();
-    this.setState({
-      allElements: this.props.products,
-      totalElementsCount: this.props.products.length
-    }, () => {
-      this.setPaginationStates();
-    });
+    
   }
 
   async getAllElements() {
@@ -46,7 +60,7 @@ export default class ProductCatalog extends Component {
     }, () => {
       this.setElementsForCurrentPage();
     });
-  }
+  } 
 
   setElementsForCurrentPage = () => {
     const { allElements, offset, elementsPerPage } = this.state;
@@ -69,12 +83,13 @@ export default class ProductCatalog extends Component {
 
   render() {
     const { totalElementsCount, pagesCount, elementsPerPage, currentPageElements } = this.state;  
+    const { category } = this.props.params;
 
     return (
       <div id="product-catalog">
         <Row class="header" gutter={[8, 8]}>
           <Col span={16}>
-            <Title>Products</Title>
+            <Title>{category ? category : 'Products'}</Title>
           </Col>
           <Col span={6}>
             <Input placeholder="Search product by name" />
@@ -93,7 +108,7 @@ export default class ProductCatalog extends Component {
             currentPageElements.map(data => {
               return (
                 <Col span={6}>
-                  <Link to={`/product/${data.key}`}>
+                  <Link to={`/product/${data.name.toLowerCase().replaceAll(' ', '-')}`}>
                     <Card
                       key={data.key}
                       class="card-item"
@@ -132,3 +147,7 @@ export default class ProductCatalog extends Component {
     );
   }
 }
+
+export default (props) => (
+  <ProductCatalog {...props} params={useParams()} />
+)

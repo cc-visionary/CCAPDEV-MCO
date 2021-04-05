@@ -8,7 +8,6 @@ import Register from './pages/Register';
 import LandingPage from './pages/LandingPage';
 import Dashboard from './pages/seller/Dashboard';
 import ProductCatalog from './pages/buyer/ProductCatalog';
-import ProductInCategory from './pages/buyer/ProductInCategory';
 import ProductPage from './pages/buyer/ProductPage';
 
 const products = [
@@ -16,7 +15,7 @@ const products = [
     key: 1,
     product_image: 'https://www.evetech.co.za/repository/ProductImages/razer-deathadder-elite-chroma-gaming-mouse-0004.jpg',
     name: 'Deathadder',
-    category: 'Peripherals',
+    category: 'Peripheral',
     brand: 'Razer',
     price: 32,
     stock: 100,
@@ -26,7 +25,7 @@ const products = [
     key: 2,
     product_image: 'https://www.wishhub.pk/theme/image/product/1239/dell_wm123_wireless_mousewm1231529498160.jpg',
     name: 'WM123 Wireless Mouse',
-    category: 'Peripherals',
+    category: 'Peripheral',
     brand: 'Dell',
     price: 42,
     stock: 300,
@@ -51,6 +50,26 @@ const products = [
     price: 32,
     stock: 200,
     description: 'Cool Print',
+  },
+  {
+    key: 5,
+    product_image: 'https://www.extremetech.com/wp-content/uploads/2014/07/lenovo-z50-laptop-front-open.jpg',
+    name: 'Lenovo Laptop',
+    category: 'Laptop',
+    brand: 'Lenovo',
+    price: 50000,
+    stock: 20,
+    description: 'Cool laptop',
+  },
+  {
+    key: 6,
+    product_image: 'https://i5.walmartimages.com/asr/48d6f9dd-fb05-439c-8b30-0911674f5426_1.6b77007a3dd8ec2fa356550b9127c2e1.jpeg',
+    name: 'Dell Laptop',
+    category: 'Laptop',
+    brand: 'Dell',
+    price: 50000,
+    stock: 25,
+    description: 'Awesome Laptop',
   },
 ]
 
@@ -100,11 +119,19 @@ const App = () => {
           <Register />
         </Route>
         <Route path="/products">
+          <ProductCatalog products={products} />
+        </Route>
+        <Route path="/product/:slug">
+          <ProductPage />
+        </Route>
+        <Route path="/category/:category" >
+          <ProductCatalog products={products} />
+        </Route>
+        <Route path="/dashboard">
+          <Dashboard products={products} orderList={orderList} />
         </Route>
         <Route path="/">
-          {/* <Dashboard products={products} orderList={orderList} /> */}
-          <ProductCatalog products={products} />
-          {/* <LandingPage /> */}
+          <LandingPage />
         </Route>
       </Switch>
       <Footer />
