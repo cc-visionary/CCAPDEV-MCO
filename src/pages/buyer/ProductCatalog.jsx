@@ -15,7 +15,9 @@ class ProductCatalog extends Component {
       elementsPerPage: 12,  //change as per your need
       pagesCount: 1,
       allElements: [],
+      filteredElements: [],
       totalElementsCount: 0,
+      searchValue: '',
     }
   }
 
@@ -26,6 +28,7 @@ class ProductCatalog extends Component {
       const filteredProducts = this.props.products.filter(data => data.category == category);
       this.setState({
         allElements: filteredProducts,
+        filteredElements: filteredProducts,
         totalElementsCount: filteredProducts.length
       }, () => {
         this.setPaginationStates();
@@ -33,6 +36,7 @@ class ProductCatalog extends Component {
     } else {
       this.setState({
         allElements: this.props.products,
+        filteredElements: this.props.products,
         totalElementsCount: this.props.products.length
       }, () => {
         this.setPaginationStates();
@@ -63,8 +67,8 @@ class ProductCatalog extends Component {
   } 
 
   setElementsForCurrentPage = () => {
-    const { allElements, offset, elementsPerPage } = this.state;
-    const currentPageElements = allElements.slice(offset, offset + elementsPerPage);
+    const { filteredElements, offset, elementsPerPage } = this.state;
+    const currentPageElements = filteredElements.slice(offset, offset + elementsPerPage);
     this.setState({
       currentPageElements
     });
@@ -81,6 +85,29 @@ class ProductCatalog extends Component {
     });
   }
 
+  handleSort = (val) => {
+    const copy = [...this.state.filteredElements];
+    let sorted;
+    if(val === 'low_to_high') {
+      sorted = copy.sort((a, b) => a.price > b.price)
+    } else if(val === 'high_to_low') {
+      sorted = copy.sort((a, b) => a.price < b.price)
+    } else if(val === 'top_rated') {
+      
+    } else {
+      sorted = copy.sort((a, b) => a.key > b.key)
+    }
+    this.setState({ filteredElements: sorted }, () => this.setElementsForCurrentPage())
+  }
+
+  handleSearch = (e) => {
+    const copy = [...this.state.allElements];
+    this.setState({ 
+      searchValue : e.target.value, 
+      filteredElements : copy.filter(data => data.name.toLowerCase().includes(e.target.value.toLowerCase())) 
+    }, () => this.setElementsForCurrentPage())
+  }
+
   render() {
     const { totalElementsCount, pagesCount, elementsPerPage, currentPageElements } = this.state;  
     const { category } = this.props.params;
@@ -91,15 +118,15 @@ class ProductCatalog extends Component {
           <Col span={16}>
             <Title>{category ? category : 'Products'}</Title>
           </Col>
-          <Col span={6}>
-            <Input placeholder="Search product by name" />
+          <Col span={5}>
+            <Input placeholder="Search product by name" value={this.state.searchValue} onChange={this.handleSearch} />
           </Col>
-          <Col span={2}>
-            <Select style={{ display: 'block' }} defaultValue='featured'>
+          <Col span={3}>
+            <Select style={{ display: 'block' }} onChange={this.handleSort} defaultValue='featured'>
                 <Option value='featured'>Featured</Option>
                 <Option value='low_to_high'>Price: Low to High</Option>
                 <Option value='high_to_low'>Price: High to Low</Option>
-                <Option value='review'>Avg. Customer Review</Option>
+                <Option value='top_rated'>Top Rated</Option>
               </Select>
           </Col>
         </Row>
@@ -107,7 +134,7 @@ class ProductCatalog extends Component {
           { 
             currentPageElements.map(data => {
               return (
-                <Col span={6}>
+                <Col key={data.key} span={6}>
                   <Link to={{pathname: `/product/${data.name.toLowerCase().replaceAll(' ', '-')}`, data: data}}>
                     <Card
                       key={data.key}
