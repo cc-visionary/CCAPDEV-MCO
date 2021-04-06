@@ -1,11 +1,12 @@
 import React from 'react';
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { HashRouter as Router, Switch, Route, BrowsetRouter } from "react-router-dom";
 
 import Navigation from './components/Navigation';
 import Footer from './components/Footer';
 import Profile from './pages/Profile';
 import Register from './pages/Register';
 import LandingPage from './pages/LandingPage';
+import PageNotFound from './pages/PageNotFound';
 import Dashboard from './pages/seller/Dashboard';
 import ProductCatalog from './pages/buyer/ProductCatalog';
 import ProductPage from './pages/buyer/ProductPage';
@@ -111,29 +112,18 @@ const App = () => {
   return (
     <Router>
       <Navigation loggedIn={loggedIn} user={user} />
-      <Switch>
-        <Route path="/profile">
-          <Profile />
-        </Route>
-        <Route path="/register">
-          <Register />
-        </Route>
-        <Route path="/products">
-          <ProductCatalog products={products} />
-        </Route>
-        <Route path="/product/:slug">
-          <ProductPage />
-        </Route>
-        <Route path="/category/:category" >
-          <ProductCatalog products={products} />
-        </Route>
-        <Route path="/dashboard">
-          <Dashboard products={products} orderList={orderList} />
-        </Route>
-        <Route path="/">
-          <LandingPage />
-        </Route>
-      </Switch>
+      <div className="main">
+        <Switch>
+          <Route exact path="/" component={LandingPage} className="main" />
+          <Route path="/profile" component={Profile} />
+          <Route path="/register" component={Register} />
+          <Route path="/products" component={() => <ProductCatalog products={products} />} />
+          <Route path="/product/:slug" component={ProductPage} />
+          <Route path="/category/:category" component={() => <ProductCatalog products={products} />} />
+          <Route path="/dashboard" component={() => <Dashboard products={products} orderList={orderList} />} />
+          <Route component={PageNotFound} />
+        </Switch>
+      </div>
       <Footer />
     </Router>
   );

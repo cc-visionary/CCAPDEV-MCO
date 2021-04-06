@@ -1,3 +1,13 @@
 .App {
   text-align: center;
 }
+
+.main {
+  margin: 0 132px;
+}
+
+@media screen and (max-width: 768px) {
+  .main {
+    margin: 0 10px;
+  }
+}

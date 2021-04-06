@@ -13,3 +13,13 @@
     }
   }
 }
+
+@media screen and (max-width: 768px) {
+  #footer {
+    margin: 25px 10px;
+    
+    .cards {
+      font-size: 1em;
+    }
+  }
+}

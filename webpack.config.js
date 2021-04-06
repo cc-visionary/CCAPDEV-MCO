@@ -78,6 +78,14 @@ module.exports = {
           },
         ],
       },
+      {
+        test: /\.html$/,
+        use: [
+          {
+            loader: "html-loader"
+          }
+        ]
+      }
     ],
   },
   resolve: {
@@ -86,6 +94,7 @@ module.exports = {
   plugins: [
     new HtmlWebPackPlugin({
       template: './src/index.html',
+      filename: "./index.html"
     }),
   ]
 };
