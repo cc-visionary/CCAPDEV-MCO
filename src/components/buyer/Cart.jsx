@@ -1,10 +1,10 @@
-import React from 'react'
+import React, { Component } from 'react';
+import { Drawer, Button } from 'antd';
 
-const Cart = () => {
+const Cart = ({visible, onClose}) => {
   return (
-    <div>
-      
-    </div>
+    <Drawer width={720} visible={visible} onClose={onClose}>
+    </Drawer>
   )
 }
 

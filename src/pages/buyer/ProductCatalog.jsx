@@ -87,7 +87,7 @@ class ProductCatalog extends Component {
 
     return (
       <div id="product-catalog">
-        <Row class="header" gutter={[8, 8]}>
+        <Row className="header" gutter={[8, 8]}>
           <Col span={16}>
             <Title>{category ? category : 'Products'}</Title>
           </Col>
@@ -103,15 +103,15 @@ class ProductCatalog extends Component {
               </Select>
           </Col>
         </Row>
-        <Row class="catalog" gutter={[16, 16]}>
+        <Row className="catalog" gutter={[16, 16]}>
           { 
             currentPageElements.map(data => {
               return (
                 <Col span={6}>
-                  <Link to={`/product/${data.name.toLowerCase().replaceAll(' ', '-')}`}>
+                  <Link to={{pathname: `/product/${data.name.toLowerCase().replaceAll(' ', '-')}`, data: data}}>
                     <Card
                       key={data.key}
-                      class="card-item"
+                      className="card-item"
                     >
                       <Image 
                         width={200}

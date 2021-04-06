@@ -7,7 +7,7 @@ const { Title } = Typography;
 const Footer = () => {
   return (
     <div id="footer">
-      <div class="title">
+      <div className="title">
         <Title level={3}>TechShop.</Title>
         <p>© Copyright 2021. Powered by TechShop</p>
       </div>

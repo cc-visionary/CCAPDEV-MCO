@@ -29,56 +29,56 @@ const LandingPage = () => {
 
   return (
     <div id="landing-page">
-      <div class="main-landing">
-        <div class="left">
-          <div class="header">
+      <div className="main-landing">
+        <div className="left">
+          <div className="header">
             <Title>Welcome to TechShop.</Title>
             <p>Where you get your latest and exclusive computer and accessories.</p>
           </div>
-          <div class="buttons">
+          <div className="buttons">
             <BoxButton path={'/products'} link>Shop Now</BoxButton>
           </div>
         </div>
-        <div class="right">
+        <div className="right">
           <img src={mainImage} alt="Main Image" />
         </div>
       </div>
-      <div class="category">
+      <div className="category">
         <Title>Category</Title>
-        <div class="category-list">
+        <div className="category-list">
           {
             categories.map((x) => {
-              return <Link to={`/category/${x['category']}`} class="item">
-                <div class="item-icon">{x['icon']}</div>
-                <div class="item-name">{x['category']}</div>
+              return <Link to={`/category/${x['category']}`} className="item">
+                <div className="item-icon">{x['icon']}</div>
+                <div className="item-name">{x['category']}</div>
               </Link>
             })
           }
         </div>
       </div>
-      <div class="trend">
-        <div class="header">
+      <div className="trend">
+        <div className="header">
           <h1>Stay in Trend with TechShop</h1>
         </div>
-        <div class="content">
+        <div className="content">
           <Row gutter={30}>
             <Col span={8}>
               <Card>
-                <span class="icon"><GoPackage /></span>
+                <span className="icon"><GoPackage /></span>
                 <Title>Latest Technology</Title>
                 <p>Our technology are new to help you stay updated to new trends</p>
               </Card>
             </Col>
             <Col span={8}>
               <Card>
-                <span class="icon"><ImPriceTag /></span>
+                <span className="icon"><ImPriceTag /></span>
                 <Title>Best Prices</Title>
                 <p>Enjoy the best prices for high quality computer and accessories.</p>
               </Card>
             </Col>
             <Col span={8}>
               <Card>
-                <span class="icon"><MdLocalShipping /></span>
+                <span className="icon"><MdLocalShipping /></span>
                 <Title>Free Shipping</Title>
                 <p>We provide free shipping worldwide. You can order from anywhere, anytime.</p>
               </Card>
@@ -86,7 +86,7 @@ const LandingPage = () => {
           </Row>
         </div>
       </div>
-      <div class="brands">
+      <div className="brands">
         <SiApple />
         <SiHp />
         <SiDell />

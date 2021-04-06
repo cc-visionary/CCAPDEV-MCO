@@ -6,7 +6,7 @@ import { AiOutlineMenu } from 'react-icons/ai';
 
 import BoxButton from './BoxButton';
 import Login from './Login';
-import Cart from './Cart';
+import Cart from './buyer/Cart';
 import ProfileMenu from './ProfileMenu';
 
 const { Title } = Typography;
@@ -51,11 +51,11 @@ const Navigation = ({ loggedIn, user }) => {
 
   return (
     <div id="navigation">
-      <div class="left">
-        <div class="menu-button"><Button type="text" icon={<AiOutlineMenu />} /></div>
-        <Link to='/'><Title class="shop-name">TechShop.</Title></Link>
+      <div className="left">
+        <div className="menu-button"><Button type="text" icon={<AiOutlineMenu />} /></div>
+        <Link to='/'><Title className="shop-name">TechShop.</Title></Link>
       </div>
-      <div class="right">
+      <div className="right">
         { loggedIn && user == 'buyer' ? <Button size="large" type="text" icon={<ShoppingCartOutlined />} onClick={() => setCartVisible(true)} /> : null }
         { !loggedIn ? 
           <BoxButton onClick={() => setLoginVisible(true)}>Login</BoxButton> : 
