@@ -11,9 +11,7 @@ import ProfileMenu from './ProfileMenu';
 
 const { Title } = Typography;
 
-
-
-const Navigation = ({ loggedIn, user }) => {
+const Navigation = ({ loggedIn, setLoggedIn, userType, setUserType }) => {
   const [loginVisible, setLoginVisible] = useState(false);
   const [cartVisible, setCartVisible] = useState(false);
   const [form] = Form.useForm();
@@ -39,6 +37,7 @@ const Navigation = ({ loggedIn, user }) => {
   const onSubmit = (values) => {
     console.log(values);
     setLoginVisible(false);
+    setLoggedIn(true);
   };
 
   const checkout = () => {
@@ -49,6 +48,11 @@ const Navigation = ({ loggedIn, user }) => {
     setCartVisible(false);
   };
 
+  const logout = () => {
+    setLoggedIn(false)
+    setUserType('buyer')
+  }
+
   return (
     <div id="navigation">
       <div className="left">
@@ -56,10 +60,10 @@ const Navigation = ({ loggedIn, user }) => {
         <Link to='/'><Title className="shop-name">TechShop.</Title></Link>
       </div>
       <div className="right">
-        { loggedIn && user == 'buyer' ? <Button size="large" type="text" icon={<ShoppingCartOutlined />} onClick={() => setCartVisible(true)} /> : null }
+        { loggedIn && userType == 'buyer' ? <Button size="large" type="text" icon={<ShoppingCartOutlined />} onClick={() => setCartVisible(true)} /> : null }
         { !loggedIn ? 
           <BoxButton onClick={() => setLoginVisible(true)}>Login</BoxButton> : 
-          <Dropdown overlay={<ProfileMenu />} placement="bottomRight">
+          <Dropdown overlay={<ProfileMenu logout={() => setLoginVisible(false)} logout={() => logout()} userType={userType} setUserType={setUserType} />} placement="bottomRight">
             <Button size="large" type="text" icon={<UserOutlined />} /> 
           </Dropdown>
         }

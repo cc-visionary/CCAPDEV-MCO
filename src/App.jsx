@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { HashRouter as Router, Switch, Route, BrowsetRouter } from "react-router-dom";
 
 import Navigation from './components/Navigation';
@@ -116,13 +116,18 @@ const orderList = [
 ];
 
 const App = () => {
-  const loggedIn = true;
-  const user = 'buyer';
+  const [userType, setUserType] = useState('buyer');
+  const [loggedIn, setLoggedIn] = useState(false);
 
   return (
     <Router>
-      <Navigation loggedIn={loggedIn} user={user} />
+      <Navigation loggedIn={loggedIn} setLoggedIn={setLoggedIn} userType={userType} setUserType={setUserType} />
       <div className="main">
+        {userType == 'seller' ? 
+        <Switch>
+          <Route exact path="/" component={() => <Dashboard products={products} orderList={orderList} />} />
+        </Switch>
+        : 
         <Switch>
           <Route exact path="/" component={LandingPage} className="main" />
           <Route path="/profile" component={Profile} />
@@ -130,9 +135,10 @@ const App = () => {
           <Route path="/products" component={() => <ProductCatalog products={products} />} />
           <Route path="/product/:slug" component={ProductPage} />
           <Route path="/category/:category" component={() => <ProductCatalog products={products} />} />
-          <Route path="/dashboard" component={() => <Dashboard products={products} orderList={orderList} />} />
           <Route component={PageNotFound} />
         </Switch>
+        }
+        
       </div>
       <Footer />
     </Router>

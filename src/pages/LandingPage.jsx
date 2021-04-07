@@ -26,7 +26,6 @@ const categories = [
 const { Title } = Typography;
 
 const LandingPage = () => {
-
   return (
     <div id="landing-page">
       <div className="main-landing">

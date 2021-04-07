@@ -20,12 +20,6 @@ with subcategories of Laptops, Monitors, Data Storage, Peripherals, Networking, 
 - Login and Logout
 - View, Edit and Delete Profile
 
-## Bugs:
-- `<Redirect to="/" />` and history.push() through function is not working
-
-## Probable Errors
-- form.setField() could produce an error since it's not inside a function and is in the render method 
-
 ## Screenshots
 
 ## Credits

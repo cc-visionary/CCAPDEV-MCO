@@ -36,9 +36,6 @@ const Register = () => {
             <Button icon={<UploadOutlined />}>Change Avatar</Button>
           </Upload>
         </Form.Item>
-        <Form.Item name='username' label="Username" rules={[{ required: true, message: 'Please input your username!' }]}>
-          <Input />
-        </Form.Item>
         <Form.Item name='fullname' label="Fullname" rules={[{ required: true, message: 'Please input your fullname!' }]}>
           <Input/>
         </Form.Item>
@@ -47,6 +44,15 @@ const Register = () => {
         </Form.Item>
         <Form.Item name='birthday' label="Birthday" rules={[{ required: true, message: 'Please input your birthday!' }]}>
           <DatePicker format='MM-DD-YYYY' />
+        </Form.Item>
+        <Form.Item name='username' label="Username" rules={[{ required: true, message: 'Please input your username!' }]}>
+          <Input />
+        </Form.Item>
+        <Form.Item name='password' type="password" label="Password" rules={[{ required: true, type: 'password', message: 'Please input your password!' }]}>
+          <Input/>
+        </Form.Item>
+        <Form.Item name='confirm_password' type="password" label="Confirm Password" rules={[{ required: true, type: 'password', message: 'Please confirm your password!' }]}>
+          <Input/>
         </Form.Item>
         <Form.Item name='role' label="Role" initialValue='buyer' >
           <Select defaultValue='buyer' >
