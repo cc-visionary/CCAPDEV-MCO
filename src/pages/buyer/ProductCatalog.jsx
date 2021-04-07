@@ -28,16 +28,14 @@ class ProductCatalog extends Component {
       const filteredProducts = this.props.products.filter(data => data.category == category);
       this.setState({
         allElements: filteredProducts,
-        filteredElements: filteredProducts,
-        totalElementsCount: filteredProducts.length
+        filteredElements: filteredProducts
       }, () => {
         this.setPaginationStates();
       });
     } else {
       this.setState({
         allElements: this.props.products,
-        filteredElements: this.props.products,
-        totalElementsCount: this.props.products.length
+        filteredElements: this.props.products
       }, () => {
         this.setPaginationStates();
       });
@@ -50,17 +48,16 @@ class ProductCatalog extends Component {
     const allElements = await Axios.get("https://jsonplaceholder.typicode.com/posts");
     console.log(allElements);
     this.setState({
-      allElements: allElements.data,
-      totalElementsCount: allElements.data.length
+      allElements: allElements.data
     }, () => {
       this.setPaginationStates();
     });
   }
 
   setPaginationStates = () => {
-    const { totalElementsCount, elementsPerPage } = this.state;
+    const { filteredElements, elementsPerPage } = this.state;
     this.setState({
-      pagesCount: Math.ceil(totalElementsCount / elementsPerPage)
+      pagesCount: Math.ceil(filteredElements.length / elementsPerPage)
     }, () => {
       this.setElementsForCurrentPage();
     });
@@ -89,13 +86,13 @@ class ProductCatalog extends Component {
     const copy = [...this.state.filteredElements];
     let sorted;
     if(val === 'low_to_high') {
-      sorted = copy.sort((a, b) => a.price > b.price)
+      sorted = copy.sort((a, b) => a.price > b.price);
     } else if(val === 'high_to_low') {
-      sorted = copy.sort((a, b) => a.price < b.price)
+      sorted = copy.sort((a, b) => a.price < b.price);
     } else if(val === 'top_rated') {
-      
+      sorted = copy;
     } else {
-      sorted = copy.sort((a, b) => a.key > b.key)
+      sorted = copy.sort((a, b) => a.key > b.key);
     }
     this.setState({ filteredElements: sorted }, () => this.setElementsForCurrentPage())
   }
@@ -105,7 +102,10 @@ class ProductCatalog extends Component {
     this.setState({ 
       searchValue : e.target.value, 
       filteredElements : copy.filter(data => data.name.toLowerCase().includes(e.target.value.toLowerCase())) 
-    }, () => this.setElementsForCurrentPage())
+    }, () => {
+      this.setElementsForCurrentPage()
+      this.setPaginationStates()
+    })
   }
 
   render() {
