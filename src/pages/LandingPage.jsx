@@ -29,18 +29,18 @@ const LandingPage = () => {
   return (
     <div id="landing-page">
       <div className="main-landing">
-        <div className="left">
-          <div className="header">
-            <Title>Welcome to TechShop.</Title>
-            <p>Where you get your latest and exclusive computer and accessories.</p>
-          </div>
-          <div className="buttons">
-            <BoxButton path={'/products'} link>Shop Now</BoxButton>
-          </div>
-        </div>
-        <div className="right">
-          <img src={mainImage} alt="Main Image" />
-        </div>
+        <Row>
+          <Col className="left" xl={12}>
+            <div className="header">
+              <Title>Welcome to TechShop.</Title>
+              <p>Where you get your latest and exclusive computer and accessories.</p>
+            </div>
+            <div className="buttons">
+              <BoxButton path={'/products'} link>Shop Now</BoxButton>
+            </div>
+          </Col>
+          <Col className="right" xl={12}><img src={mainImage} alt="Main Image" /></Col>
+        </Row>
       </div>
       <div className="category">
         <Title>Category</Title>
@@ -64,21 +64,21 @@ const LandingPage = () => {
             <Col span={8}>
               <Card>
                 <span className="icon"><GoPackage /></span>
-                <Title>Latest Technology</Title>
+                <Title level={3}>Latest Technology</Title>
                 <p>Our technology are new to help you stay updated to new trends</p>
               </Card>
             </Col>
             <Col span={8}>
               <Card>
                 <span className="icon"><ImPriceTag /></span>
-                <Title>Best Prices</Title>
+                <Title level={3}>Best Prices</Title>
                 <p>Enjoy the best prices for high quality computer and accessories.</p>
               </Card>
             </Col>
             <Col span={8}>
               <Card>
                 <span className="icon"><MdLocalShipping /></span>
-                <Title>Free Shipping</Title>
+                <Title level={3}>Free Shipping</Title>
                 <p>We provide free shipping worldwide. You can order from anywhere, anytime.</p>
               </Card>
             </Col>

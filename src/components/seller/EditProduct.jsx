@@ -84,7 +84,7 @@ const EditProduct = ({ form, visible, onClose, onSubmit }) => {
               label="Price"
               rules={[{ required: true, message: 'Please enter the price' }]}
             >
-              <InputNumber />
+              <InputNumber formatter={value => `₱ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, '.')} />
             </Form.Item>
           </Col>
           <Col span={6}>

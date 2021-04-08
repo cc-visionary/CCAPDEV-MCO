@@ -22,7 +22,8 @@ const products = [
     price: 32,
     stock: 2499.99,
     description: 'Good Mouse',
-    rating: 5,
+    rating: 4.8,
+    nReviews: 455,
   },
   {
     key: 2,
@@ -34,6 +35,7 @@ const products = [
     stock: 300,
     description: 'Bad Mouse',
     rating: 3,
+    nReviews: 231,
   },
   {
     key: 3,
@@ -45,6 +47,7 @@ const products = [
     stock: 150,
     description: 'Cool Scan',
     rating: 2.5,
+    nReviews: 223,
   },
   {
     key: 4,
@@ -56,6 +59,7 @@ const products = [
     stock: 200,
     description: 'Cool Print',
     rating: 2,
+    nReviews: 21,
   },
   {
     key: 5,
@@ -67,6 +71,7 @@ const products = [
     stock: 20,
     description: 'Cool laptop',
     rating: 3,
+    nReviews: 321,
   },
   {
     key: 6,
@@ -78,6 +83,7 @@ const products = [
     stock: 25,
     description: 'Awesome Laptop',
     rating: 4,
+    nReviews: 455,
   },
   {
     key: 7,
@@ -89,6 +95,7 @@ const products = [
     stock: 25,
     description: "One of the most favored gaming mouse recommended by gamers.",
     rating: 4,
+    nReviews: 500,
   },
 ]
 
