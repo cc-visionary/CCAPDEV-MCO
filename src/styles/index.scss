@@ -10,8 +10,10 @@
 @import './pages/Profile.scss';
 @import './pages/Register.scss';
 @import './pages/buyer/ProductPage.scss';
+@import './pages/buyer/ProductCatalog.scss';
 @import './pages/buyer/Checkout.scss';
 @import '~antd/dist/antd.css';
+@import '~react-rater/lib/react-rater.css';
 
 body {
   margin: 0;

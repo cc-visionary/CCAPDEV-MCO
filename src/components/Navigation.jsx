@@ -1,7 +1,7 @@
 import React, {useState, useCallback}  from 'react';
-import { Button, Typography, Form, Dropdown, Popover } from 'antd';
+import { Button, Typography, Form, Dropdown, Popover, Badge } from 'antd';
 import { ShoppingCartOutlined, UserOutlined } from '@ant-design/icons';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import { AiOutlineMenu } from 'react-icons/ai';
 
 import BoxButton from './BoxButton';
@@ -13,6 +13,7 @@ const { Text, Title } = Typography;
 
 const Navigation = ({ cart, loggedIn, setLoggedIn, userType, setUserType }) => {
   const [loginVisible, setLoginVisible] = useState(false);
+  const [redirect, setRedirect] = useState(false);
   const [form] = Form.useForm();
 
   const onOk = useCallback((values) => {
@@ -41,7 +42,8 @@ const Navigation = ({ cart, loggedIn, setLoggedIn, userType, setUserType }) => {
 
   const logout = () => {
     setLoggedIn(false)
-    setUserType('buyer')
+    setUserType('buyerredirect')
+    setRedirect(true);
   }
 
   return (
@@ -51,10 +53,10 @@ const Navigation = ({ cart, loggedIn, setLoggedIn, userType, setUserType }) => {
         <Link to='/'><Title className="shop-name">TechShop.</Title></Link>
       </div>
       <div className="right">
-        { loggedIn && userType == 'buyer' ? <Popover content={() => <Cart cart={cart} />} title={() => <Text type='secondary'>Recently Added Product</Text>} placement='bottomLeft' ><Button size="large" type="text" icon={<ShoppingCartOutlined />} /></Popover> : null }
+        { loggedIn && userType == 'buyer' ? <Popover content={(props) => <Cart cart={cart} {...props} />} title={() => <Text type='secondary'>Recently Added Product</Text>} placement='bottomLeft' ><Badge count={cart.length}><Button size="large" type="text" icon={<ShoppingCartOutlined />} /></Badge></Popover> : null }
         { !loggedIn ? 
           <BoxButton onClick={() => setLoginVisible(true)}>Login</BoxButton> : 
-          <Dropdown overlay={<ProfileMenu logout={() => setLoginVisible(false)} logout={() => logout()} userType={userType} setUserType={setUserType} />} placement="bottomRight">
+          <Dropdown overlay={<ProfileMenu logout={() => setLoginVisible(false)} logout={() => logout()} userType={userType} setUserType={setUserType} setRedirect={setRedirect} />} placement="bottomRight">
             <Button size="large" type="text" icon={<UserOutlined />} /> 
           </Dropdown>
         }
@@ -65,7 +67,7 @@ const Navigation = ({ cart, loggedIn, setLoggedIn, userType, setUserType }) => {
         onCancel={() => closePopup()}
         onOk={() => onOk()}
       />
-      
+      {redirect ? <Redirect to='/' /> : <></> }
     </div>
   )
 }
