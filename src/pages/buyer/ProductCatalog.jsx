@@ -41,7 +41,6 @@ class ProductCatalog extends Component {
       });
     }
     // this.getAllElements();
-    
   }
 
   async getAllElements() {

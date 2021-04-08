@@ -1,5 +1,5 @@
 import React, {useState, useCallback}  from 'react';
-import { Button, Typography, Form, Dropdown } from 'antd';
+import { Button, Typography, Form, Dropdown, Popover } from 'antd';
 import { ShoppingCartOutlined, UserOutlined } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
 import { AiOutlineMenu } from 'react-icons/ai';
@@ -9,11 +9,10 @@ import Login from './Login';
 import Cart from './buyer/Cart';
 import ProfileMenu from './ProfileMenu';
 
-const { Title } = Typography;
+const { Text, Title } = Typography;
 
-const Navigation = ({ loggedIn, setLoggedIn, userType, setUserType }) => {
+const Navigation = ({ cart, loggedIn, setLoggedIn, userType, setUserType }) => {
   const [loginVisible, setLoginVisible] = useState(false);
-  const [cartVisible, setCartVisible] = useState(false);
   const [form] = Form.useForm();
 
   const onOk = useCallback((values) => {
@@ -40,14 +39,6 @@ const Navigation = ({ loggedIn, setLoggedIn, userType, setUserType }) => {
     setLoggedIn(true);
   };
 
-  const checkout = () => {
-    onCloseCart()
-  }
-
-  const onCloseCart = () => {
-    setCartVisible(false);
-  };
-
   const logout = () => {
     setLoggedIn(false)
     setUserType('buyer')
@@ -60,7 +51,7 @@ const Navigation = ({ loggedIn, setLoggedIn, userType, setUserType }) => {
         <Link to='/'><Title className="shop-name">TechShop.</Title></Link>
       </div>
       <div className="right">
-        { loggedIn && userType == 'buyer' ? <Button size="large" type="text" icon={<ShoppingCartOutlined />} onClick={() => setCartVisible(true)} /> : null }
+        { loggedIn && userType == 'buyer' ? <Popover content={() => <Cart cart={cart} />} title={() => <Text type='secondary'>Recently Added Product</Text>} placement='bottomLeft' ><Button size="large" type="text" icon={<ShoppingCartOutlined />} /></Popover> : null }
         { !loggedIn ? 
           <BoxButton onClick={() => setLoginVisible(true)}>Login</BoxButton> : 
           <Dropdown overlay={<ProfileMenu logout={() => setLoginVisible(false)} logout={() => logout()} userType={userType} setUserType={setUserType} />} placement="bottomRight">
@@ -74,7 +65,7 @@ const Navigation = ({ loggedIn, setLoggedIn, userType, setUserType }) => {
         onCancel={() => closePopup()}
         onOk={() => onOk()}
       />
-      <Cart visible={cartVisible} onClose={() => onCloseCart()} checkout={() => checkout()} />
+      
     </div>
   )
 }

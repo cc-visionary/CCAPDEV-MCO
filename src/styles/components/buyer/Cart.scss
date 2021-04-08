@@ -1,0 +1,13 @@
+.cart-popover {
+  .cart-item {
+    .item-price {
+      display: flex;
+      justify-content: flex-end;
+    }
+  }
+
+  .link-to-checkout {
+    display: flex;
+    justify-content: flex-end;
+  }
+}
