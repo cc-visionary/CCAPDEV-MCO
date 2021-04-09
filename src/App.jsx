@@ -145,31 +145,35 @@ const App = () => {
 
   const addToCart = (product) => {
     let inCart = false
-    let index = -1;
-    cartList.map((data, i) => {
+    
+    const newCart = cartList.map((data) => {
       if(data.key === product.key && data.name === product.name) {
         inCart = true;
-        index = i;
+        data['quantity'] += product.quantity
       }
+
+      return data;
     })
 
-    
-    if(inCart) {
-      let curr = cartList;
-      curr[index]['quantity'] += product.quantity; 
-      setCartList(curr)
-    } 
+    if(inCart) setCartList(newCart)
     else setCartList([...cartList, product])  
 
     message.success('Successfully added to cart')
   }
 
   const deleteProductFromCart = (index) => {
-    setCartList(cartList.filter((_, i) => !i == index))
+    setCartList(cartList.filter((_, i) => !(i == index)))
   }
 
   const deleteProductsFromCart = (indexes) => {
     setCartList(cartList.filter((_, i) => !indexes.includes(i)))
+  }
+
+  const changeCartQuantity = ( index, value ) => {
+    setCartList(cartList.map((data, i) => { 
+      if (i == index) data['quantity'] = value
+      return data;
+    }))
   }
 
   return (
@@ -188,7 +192,7 @@ const App = () => {
           <Route path="/products" component={(props) => <ProductCatalog products={products} {...props} />} />
           <Route path="/product/:slug" component={(props) => <ProductPage addToCart={addToCart} {...props} />} />
           <Route path="/category/:category" component={(props) => <ProductCatalog products={products} {...props} />} />
-          <Route path="/cart" component={(props) => <Cart cart={cartList} deleteProductFromCart={deleteProductFromCart} deleteProductsFromCart={deleteProductsFromCart} {...props} />} />
+          <Route path="/cart" component={(props) => <Cart cart={cartList} changeCartQuantity={changeCartQuantity} deleteProductFromCart={deleteProductFromCart} deleteProductsFromCart={deleteProductsFromCart} {...props} />} />
           <Route path="/checkout" component={Checkout} />
           <Route component={PageNotFound} />
         </Switch>
