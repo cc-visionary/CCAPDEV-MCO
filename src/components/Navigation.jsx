@@ -6,7 +6,7 @@ import { AiOutlineMenu } from 'react-icons/ai';
 
 import BoxButton from './BoxButton';
 import Login from './Login';
-import Cart from './buyer/Cart';
+import CartPopover from './buyer/CartPopover';
 import ProfileMenu from './ProfileMenu';
 
 const { Text, Title } = Typography;
@@ -53,7 +53,7 @@ const Navigation = ({ cart, loggedIn, setLoggedIn, userType, setUserType }) => {
         <Link to='/'><Title className="shop-name">TechShop.</Title></Link>
       </div>
       <div className="right">
-        { loggedIn && userType == 'buyer' ? <Popover content={(props) => <Cart cart={cart} {...props} />} title={() => <Text type='secondary'>Recently Added Product</Text>} placement='bottomLeft' ><Badge count={cart.length}><Button size="large" type="text" icon={<ShoppingCartOutlined />} /></Badge></Popover> : null }
+        { loggedIn && userType == 'buyer' ? <Popover content={(props) => <CartPopover cart={cart} {...props} />} title={() => <Text type='secondary'>Recently Added Product</Text>} placement='bottomLeft' ><Badge count={cart.length}><Button size="large" type="text" icon={<ShoppingCartOutlined />} /></Badge></Popover> : null }
         { !loggedIn ? 
           <BoxButton onClick={() => setLoginVisible(true)}>Login</BoxButton> : 
           <Dropdown overlay={<ProfileMenu logout={() => setLoginVisible(false)} logout={() => logout()} userType={userType} setUserType={setUserType} setRedirect={setRedirect} />} placement="bottomRight">

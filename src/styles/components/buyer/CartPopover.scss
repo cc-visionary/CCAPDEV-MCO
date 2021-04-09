@@ -10,4 +10,10 @@
     display: flex;
     justify-content: flex-end;
   }
+
+  .empty {
+    display: block;
+    text-align: center;
+    margin: 5px 0 15px 0;
+  }
 }

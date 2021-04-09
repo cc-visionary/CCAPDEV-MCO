@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Rater from 'react-rater';
 import { Typography, Image, Space, Row, Col, Divider, InputNumber } from 'antd';
 
@@ -6,8 +6,10 @@ import BoxButton from '../../components/BoxButton';
 
 const { Title, Text, Paragraph } = Typography;
 
-const ProductPage = (props) => {
+const ProductPage = ({ addToCart, ...props }) => {
   const { data } = props.location;
+  const [ quantity, setQuantity ] = useState(1)
+
   return data ? 
       <Row id="product-page">
         <Col className='left' md={11} xs={24}>
@@ -24,12 +26,12 @@ const ProductPage = (props) => {
             <Paragraph>{data.description}</Paragraph>
           </div>
           <div className='price-reviews'>
-            <Title>₱{data.price}</Title>
+            <Title>₱{parseFloat(data.price).toFixed(2)}</Title>
             <Space><Rater interactive={false} rating={data.rating} /> <Text underline>{data.nReviews} reviews</Text></Space>
           </div>
           <div className='add-to-cart'>
-            <div class='quantity'><Text>Quantity: </Text><InputNumber defaultValue={1} min={1} /></div>
-            <BoxButton>Add to Cart</BoxButton>
+            <div class='quantity'><Text>Quantity: </Text><InputNumber value={quantity} min={1} onChange={value => setQuantity(value)} /></div>
+            <BoxButton onClick={() => addToCart({ ...data, quantity })}>Add to Cart</BoxButton>
           </div>
         </Col>
       </Row> : 

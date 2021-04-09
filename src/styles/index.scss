@@ -4,13 +4,14 @@
 @import './components/Footer.scss';
 @import './components/Navigation.scss';
 @import './components/buyer/OrderHistory.scss';
-@import './components/buyer/Cart.scss';
+@import './components/buyer/CartPopover.scss';
 @import './components/seller/Inventory.scss';
 @import './pages/LandingPage.scss';
 @import './pages/Profile.scss';
 @import './pages/Register.scss';
 @import './pages/buyer/ProductPage.scss';
 @import './pages/buyer/ProductCatalog.scss';
+@import './pages/buyer/Cart.scss';
 @import './pages/buyer/Checkout.scss';
 @import '~antd/dist/antd.css';
 @import '~react-rater/lib/react-rater.css';

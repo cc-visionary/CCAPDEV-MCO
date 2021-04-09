@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { message } from 'antd';
 import { HashRouter as Router, Switch, Route, BrowsetRouter } from "react-router-dom";
 
 import Navigation from './components/Navigation';
@@ -10,6 +11,7 @@ import PageNotFound from './pages/PageNotFound';
 import Dashboard from './pages/seller/Dashboard';
 import ProductCatalog from './pages/buyer/ProductCatalog';
 import ProductPage from './pages/buyer/ProductPage';
+import Cart from './pages/buyer/Cart';
 import Checkout from './pages/buyer/Checkout';
 
 const products = [
@@ -131,9 +133,9 @@ const orderList = [
 ];
 
 const cart = [
-  products[0],
-  products[2],
-  products[6]
+  { ...products[0], quantity: 2 },
+  { ...products[2], quantity: 1 },
+  { ...products[6], quantity: 1 }
 ]
 
 const App = () => {
@@ -142,16 +144,37 @@ const App = () => {
   const [cartList, setCartList] = useState(cart);
 
   const addToCart = (product) => {
-    setCartList([...cartList, product])
+    let inCart = false
+    let index = -1;
+    cartList.map((data, i) => {
+      if(data.key === product.key && data.name === product.name) {
+        inCart = true;
+        index = i;
+      }
+    })
+
+    
+    if(inCart) {
+      let curr = cartList;
+      curr[index]['quantity'] += product.quantity; 
+      setCartList(curr)
+    } 
+    else setCartList([...cartList, product])  
+
+    message.success('Successfully added to cart')
   }
 
-  const deleteFromCart = (product) => {
+  const deleteProductFromCart = (index) => {
+    setCartList(cartList.filter((_, i) => !i == index))
+  }
 
+  const deleteProductsFromCart = (indexes) => {
+    setCartList(cartList.filter((_, i) => !indexes.includes(i)))
   }
 
   return (
     <Router>
-      <Navigation cart={cartList} deleteFromCart={deleteFromCart} loggedIn={loggedIn} setLoggedIn={setLoggedIn} userType={userType} setUserType={setUserType} />
+      <Navigation cart={cartList} loggedIn={loggedIn} setLoggedIn={setLoggedIn} userType={userType} setUserType={setUserType} />
       <div className="main">
         {userType == 'seller' ? 
         <Switch>
@@ -165,6 +188,7 @@ const App = () => {
           <Route path="/products" component={(props) => <ProductCatalog products={products} {...props} />} />
           <Route path="/product/:slug" component={(props) => <ProductPage addToCart={addToCart} {...props} />} />
           <Route path="/category/:category" component={(props) => <ProductCatalog products={products} {...props} />} />
+          <Route path="/cart" component={(props) => <Cart cart={cartList} deleteProductFromCart={deleteProductFromCart} deleteProductsFromCart={deleteProductsFromCart} {...props} />} />
           <Route path="/checkout" component={Checkout} />
           <Route component={PageNotFound} />
         </Switch>
