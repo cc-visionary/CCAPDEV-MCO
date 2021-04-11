@@ -14,6 +14,7 @@ import ProductPage from './pages/buyer/ProductPage';
 import Cart from './pages/buyer/Cart';
 import Checkout from './pages/buyer/Checkout';
 import OrderHistory from './pages/buyer/OrderHistory';
+import moment from 'moment';
 
 const products = [
   {
@@ -139,17 +140,18 @@ const cartDummy = [
   { ...products[6], quantity: 1 }
 ]
 
+const shippingFee = 99.99;
+
 const orderHistoryDummy = [
   {
     key: 1,
-    order_id: '112311',
-    amount: 200.00,
+    contactInfo: [],
+    total: [{...products[0], quantity: 1}, {...products[2], quantity: 2}, {...products[3], quantity: 4}].reduce((sum, data) => sum + parseFloat(data.price) * parseFloat(data.quantity), 0) + shippingFee,
     items: [{...products[0], quantity: 1}, {...products[2], quantity: 2}, {...products[3], quantity: 4}],
-    date_ordered: '03-26-2021',
-  },
+    shippingFee: shippingFee,
+    date_ordered: moment('03-26-2021', 'MM-DD-YYYY'),
+  }
 ]
-
-const shippingCost = 99.99;
 
 const App = () => {
   const [userType, setUserType] = useState('buyer');
@@ -206,8 +208,8 @@ const App = () => {
           <Route path="/products" component={(props) => <ProductCatalog products={products} {...props} />} />
           <Route path="/product/:slug" component={(props) => <ProductPage addToCart={addToCart} {...props} />} />
           <Route path="/category/:category" component={(props) => <ProductCatalog products={products} {...props} />} />
-          <Route path="/cart" component={(props) => <Cart shippingCost={shippingCost} cart={cartList} changeCartQuantity={changeCartQuantity} deleteProductFromCart={deleteProductFromCart} deleteProductsFromCart={deleteProductsFromCart} {...props} />} />
-          <Route path="/checkout" component={(props) => <Checkout orderHistory={orderHistory} setOrderHistory={setOrderHistory} shippingCost={shippingCost} cart={cartList} {...props} />} />
+          <Route path="/cart" component={(props) => <Cart shippingFee={shippingFee} cart={cartList} changeCartQuantity={changeCartQuantity} deleteProductFromCart={deleteProductFromCart} deleteProductsFromCart={deleteProductsFromCart} {...props} />} />
+          <Route path="/checkout" component={(props) => <Checkout orderHistory={orderHistory} setOrderHistory={setOrderHistory} shippingFee={shippingFee} cart={cartList} setCart={setCartList} {...props} />} />
           <Route path="/order-history" component={(props) => <OrderHistory orderHistory={orderHistory} {...props} />} />
           <Route component={PageNotFound} />
         </Switch>

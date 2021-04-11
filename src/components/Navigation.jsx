@@ -42,7 +42,7 @@ const Navigation = ({ cart, loggedIn, setLoggedIn, userType, setUserType }) => {
 
   const logout = () => {
     setLoggedIn(false)
-    setUserType('buyerredirect')
+    setUserType('buyer')
     setRedirect(true);
   }
 

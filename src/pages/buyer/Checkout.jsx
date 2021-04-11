@@ -3,6 +3,7 @@ import { Image, Button, Row, Col, Divider, Typography, Form, Input, Select, mess
 import { Link, Redirect } from 'react-router-dom';
 import { LeftOutlined } from '@ant-design/icons';
 import axios from 'axios';
+import moment from 'moment';
 
 const { Title, Text } = Typography;
 const { Option } = Select;
@@ -24,18 +25,28 @@ export default class Checkout extends Component {
   }
 
   onFinish = (values) => {
-    const { orderHistory, setOrderHistory } = this.props;
+    const { cart, orderHistory, setOrderHistory, setCart } = this.props;
+
+    const newOrder = {
+      key: orderHistory.length + 1,
+      contactInfo: values,
+      total: cart.reduce((sum, data) => sum + parseFloat(data.price * data.quantity), 0).toFixed(2),
+      items: cart,
+      shippingFee: shippingFee,
+      date: moment() 
+    }
 
     message.success('Checkout was successful!');
-    console.log(values)
+    setOrderHistory([...orderHistory, newOrder])
+    setCart([])
     this.setState({ redirect: true })
   }
 
   render () {
     const { redirect } = this.state;
-    const { cart, shippingCost } = this.props;
+    const { cart, shippingFee } = this.props;
 
-    const subtotal = cart.reduce((sum, data) => sum + parseFloat(data.price), 0).toFixed(2);
+    const subtotal = cart.reduce((sum, data) => sum + parseFloat(data.price * data.quantity), 0).toFixed(2);
 
     return redirect ? 
     <Redirect to='/' />
@@ -119,7 +130,7 @@ export default class Checkout extends Component {
             return <Row gutter={16}>
               <Col span={2}><Image width={25} height={25} preview={false} src={data.product_image} /></Col>
               <Col span={16}><Text>{data.name}</Text></Col>
-              <Col span={6}><Text className='prices'>₱{parseFloat(data.price).toFixed(2)}</Text></Col>
+              <Col span={6}><Text className='prices'>₱{parseFloat(data.price * data.quantity).toFixed(2)}</Text></Col>
             </Row>
           })}
           <Divider/>
@@ -129,12 +140,12 @@ export default class Checkout extends Component {
           </Row>
           <Row gutter={16}>
             <Col span={12}><Text strong>Shipping</Text></Col>
-            <Col className='prices' span={12}>₱{shippingCost}</Col>
+            <Col className='prices' span={12}>₱{shippingFee}</Col>
           </Row>
           <Divider/>
           <Row gutter={16}>
             <Col span={12}><Title level={3}>Total</Title></Col>
-            <Col className='prices' span={12}><Title level={3}>₱{parseFloat(subtotal) + parseFloat(shippingCost)}</Title></Col>
+            <Col className='prices' span={12}><Title level={3}>₱{parseFloat(subtotal) + parseFloat(shippingFee)}</Title></Col>
           </Row>
         </Col>
       </Row>
