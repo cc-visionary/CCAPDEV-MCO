@@ -37,14 +37,13 @@ const OrderHistory = ({ orderHistory }) => {
                     </Link>
                   )
                 }
-                <Row gutter={16}>
-                  <Col span={2}></Col>
-                  <Col span={13}>Shipping Fee</Col>
-                  <Col span={6}>₱{parseFloat(item.shippingFee).toFixed(2)}</Col>
-                  <Col span={3}>₱{parseFloat(item.shippingFee).toFixed(2)}</Col>
-                </Row>
               </div>
               <Divider />
+              <Row gutter={16}>
+                <Col span={18} />
+                <Col span={3}><Text>Shipping Fee:</Text></Col>
+                <Col span={3}><Text>₱{item.shippingFee}</Text></Col>
+              </Row>
               <Row gutter={16}>
                 <Col span={18}><Text type='secondary'>Date Ordered: {item.date_ordered._i}</Text></Col>
                 <Col span={3}><Text>Total:</Text></Col>

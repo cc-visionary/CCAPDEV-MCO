@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom'
 
 const { Text, Title } = Typography;
 
-const Cart = ({ shippingCost, cart, changeCartQuantity, deleteProductFromCart, deleteProductsFromCart, ...props }) => {
+const Cart = ({ shippingFee, cart, changeCartQuantity, deleteProductFromCart, deleteProductsFromCart, ...props }) => {
   const [ checkAll, setCheckAll] = useState(false)
   const [ checkboxes, setCheckboxes ] = useState(cart.map(() => false))
   const [ indeterminate, setIndeterminate ] = useState(false);
@@ -70,8 +70,8 @@ const Cart = ({ shippingCost, cart, changeCartQuantity, deleteProductFromCart, d
           <div className="summary">
             <Title level={4}>Order Summary</Title>
             <div><Text type="secondary">Subtotal ({cart.length} items):</Text><Text>₱{parseFloat(totalCost).toFixed(2)}</Text></div>
-            <div><Text type="secondary">Shipping Fee:</Text><Text>₱{shippingCost}</Text></div>
-            <div><Text>Total:</Text><Text>₱{parseFloat(totalCost + shippingCost).toFixed(2)}</Text></div>
+            <div><Text type="secondary">Shipping Fee:</Text><Text>₱{shippingFee}</Text></div>
+            <div><Text>Total:</Text><Text>₱{parseFloat(totalCost + shippingFee).toFixed(2)}</Text></div>
           </div>
           <Link to='/checkout' disabled={cart.length == 0}><Button type='secondary' disabled={cart.length == 0} block >PROCEED TO CHECKOUT</Button></Link>
         </div>

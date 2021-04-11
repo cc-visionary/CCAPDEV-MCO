@@ -78,8 +78,8 @@ const LandingPage = () => {
             <Col span={8}>
               <Card>
                 <span className="icon"><MdLocalShipping /></span>
-                <Title level={3}>Free Shipping</Title>
-                <p>We provide free shipping worldwide. You can order from anywhere, anytime.</p>
+                <Title level={3}>Fast Delivery</Title>
+                <p>We provide fast deliver worldwide. You can order from anywhere, anytime and receive it within 1-2 weeks.</p>
               </Card>
             </Col>
           </Row>

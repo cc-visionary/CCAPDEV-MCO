@@ -13,8 +13,6 @@ const ProfileMenu = ({ logout, userType, setUserType, setRedirect }) => {
     setRedirect(true);
   }
 
-  console.log(userType)
-
   return (
     <Menu>
       <Menu.Item><Link to='/profile'>View Account</Link></Menu.Item>
