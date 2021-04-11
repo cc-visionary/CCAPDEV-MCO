@@ -10,7 +10,7 @@ const ProductPage = ({ addToCart, ...props }) => {
   const { data } = props.location;
   const [ quantity, setQuantity ] = useState(1)
 
-  console.log(data.product_image)
+  console.log(data.stock)
 
   return data ? 
       <Row align='middle' id="product-page">
@@ -31,10 +31,14 @@ const ProductPage = ({ addToCart, ...props }) => {
             <Title>₱{parseFloat(data.price).toFixed(2)}</Title>
             <Space><Rater interactive={false} rating={data.reviews.length == 0 ? 0 : data.reviews.reduce((sum, review) => sum + parseFloat(review.rating), 0) / data.reviews.length} /> <Button type='link'><Text underline>{data.reviews.length == 0 ? 'No' : data.reviews.length} reviews</Text></Button></Space>
           </div>
-          <div className='add-to-cart'>
-            <div className='quantity'><Text>Quantity: </Text><InputNumber value={quantity} min={1} onChange={value => setQuantity(value)} /></div>
-            <BoxButton onClick={() => addToCart({ key: data.key, quantity })}>Add to Cart</BoxButton>
-          </div>
+          {
+            data.stock > 0 ?
+            <div className='add-to-cart'>
+              <div className='quantity'><Text>Quantity: </Text><InputNumber value={quantity} min={1} max={data.stock} onChange={value => setQuantity(value)} /></div>
+              <BoxButton onClick={() => addToCart({ key: data.key, quantity })}>Add to Cart</BoxButton>
+            </div> :
+            <div className='out-of-stock'>Out of Stock</div>
+          }
         </Col>
       </Row> : 
       <Row id="not-exist"><Title>Product does not exist...</Title></Row>

@@ -69,7 +69,7 @@ const Cart = ({ products, shippingFee, cart, setCart, ...props }) => {
                     <Text type="secondary">{products[index].brand}</Text>
                   </div>
                   <div className="price">₱{parseFloat(products[index].price).toFixed(2)}</div>
-                  <div className="quantity"><InputNumber min={1} defaultValue={item.quantity} onChange={(val) => changeCartQuantity(i, val)} /></div>
+                  <div className="quantity"><InputNumber min={1} max={products[index].stock} defaultValue={item.quantity} onChange={(val) => changeCartQuantity(i, val)} /></div>
                   <div className="delete"><Popconfirm title="Are you sure you want to delete this product?" onConfirm={() => deleteProductFromCart(i)}><Button type="link"><Text type="secondary"><DeleteOutlined /></Text></Button></Popconfirm></div>
                 </div>
                 {i != cart.length - 1 ? <Divider style={{'margin': '10px -5px'}} /> : <></>}

@@ -27,12 +27,10 @@ export default class Checkout extends Component {
   onFinish = (values) => {
     const { products, setProducts, shippingFee, cart, orderHistory, setOrderHistory, setCart, addToOrderList } = this.props;
 
-    const total = cart.reduce((sum, item) => sum + products[products.map(data => data.key).indexOf(item.key)].price * item.quantity, 0) + shippingFee
-
     const newOrder = {
       key: orderHistory.length + 1,
       contactInfo: values,
-      total,
+      total: cart.reduce((sum, item) => sum + products[products.map(data => data.key).indexOf(item.key)].price * item.quantity, 0) + shippingFee,
       items: cart.map((item) => ({...products[products.map(data => data.key).indexOf(item.key)], quantity: item.quantity})),
       shippingFee: shippingFee,
       date_ordered: moment()
@@ -43,10 +41,17 @@ export default class Checkout extends Component {
     setOrderHistory([...orderHistory, newOrder])
 
     // add to Order List 
-    addToOrderList({orderId: '100231', total, items: cart.map((item) => ({...products[products.map(data => data.key).indexOf(item.key)], quantity: item.quantity})), shippingFee: shippingFee, date_ordered: moment()})
+    addToOrderList({orderId: '100231', total: newOrder.total, items: cart.map((item) => ({...products[products.map(data => data.key).indexOf(item.key)], quantity: item.quantity})), shippingFee: shippingFee, date_ordered: moment()})
 
     // update item stocks
+    setProducts(products.map(product => {
+      const item_keys = newOrder.items.map(item => item.key);
+      if(item_keys.includes(product.key)) {
+        product['stock'] -= cart[item_keys.indexOf(product.key)].quantity;
+      }
 
+      return product;
+    }))
 
     // empty cart
     setCart([])

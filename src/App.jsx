@@ -87,7 +87,7 @@ const productsDummy = [
     category: 'Laptop',
     brand: 'Dell',
     price: 50000,
-    stock: 25,
+    stock: 0,
     description: 'Awesome Laptop',
     reviews: [],
     orders: 0
@@ -99,7 +99,7 @@ const productsDummy = [
     category: 'Peripheral',
     brand: 'Logitech',
     price: 2000,
-    stock: 25,
+    stock: 1,
     description: "One of the most favored gaming mouse recommended by gamers.",
     reviews: [],
     orders: 0
@@ -217,7 +217,6 @@ export default class App extends Component {
   }
 
   addToOrderList = (order) => {
-    console.log(order.total)
     this.setOrderList([...this.state.orderList, {...order, key: this.state.orderList.length + 1, order_id: 112310 + this.state.orderList.length + 1}])
   }
 
