@@ -25,7 +25,7 @@ export default class Checkout extends Component {
   }
 
   onFinish = (values) => {
-    const { cart, orderHistory, setOrderHistory, setCart } = this.props;
+    const { shippingFee, cart, orderHistory, setOrderHistory, setCart } = this.props;
 
     const newOrder = {
       key: orderHistory.length + 1,
@@ -33,13 +33,13 @@ export default class Checkout extends Component {
       total: cart.reduce((sum, data) => sum + parseFloat(data.price * data.quantity), 0).toFixed(2),
       items: cart,
       shippingFee: shippingFee,
-      date: moment() 
+      date_ordered: moment()
     }
 
-    message.success('Checkout was successful!');
+    this.setState({ redirect: true })
     setOrderHistory([...orderHistory, newOrder])
     setCart([])
-    this.setState({ redirect: true })
+    message.success('Checkout was successful!');
   }
 
   render () {
@@ -128,9 +128,9 @@ export default class Checkout extends Component {
           <Divider />
           {cart.map(data => {
             return <Row gutter={16}>
-              <Col span={2}><Image width={25} height={25} preview={false} src={data.product_image} /></Col>
-              <Col span={16}><Text>{data.name}</Text></Col>
-              <Col span={6}><Text className='prices'>₱{parseFloat(data.price * data.quantity).toFixed(2)}</Text></Col>
+              <Col span={3}><Image width={50} height={50} preview={false} src={data.product_image} /></Col>
+              <Col span={14}><Text>{data.name}</Text><br /><Text type='secondary'>{data.brand}</Text></Col>
+              <Col span={7}><Text className='prices'>₱{parseFloat(data.price * data.quantity).toFixed(2)}</Text></Col>
             </Row>
           })}
           <Divider/>
@@ -140,12 +140,12 @@ export default class Checkout extends Component {
           </Row>
           <Row gutter={16}>
             <Col span={12}><Text strong>Shipping</Text></Col>
-            <Col className='prices' span={12}>₱{shippingFee}</Col>
+            <Col className='prices' span={12}>₱{cart.length == 0 ? 0 : shippingFee}</Col>
           </Row>
           <Divider/>
           <Row gutter={16}>
             <Col span={12}><Title level={3}>Total</Title></Col>
-            <Col className='prices' span={12}><Title level={3}>₱{parseFloat(subtotal) + parseFloat(shippingFee)}</Title></Col>
+            <Col className='prices' span={12}><Title level={3}>₱{parseFloat(subtotal) + parseFloat(cart.length == 0 ? 0 : shippingFee)}</Title></Col>
           </Row>
         </Col>
       </Row>

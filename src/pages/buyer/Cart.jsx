@@ -49,7 +49,7 @@ const Cart = ({ shippingFee, cart, changeCartQuantity, deleteProductFromCart, de
                     <Text type="secondary">{item.brand}</Text>
                   </div>
                   <div className="price">₱{parseFloat(item.price).toFixed(2)}</div>
-                  <div className="quantity"><InputNumber defaultValue={item.quantity} onChange={(val) => changeCartQuantity(i, val)} /></div>
+                  <div className="quantity"><InputNumber min={1} defaultValue={item.quantity} onChange={(val) => changeCartQuantity(i, val)} /></div>
                   <div className="delete"><Popconfirm title="Are you sure you want to delete this product?" onConfirm={() => deleteProductFromCart(i)}><Button type="link"><Text type="secondary"><DeleteOutlined /></Text></Button></Popconfirm></div>
                 </div>
                 {i != cart.length - 1 ? <Divider style={{'margin': '10px -5px'}} /> : <></>}
@@ -70,8 +70,8 @@ const Cart = ({ shippingFee, cart, changeCartQuantity, deleteProductFromCart, de
           <div className="summary">
             <Title level={4}>Order Summary</Title>
             <div><Text type="secondary">Subtotal ({cart.length} items):</Text><Text>₱{parseFloat(totalCost).toFixed(2)}</Text></div>
-            <div><Text type="secondary">Shipping Fee:</Text><Text>₱{shippingFee}</Text></div>
-            <div><Text>Total:</Text><Text>₱{parseFloat(totalCost + shippingFee).toFixed(2)}</Text></div>
+            <div><Text type="secondary">Shipping Fee:</Text><Text>₱{cart.length == 0 ? parseFloat(0.00).toFixed(2) : shippingFee}</Text></div>
+            <div><Text>Total:</Text><Text>₱{parseFloat(totalCost + (cart.length == 0 ? 0 : shippingFee)).toFixed(2)}</Text></div>
           </div>
           <Link to='/checkout' disabled={cart.length == 0}><Button type='secondary' disabled={cart.length == 0} block >PROCEED TO CHECKOUT</Button></Link>
         </div>

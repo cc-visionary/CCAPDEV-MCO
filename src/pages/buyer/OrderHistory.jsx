@@ -12,7 +12,7 @@ const OrderHistory = ({ orderHistory }) => {
         <Collapse accordion>
           {
             orderHistory.map((item, i) => 
-              <Panel header={`Order from ${item.date_ordered._i}`} key={i}>
+              <Panel header={`Order from ${item.date_ordered.format('MM-DD-YYYY')}`} key={i}>
                 <div>
                   <Row gutter={16}>
                     <Col span={2}></Col>
@@ -40,12 +40,12 @@ const OrderHistory = ({ orderHistory }) => {
               </div>
               <Divider />
               <Row gutter={16}>
-                <Col span={18} />
+                <Col span={18}><Text type='secondary'>Date Ordered: {item.date_ordered.format('MMM DD, YYYY')}</Text></Col>
                 <Col span={3}><Text>Shipping Fee:</Text></Col>
                 <Col span={3}><Text>₱{item.shippingFee}</Text></Col>
               </Row>
               <Row gutter={16}>
-                <Col span={18}><Text type='secondary'>Date Ordered: {item.date_ordered._i}</Text></Col>
+                <Col span={18}><Text type='secondary'>Time Ordered: {item.date_ordered.format('HH:mm:ss ZZ')}</Text></Col>
                 <Col span={3}><Text>Total:</Text></Col>
                 <Col span={3}><Text>₱{item.total}</Text></Col>
               </Row>

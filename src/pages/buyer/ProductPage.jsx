@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import Rater from 'react-rater';
-import { Typography, Image, Space, Row, Col, Divider, InputNumber } from 'antd';
+import { Button, Typography, Image, Space, Row, Col, Divider, InputNumber } from 'antd';
 
 import BoxButton from '../../components/BoxButton';
 
@@ -27,7 +27,7 @@ const ProductPage = ({ addToCart, ...props }) => {
           </div>
           <div className='price-reviews'>
             <Title>₱{parseFloat(data.price).toFixed(2)}</Title>
-            <Space><Rater interactive={false} rating={data.rating} /> <Text underline>{data.nReviews} reviews</Text></Space>
+            <Space><Rater interactive={false} rating={data.rating} /> <Button type='link'><Text underline>{data.nReviews} reviews</Text></Button></Space>
           </div>
           <div className='add-to-cart'>
             <div class='quantity'><Text>Quantity: </Text><InputNumber value={quantity} min={1} onChange={value => setQuantity(value)} /></div>

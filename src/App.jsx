@@ -149,7 +149,7 @@ const orderHistoryDummy = [
     total: [{...products[0], quantity: 1}, {...products[2], quantity: 2}, {...products[3], quantity: 4}].reduce((sum, data) => sum + parseFloat(data.price) * parseFloat(data.quantity), 0) + shippingFee,
     items: [{...products[0], quantity: 1}, {...products[2], quantity: 2}, {...products[3], quantity: 4}],
     shippingFee: shippingFee,
-    date_ordered: moment('03-26-2021', 'MM-DD-YYYY'),
+    date_ordered: moment('04-21-2020 ', 'MM-DD-YYYY'),
   }
 ]
 
