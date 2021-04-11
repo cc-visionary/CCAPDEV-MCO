@@ -54,16 +54,15 @@ const OrderHistory = ({ products, setProducts, orderHistory }) => {
         {
           orderHistory.map((item, i) => 
             <Panel header={`Order from ${item.date_ordered.format('MM-DD-YYYY')}`} key={i}>
-              <div>
-                <Row gutter={16}>
-                  <Col span={2}></Col>
-                  <Col span={10}>Name</Col>
-                  <Col span={3}>Price per Item</Col>
-                  <Col span={3}>Quantity</Col>
-                  <Col span={3}>Subtotal</Col>
-                  <Col span={5} />
-                </Row>
-                <Divider />
+              <Row gutter={16}>
+                <Col span={2}></Col>
+                <Col span={10}>Name</Col>
+                <Col span={3}>Price per Item</Col>
+                <Col span={3}>Quantity</Col>
+                <Col span={3}>Subtotal</Col>
+                <Col span={5} />
+              </Row>
+              <Divider />
               {
                 item.items.map((data, i) => 
                     <Row align='middle' gutter={16}>
@@ -77,17 +76,16 @@ const OrderHistory = ({ products, setProducts, orderHistory }) => {
                     </Row>
                 )
               }
-            </div>
             <Divider />
             <Row gutter={16}>
               <Col span={15}><Text type='secondary'>Date Ordered: {item.date_ordered.format('MMM DD, YYYY')}</Text></Col>
               <Col span={3}><Text>Shipping Fee:</Text></Col>
-              <Col span={3}><Text>₱{item.shippingFee}</Text></Col>
+              <Col span={3}><Text>₱{parseFloat(item.shippingFee).toFixed(2)}</Text></Col>
             </Row>
             <Row gutter={16}>
               <Col span={15}><Text type='secondary'>Time Ordered: {item.date_ordered.format('HH:mm:ss ZZ')}</Text></Col>
               <Col span={3}><Text>Total:</Text></Col>
-              <Col span={3}><Text>₱{item.total}</Text></Col>
+              <Col span={3}><Text>₱{parseFloat(item.total).toFixed(2)}</Text></Col>
             </Row>
           </Panel>
           )

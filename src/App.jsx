@@ -16,6 +16,8 @@ import Checkout from './pages/buyer/Checkout';
 import OrderHistory from './pages/buyer/OrderHistory';
 import moment from 'moment';
 
+const shippingFee = 99.99;
+
 const productsDummy = [
   {
     key: 1,
@@ -108,29 +110,33 @@ const orderListDummy = [
   {
     key: 1,
     order_id: '112311',
-    total: [{...productsDummy[3], quantity: 1}, {...productsDummy[4], quantity: 3}, {...productsDummy[5], quantity: 2}].reduce((sum, product) => sum + product.price * product.quantity, 0),
+    total: [{...productsDummy[3], quantity: 1}, {...productsDummy[4], quantity: 3}, {...productsDummy[5], quantity: 2}].reduce((sum, product) => sum + product.price * product.quantity, 0) + shippingFee,
     items: [{...productsDummy[3], quantity: 1}, {...productsDummy[4], quantity: 3}, {...productsDummy[5], quantity: 2}],
+    shippingFee: shippingFee,
     date_ordered: moment('03-26-2021', 'MM-DD-YYYY'),
   },
   {
     key: 2,
     order_id: '112312',
-    total: [{...productsDummy[3], quantity: 1}, {...productsDummy[1], quantity: 1}].reduce((sum, product) => sum + product.price * product.quantity, 0),
+    total: [{...productsDummy[3], quantity: 1}, {...productsDummy[1], quantity: 1}].reduce((sum, product) => sum + product.price * product.quantity, 0) + shippingFee,
     items: [{...productsDummy[3], quantity: 1}, {...productsDummy[1], quantity: 1}],
+    shippingFee: shippingFee,
     date_ordered: moment('03-27-2021', 'MM-DD-YYYY'),
   },
   {
     key: 3,
     order_id: '112313',
-    total: [{...productsDummy[5], quantity: 1}].reduce((sum, product) => sum + product.price * product.quantity, 0),
+    total: [{...productsDummy[5], quantity: 1}].reduce((sum, product) => sum + product.price * product.quantity, 0) + shippingFee,
     items: [{...productsDummy[5], quantity: 1}],
+    shippingFee: shippingFee,
     date_ordered: moment('03-27-2021', 'MM-DD-YYYY'),
   },
   {
     key: 4,
     order_id: '112314',
-    total: [{...productsDummy[6], quantity: 2}].reduce((sum, product) => sum + product.price * product.quantity, 0),
+    total: [{...productsDummy[6], quantity: 2}].reduce((sum, product) => sum + product.price * product.quantity, 0) + shippingFee,
     items: [{...productsDummy[6], quantity: 2}],
+    shippingFee: shippingFee,
     date_ordered: moment('03-27-2021', 'MM-DD-YYYY'),
   },
 ];
@@ -140,8 +146,6 @@ const cartDummy = [
   { key: 3, quantity: 1 },
   { key: 7, quantity: 1 }
 ]
-
-const shippingFee = 99.99;
 
 const orderHistoryDummy = [
   {
@@ -213,7 +217,8 @@ export default class App extends Component {
   }
 
   addToOrderList = (order) => {
-    this.setOrderList((currOrderList) => [...currOrderList, {...order, key: currOrderList.length + 1}])
+    console.log(order.total)
+    this.setOrderList([...this.state.orderList, {...order, key: this.state.orderList.length + 1, order_id: 112310 + this.state.orderList.length + 1}])
   }
 
   componentDidMount = () => {
@@ -230,7 +235,7 @@ export default class App extends Component {
         <div id="main">
           {userType == 'seller' ? 
           <Switch>
-            <Route exact path="/" component={(props) => <Dashboard products={products} setProducts={setProducts} orderList={orderList} {...props} />} />
+            <Route exact path="/" component={(props) => <Dashboard cart={cart} setCart={setCart} products={products} setProducts={setProducts} orderList={orderList} {...props} />} />
           </Switch>
           : 
           <Switch>
@@ -241,7 +246,7 @@ export default class App extends Component {
             <Route path="/product/:slug" component={(props) => <ProductPage addToCart={addToCart} {...props} />} />
             <Route path="/category/:category" component={(props) => <ProductCatalog products={products} {...props} />} />
             <Route path="/cart" component={(props) => <Cart shippingFee={shippingFee} cart={cart} products={products} setCart={setCart} {...props} />} />
-            <Route path="/checkout" component={(props) => <Checkout orderHistory={orderHistory} products={products} setOrderHistory={setOrderHistory} shippingFee={shippingFee} cart={cart} setCart={setCart} addToOrderList={addToOrderList} {...props} />} />
+            <Route path="/checkout" component={(props) => <Checkout orderHistory={orderHistory} products={products} setProducts={setProducts} setOrderHistory={setOrderHistory} shippingFee={shippingFee} cart={cart} setCart={setCart} addToOrderList={addToOrderList} {...props} />} />
             <Route path="/order-history" component={(props) => <OrderHistory products={products} setProducts={setProducts} orderHistory={orderHistory} {...props} />} />
             <Route component={PageNotFound} />
           </Switch>

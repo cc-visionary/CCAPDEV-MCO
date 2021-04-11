@@ -25,20 +25,30 @@ export default class Checkout extends Component {
   }
 
   onFinish = (values) => {
-    const { products, shippingFee, cart, orderHistory, setOrderHistory, setCart, addToOrderList } = this.props;
+    const { products, setProducts, shippingFee, cart, orderHistory, setOrderHistory, setCart, addToOrderList } = this.props;
+
+    const total = cart.reduce((sum, item) => sum + products[products.map(data => data.key).indexOf(item.key)].price * item.quantity, 0) + shippingFee
 
     const newOrder = {
       key: orderHistory.length + 1,
       contactInfo: values,
-      total: cart.reduce((sum, item) => sum + parseFloat(products[item.key - 1].price * products[item.key - 1].quantity), 0).toFixed(2),
-      items: cart.map((item) => ({...products[item.key - 1], quantity: item.quantity})),
+      total,
+      items: cart.map((item) => ({...products[products.map(data => data.key).indexOf(item.key)], quantity: item.quantity})),
       shippingFee: shippingFee,
       date_ordered: moment()
     }
 
     this.setState({ redirect: true })
+    // add to Order History
     setOrderHistory([...orderHistory, newOrder])
-    addToOrderList({orderId: '100231', total: cart.reduce((sum, item) => sum + parseFloat(products[item.key - 1].price * products[item.key - 1].quantity), 0).toFixed(2), items: cart.map((item) => ({...products[item.key - 1], quantity: item.quantity})), date_ordered: moment()})
+
+    // add to Order List 
+    addToOrderList({orderId: '100231', total, items: cart.map((item) => ({...products[products.map(data => data.key).indexOf(item.key)], quantity: item.quantity})), shippingFee: shippingFee, date_ordered: moment()})
+
+    // update item stocks
+
+
+    // empty cart
     setCart([])
     message.success('Checkout was successful!');
   }
@@ -47,7 +57,7 @@ export default class Checkout extends Component {
     const { redirect } = this.state;
     const { products, cart, shippingFee } = this.props;
 
-    const subtotal = cart.reduce((sum, item) => sum + parseFloat(products[item.key - 1].price * item.quantity), 0).toFixed(2);
+    const subtotal = cart.reduce((sum, item) => sum + parseFloat(products[products.map(data => data.key).indexOf(item.key)].price * item.quantity), 0).toFixed(2);
 
     return redirect ? 
     <Redirect to='/' />
@@ -128,10 +138,11 @@ export default class Checkout extends Component {
         <Title level={3}>Your Cart</Title>
           <Divider />
           {cart.map(data => {
+            const index = products.map(d => d.key).indexOf(data.key)
             return <Row gutter={16} key={data.key}>
-              <Col span={3}><Image width={50} height={50} preview={false} src={products[data.key - 1].product_image} /></Col>
-              <Col span={14}><Text>{products[data.key - 1].name}</Text><br /><Text type='secondary'>{products[data.key - 1].brand}</Text></Col>
-              <Col span={7}><Text className='prices'>₱{parseFloat(products[data.key - 1].price * data.quantity).toFixed(2)}</Text></Col>
+              <Col span={3}><Image width={50} height={50} preview={false} src={products[index].product_image} /></Col>
+              <Col span={14}><Text>{products[index].name}</Text><br /><Text type='secondary'>{products[index].brand}</Text></Col>
+              <Col span={7}><Text className='prices'>₱{parseFloat(products[index].price * data.quantity).toFixed(2)}</Text></Col>
             </Row>
           })}
           <Divider/>

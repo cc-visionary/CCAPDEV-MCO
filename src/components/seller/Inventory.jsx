@@ -8,7 +8,7 @@ import EditProduct from './EditProduct';
 
 const { Text, Title } = Typography;
 
-const Inventory = ({ products, setProducts }) => {
+const Inventory = ({ cart, setCart, products, setProducts }) => {
   const [addDrawerVisible, setAddDrawerVisible] = useState(false);
   const [editDrawerVisible, setEditDrawerVisible] = useState(false);
   const [uniqueKey, setUniqueKey] = useState(products.length);
@@ -18,7 +18,8 @@ const Inventory = ({ products, setProducts }) => {
   const [addForm] = Form.useForm();
 
   const handleDelete = (key) => {
-    setProducts(products.filter((product) => product.key !== key))
+    setCart(cart.filter((product) => product.key != key))
+    setProducts(products.filter((product) => product.key != key))
   }
 
   const onSubmitAddProduct = () => {
@@ -36,7 +37,7 @@ const Inventory = ({ products, setProducts }) => {
   const handleAddProduct = (values) => {
     values['key'] = uniqueKey + 1;
     setUniqueKey(currKey => currKey + 1);
-    setProducts([...products, {...values, key: products.length + 1, reviews: []}]);
+    setProducts([...products, {...values, key: products.length + 1, reviews: [], orders: 0}]);
     closeAddDrawer();
   }
 
@@ -50,8 +51,9 @@ const Inventory = ({ products, setProducts }) => {
   }
 
   const showEditDrawer = (key) => {
-    editForm.setFieldsValue(products[key - 1]);
-    setFileList([{uid: '-1', name: products[key - 1].name, status: 'done', url: products[key - 1].product_image}]);
+    const index = products.map(product => product.key).indexOf(key)
+    editForm.setFieldsValue(products[index]);
+    setFileList([{uid: '-1', name: products[index].name, status: 'done', url: products[index].product_image}]);
     setEditDrawerVisible(true);
   }
 
@@ -74,10 +76,9 @@ const Inventory = ({ products, setProducts }) => {
   }
 
   const handleEditProduct = (values) => {
-    console.log(values.product_image.url)
     const newProducts = [...products];
-    newProducts[values.key - 1] = {...values, product_image: values.product_image.file.originFileObj, reviews: newProducts[values.key - 1].reviews, key: newProducts[values.key - 1].key};
-    console.log(newProducts)
+    const index = products.map(product => product.key).indexOf(values.key)
+    newProducts[index] = {...values, reviews: newProducts[index].reviews, key: newProducts[index].key, orders: newProducts[index].orders};
     setProducts(newProducts)
     closeEditDrawer();
   }
@@ -88,7 +89,6 @@ const Inventory = ({ products, setProducts }) => {
 
   let categories = []
   let brands = []
-  console.log(products)
   products.map((record) => {
     if(!categories.includes(record.category)) categories.push(record.category)
     if(!brands.includes(record.brand)) brands.push(record.brand)
@@ -131,6 +131,12 @@ const Inventory = ({ products, setProducts }) => {
       sorter: (a, b) => a.stock - b.stock,
     },
     {
+      title: 'Orders',
+      dataIndex: 'orders',
+      key: 'orders',
+      sorter: (a, b) => a.orders - b.orders,
+    },
+    {
       title: 'Description',
       dataIndex: 'description',
       key: 'description',
@@ -139,7 +145,7 @@ const Inventory = ({ products, setProducts }) => {
     {
       title: 'Reviews',
       dataIndex: 'reviews',
-      sorter: (a, b) => a.reviews.reduce((sum, val) => sum + val.rating, 0) / a.reviews.length - b.reviews.reduce((sum, val) => sum + val.rating, 0) / b.reviews.length,
+      sorter: (a, b) => a.reviews.length > 0 ? a.reviews.reduce((sum, val) => sum + val.rating, 0) / a.reviews.length - b.reviews.reduce((sum, val) => sum + val.rating, 0) / b.reviews.length : b > 0 ? 0 - b.reviews.reduce((sum, val) => sum + val.rating, 0) / b.reviews.length : a.reviews.reduce((sum, val) => sum + val.rating, 0) / a.reviews.length - 0,
       render: (_, record) => record.reviews.length == 0 ? <Text>No Reviews</Text> : <Rater rating={record.reviews.reduce((sum, val) => sum + val.rating, 0) / record.reviews.length} interactive={false} /> 
     },
     {
