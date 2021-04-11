@@ -1,8 +1,8 @@
-import React, { useCallback } from 'react';
+import React from 'react';
 import { Drawer, Button, Form, Row, Col, Input, InputNumber, Select, Upload } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
 
-const EditProduct = ({ form, visible, onClose, onSubmit }) => {
+const EditProduct = ({ form, fileList, setFileList, visible, onClose, onSubmit }) => {
   return(
     <Drawer 
       title="Edit" 
@@ -100,10 +100,10 @@ const EditProduct = ({ form, visible, onClose, onSubmit }) => {
         <Row align='middle' gutter={16}>
           <Col span={6}>
             <Form.Item
-              name="product-image"
+              name="product_image"
               label="Product Image"
             >
-              <Upload maxCount={1} listType="picture-card"><UploadOutlined /> Update</Upload>
+              <Upload accept='.png, .jpg, .jpeg' maxCount={1} fileList={fileList} onChange={({fileList}) => setFileList(fileList)} listType="picture-card"><UploadOutlined /> Update</Upload>
             </Form.Item>
           </Col>
           <Col span={18}>
@@ -117,7 +117,7 @@ const EditProduct = ({ form, visible, onClose, onSubmit }) => {
                 },
               ]}
             >
-              <Input.TextArea rows={4} placeholder="Please enter product description" />
+              <Input.TextArea rows={9} placeholder="Please enter product description" />
             </Form.Item>
           </Col>
         </Row>

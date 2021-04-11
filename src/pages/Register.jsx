@@ -37,7 +37,7 @@ const Register = () => {
   (
     <Form {...layout} id="register" name="register" onFinish={(e) => onFinish(e)} >
         <Form.Item name='avatar' label="Avatar" rules={[{ required: true, message: 'Please add an avatar' }]}>
-          <Upload listType="picture-card" maxCount={1} ><UploadOutlined /> Update</Upload>
+          <Upload accept='.png, .jpg, .jpeg' listType="picture-card" maxCount={1} ><UploadOutlined /> Update</Upload>
         </Form.Item>
         <Form.Item name='fullname' label="Fullname" rules={[{ required: true, message: 'Please enter your fullname' }]}>
           <Input placeholder='Enter your fullname'/>

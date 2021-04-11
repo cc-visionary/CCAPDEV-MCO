@@ -13,6 +13,7 @@ const Inventory = ({ products, setProducts }) => {
   const [editDrawerVisible, setEditDrawerVisible] = useState(false);
   const [uniqueKey, setUniqueKey] = useState(products.length);
   const [searchText, setSearchText] = useState('');
+  const [fileList, setFileList] = useState([]);
   const [editForm] = Form.useForm();
   const [addForm] = Form.useForm();
 
@@ -49,12 +50,14 @@ const Inventory = ({ products, setProducts }) => {
   }
 
   const showEditDrawer = (key) => {
-    editForm.setFieldsValue(products[key - 1])
+    editForm.setFieldsValue(products[key - 1]);
+    setFileList([{uid: '-1', name: products[key - 1].name, status: 'done', url: products[key - 1].product_image}]);
     setEditDrawerVisible(true);
   }
 
   const closeEditDrawer = () => {
     setEditDrawerVisible(false);
+    setFileList([])
     editForm.resetFields()
   }
 
@@ -71,8 +74,10 @@ const Inventory = ({ products, setProducts }) => {
   }
 
   const handleEditProduct = (values) => {
+    console.log(values.product_image.url)
     const newProducts = [...products];
-    newProducts[values.key - 1] = {...values, reviews: newProducts[values.key - 1].reviews, key: newProducts[values.key - 1].key};
+    newProducts[values.key - 1] = {...values, product_image: values.product_image.file.originFileObj, reviews: newProducts[values.key - 1].reviews, key: newProducts[values.key - 1].key};
+    console.log(newProducts)
     setProducts(newProducts)
     closeEditDrawer();
   }
@@ -94,6 +99,7 @@ const Inventory = ({ products, setProducts }) => {
       title: 'Name',
       dataIndex: 'name',
       key: 'name',
+      ellipsis: true,
       width: '20%'
     },
     {
@@ -123,12 +129,12 @@ const Inventory = ({ products, setProducts }) => {
       dataIndex: 'stock',
       key: 'stock',
       sorter: (a, b) => a.stock - b.stock,
-      ellipsis: true,
     },
     {
       title: 'Description',
       dataIndex: 'description',
       key: 'description',
+      ellipsis: true,
     },
     {
       title: 'Reviews',
@@ -162,7 +168,7 @@ const Inventory = ({ products, setProducts }) => {
         dataSource={searchText ? products.filter((data) => data['name'].toLowerCase().includes(searchText.toLowerCase())) : products} 
       />
       <AddProduct form={addForm} visible={addDrawerVisible} onClose={closeAddDrawer} onSubmit={onSubmitAddProduct} />
-      <EditProduct form={editForm} visible={editDrawerVisible} onClose={closeEditDrawer} onSubmit={onSubmitEditProduct} />
+      <EditProduct form={editForm} visible={editDrawerVisible} fileList={fileList} setFileList={setFileList} onClose={closeEditDrawer} onSubmit={onSubmitEditProduct} />
     </div>
   );
 }

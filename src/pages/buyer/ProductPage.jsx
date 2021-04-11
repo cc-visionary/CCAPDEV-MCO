@@ -10,6 +10,8 @@ const ProductPage = ({ addToCart, ...props }) => {
   const { data } = props.location;
   const [ quantity, setQuantity ] = useState(1)
 
+  console.log(data.product_image)
+
   return data ? 
       <Row align='middle' id="product-page">
         <Col className='left' md={11} xs={24}>
@@ -31,7 +33,7 @@ const ProductPage = ({ addToCart, ...props }) => {
           </div>
           <div className='add-to-cart'>
             <div className='quantity'><Text>Quantity: </Text><InputNumber value={quantity} min={1} onChange={value => setQuantity(value)} /></div>
-            <BoxButton onClick={() => addToCart({ ...data, quantity })}>Add to Cart</BoxButton>
+            <BoxButton onClick={() => addToCart({ key: data.key, quantity })}>Add to Cart</BoxButton>
           </div>
         </Col>
       </Row> : 

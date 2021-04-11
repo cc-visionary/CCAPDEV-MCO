@@ -129,9 +129,9 @@ const orderListDummy = [
 ];
 
 const cartDummy = [
-  { ...productsDummy[0], quantity: 2 },
-  { ...productsDummy[2], quantity: 1 },
-  { ...productsDummy[6], quantity: 1 }
+  { key: 1, quantity: 2 },
+  { key: 3, quantity: 1 },
+  { key: 7, quantity: 1 }
 ]
 
 const shippingFee = 99.99;
@@ -185,22 +185,22 @@ export default class App extends Component {
     this.setState({ orderList })
   }
 
-  addToCart = (product) => {
+  addToCart = (item) => {
     const { cart } = this.state;
 
     let inCart = false
     
     const newCart = cart.map((data) => {
-      if(data.key === product.key && data.name === product.name) {
+      if(data.key === item.key) {
         inCart = true;
-        data['quantity'] += product.quantity
+        data['quantity'] += item.quantity
       }
 
       return data;
     })
 
     if(inCart) this.setCart(newCart)
-    else this.setCart([...cart, product])  
+    else this.setCart([...cart, item])  
 
     message.success('Successfully added to cart')
   }
@@ -219,7 +219,7 @@ export default class App extends Component {
 
     return (
       <Router>
-        <Navigation cart={cart} loggedIn={loggedIn} setLoggedIn={setLoggedIn} userType={userType} setUserType={setUserType} />
+        <Navigation products={products} cart={cart} loggedIn={loggedIn} setLoggedIn={setLoggedIn} userType={userType} setUserType={setUserType} />
         <div id="main">
           {userType == 'seller' ? 
           <Switch>
@@ -233,8 +233,8 @@ export default class App extends Component {
             <Route path="/products" component={(props) => <ProductCatalog products={products} {...props} />} />
             <Route path="/product/:slug" component={(props) => <ProductPage addToCart={addToCart} {...props} />} />
             <Route path="/category/:category" component={(props) => <ProductCatalog products={products} {...props} />} />
-            <Route path="/cart" component={(props) => <Cart shippingFee={shippingFee} cart={cart} setCart={setCart} {...props} />} />
-            <Route path="/checkout" component={(props) => <Checkout orderHistory={orderHistory} setOrderHistory={setOrderHistory} shippingFee={shippingFee} cart={cart} setCart={setCart} addToOrderList={addToOrderList} {...props} />} />
+            <Route path="/cart" component={(props) => <Cart shippingFee={shippingFee} cart={cart} products={products} setCart={setCart} {...props} />} />
+            <Route path="/checkout" component={(props) => <Checkout orderHistory={orderHistory} products={products} setOrderHistory={setOrderHistory} shippingFee={shippingFee} cart={cart} setCart={setCart} addToOrderList={addToOrderList} {...props} />} />
             <Route path="/order-history" component={(props) => <OrderHistory products={products} setProducts={setProducts} orderHistory={orderHistory} {...props} />} />
             <Route component={PageNotFound} />
           </Switch>

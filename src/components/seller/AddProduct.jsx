@@ -103,10 +103,10 @@ const AddProduct = ({ form, visible, onClose, onSubmit }) => {
         <Row align='middle' gutter={16}>
           <Col span={6}>
             <Form.Item
-              name="product-image"
+              name="product_image"
               label="Product Image"
             >
-              <Upload maxCount={1} listType="picture-card"><UploadOutlined /> Update</Upload>
+              <Upload accept='.png, .jpg, .jpeg' axCount={1} listType="picture-card"><UploadOutlined /> Update</Upload>
             </Form.Item>
           </Col>
           <Col span={18}>

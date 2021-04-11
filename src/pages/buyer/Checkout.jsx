@@ -25,29 +25,29 @@ export default class Checkout extends Component {
   }
 
   onFinish = (values) => {
-    const { shippingFee, cart, orderHistory, setOrderHistory, setCart, addToOrderList } = this.props;
+    const { products, shippingFee, cart, orderHistory, setOrderHistory, setCart, addToOrderList } = this.props;
 
     const newOrder = {
       key: orderHistory.length + 1,
       contactInfo: values,
-      total: cart.reduce((sum, data) => sum + parseFloat(data.price * data.quantity), 0).toFixed(2),
-      items: cart,
+      total: cart.reduce((sum, item) => sum + parseFloat(products[item.key - 1].price * products[item.key - 1].quantity), 0).toFixed(2),
+      items: cart.map((item) => ({...products[item.key - 1], quantity: item.quantity})),
       shippingFee: shippingFee,
       date_ordered: moment()
     }
 
     this.setState({ redirect: true })
     setOrderHistory([...orderHistory, newOrder])
-    addToOrderList({orderId: '100231', total: cart.reduce((sum, data) => sum + parseFloat(data.price * data.quantity), 0).toFixed(2), items: cart, date_ordered: moment()})
+    addToOrderList({orderId: '100231', total: cart.reduce((sum, item) => sum + parseFloat(products[item.key - 1].price * products[item.key - 1].quantity), 0).toFixed(2), items: cart, date_ordered: moment()})
     setCart([])
     message.success('Checkout was successful!');
   }
 
   render () {
     const { redirect } = this.state;
-    const { cart, shippingFee } = this.props;
+    const { products, cart, shippingFee } = this.props;
 
-    const subtotal = cart.reduce((sum, data) => sum + parseFloat(data.price * data.quantity), 0).toFixed(2);
+    const subtotal = cart.reduce((sum, item) => sum + parseFloat(products[item.key - 1].price * item.quantity), 0).toFixed(2);
 
     return redirect ? 
     <Redirect to='/' />
@@ -129,9 +129,9 @@ export default class Checkout extends Component {
           <Divider />
           {cart.map(data => {
             return <Row gutter={16} key={data.key}>
-              <Col span={3}><Image width={50} height={50} preview={false} src={data.product_image} /></Col>
-              <Col span={14}><Text>{data.name}</Text><br /><Text type='secondary'>{data.brand}</Text></Col>
-              <Col span={7}><Text className='prices'>₱{parseFloat(data.price * data.quantity).toFixed(2)}</Text></Col>
+              <Col span={3}><Image width={50} height={50} preview={false} src={products[data.key - 1].product_image} /></Col>
+              <Col span={14}><Text>{products[data.key - 1].name}</Text><br /><Text type='secondary'>{products[data.key - 1].brand}</Text></Col>
+              <Col span={7}><Text className='prices'>₱{parseFloat(products[data.key - 1].price * data.quantity).toFixed(2)}</Text></Col>
             </Row>
           })}
           <Divider/>

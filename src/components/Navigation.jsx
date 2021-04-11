@@ -11,7 +11,7 @@ import ProfileMenu from './ProfileMenu';
 
 const { Text, Title } = Typography;
 
-const Navigation = ({ cart, loggedIn, setLoggedIn, userType, setUserType }) => {
+const Navigation = ({ products, cart, loggedIn, setLoggedIn, userType, setUserType }) => {
   const [loginVisible, setLoginVisible] = useState(false);
   const [redirect, setRedirect] = useState(false);
   const [form] = Form.useForm();
@@ -53,7 +53,7 @@ const Navigation = ({ cart, loggedIn, setLoggedIn, userType, setUserType }) => {
         <Link to='/'><Title className="shop-name">TechShop.</Title></Link>
       </div>
       <div className="right">
-        { loggedIn && userType == 'buyer' ? <Popover content={(props) => <CartPopover cart={cart} {...props} />} title={() => <Text type='secondary'>Recently Added Product</Text>} placement='bottomLeft' ><Badge count={cart.length}><Button size="large" type="text" icon={<ShoppingCartOutlined />} /></Badge></Popover> : null }
+        { loggedIn && userType == 'buyer' ? <Popover content={(props) => <CartPopover products={products} cart={cart} {...props} />} title={() => <Text type='secondary'>Recently Added Product</Text>} placement='bottomLeft' ><Badge count={cart.length}><Button size="large" type="text" icon={<ShoppingCartOutlined />} /></Badge></Popover> : null }
         { !loggedIn ? 
           <BoxButton onClick={() => setLoginVisible(true)}>Login</BoxButton> : 
           <Dropdown overlay={<ProfileMenu logout={() => setLoginVisible(false)} logout={() => logout()} userType={userType} setUserType={setUserType} setRedirect={setRedirect} />} placement="bottomRight">
