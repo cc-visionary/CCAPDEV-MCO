@@ -38,7 +38,7 @@ export default class Checkout extends Component {
 
     this.setState({ redirect: true })
     setOrderHistory([...orderHistory, newOrder])
-    addToOrderList({orderId: '100231', total: cart.reduce((sum, item) => sum + parseFloat(products[item.key - 1].price * products[item.key - 1].quantity), 0).toFixed(2), items: cart, date_ordered: moment()})
+    addToOrderList({orderId: '100231', total: cart.reduce((sum, item) => sum + parseFloat(products[item.key - 1].price * products[item.key - 1].quantity), 0).toFixed(2), items: cart.map((item) => ({...products[item.key - 1], quantity: item.quantity})), date_ordered: moment()})
     setCart([])
     message.success('Checkout was successful!');
   }

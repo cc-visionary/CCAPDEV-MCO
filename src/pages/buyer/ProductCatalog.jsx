@@ -32,6 +32,7 @@ class ProductCatalog extends Component {
         filteredElements: filteredProducts
       }, () => {
         this.setPaginationStates();
+        this.handleSort('featured');
       });
     } else {
       this.setState({
@@ -39,6 +40,7 @@ class ProductCatalog extends Component {
         filteredElements: this.props.products
       }, () => {
         this.setPaginationStates();
+        this.handleSort('featured');
       });
     }
     // this.getAllElements();
@@ -90,9 +92,9 @@ class ProductCatalog extends Component {
     } else if(val === 'high_to_low') {
       sorted = copy.sort((a, b) => a.price < b.price);
     } else if(val === 'top_rated') {
-      sorted = copy;
+      sorted = copy.sort((a, b) => a.reviews.length > 0 ? (a.reviews.reduce((sum, review) => sum + review.rating, 0) / a.reviews.length) < (b.reviews.reduce((sum, review) => sum + review.rating, 0) / b.reviews.length) : 0 < (b.reviews.reduce((sum, review) => sum + review.rating, 0) / b.reviews.length));
     } else {
-      sorted = copy.sort((a, b) => a.key > b.key);
+      sorted = copy.sort((a, b) => a.orders < b.orders);
     }
     this.setState({ filteredElements: sorted }, () => this.setElementsForCurrentPage())
   }

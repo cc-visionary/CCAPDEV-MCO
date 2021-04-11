@@ -27,6 +27,7 @@ const productsDummy = [
     stock: 2499,
     description: 'Good Mouse',
     reviews: [{reaction: 'not really good', rating: 2}, {reaction: 'fair', rating: 3}],
+    orders: 15
   },
   {
     key: 2,
@@ -38,6 +39,7 @@ const productsDummy = [
     stock: 300,
     description: 'Bad Mouse',
     reviews: [{reaction: 'cool', rating: 4}, {reaction: 'awesome', rating: 5}],
+    orders: 23
   },
   {
     key: 3,
@@ -49,6 +51,7 @@ const productsDummy = [
     stock: 150,
     description: 'Cool Scan',
     reviews: [{reaction: 'awesome cool', rating: 4}, {reaction: 'cool', rating: 4}, {reaction: 'nice', rating: 3}],
+    orders: 20
   },
   {
     key: 4,
@@ -60,6 +63,7 @@ const productsDummy = [
     stock: 200,
     description: 'Cool Print',
     reviews: [{reaction: 'not satisfied', rating: 2}, {reaction: 'fair', rating: 3}, {reaction: 'cool', rating: 4}],
+    orders: 18
   },
   {
     key: 5,
@@ -72,6 +76,7 @@ const productsDummy = [
     description: 'Cool laptop',
     rating: 3,
     reviews: [{reaction: 'awesome', rating: 4}],
+    orders: 13
   },
   {
     key: 6,
@@ -83,6 +88,7 @@ const productsDummy = [
     stock: 25,
     description: 'Awesome Laptop',
     reviews: [],
+    orders: 0
   },
   {
     key: 7,
@@ -94,6 +100,7 @@ const productsDummy = [
     stock: 25,
     description: "One of the most favored gaming mouse recommended by gamers.",
     reviews: [],
+    orders: 0
   },
 ]
 
