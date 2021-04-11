@@ -1,0 +1,12 @@
+#checkout {
+  .buttons {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .prices {
+    display: block;
+    text-align: right;
+  }
+}

@@ -36,25 +36,25 @@ const Register = () => {
   : 
   (
     <Form {...layout} id="register" name="register" onFinish={(e) => onFinish(e)} >
-        <Form.Item name='avatar' label="Avatar" rules={[{ required: true, message: 'Please add an avatar!' }]}>
+        <Form.Item name='avatar' label="Avatar" rules={[{ required: true, message: 'Please add an avatar' }]}>
           <Upload listType="picture-card" maxCount={1} ><UploadOutlined /> Update</Upload>
         </Form.Item>
-        <Form.Item name='fullname' label="Fullname" rules={[{ required: true, message: 'Please input your fullname!' }]}>
-          <Input/>
+        <Form.Item name='fullname' label="Fullname" rules={[{ required: true, message: 'Please enter your fullname' }]}>
+          <Input placeholder='Enter your fullname'/>
         </Form.Item>
-        <Form.Item name='email' label="Email" rules={[{ type: 'email', message: 'The input is not valid E-mail!'}, { required: true, message: 'Please input your E-mail!'},]}>
-          <Input/>
+        <Form.Item name='email' label="Email" rules={[{ type: 'email', message: 'Please enter a valid email'}, { required: true, message: 'Please enter your email'},]}>
+          <Input placeholder='Enter your email'/>
         </Form.Item>
-        <Form.Item name='birthday' label="Birthday" rules={[{ required: true, message: 'Please input your birthday!' }]}>
+        <Form.Item name='birthday' label="Birthday" rules={[{ required: true, message: 'Please enter your birthday' }]}>
           <DatePicker format='MM-DD-YYYY' />
         </Form.Item>
-        <Form.Item name='username' label="Username" rules={[{ required: true, message: 'Please input your username!' }]}>
-          <Input />
+        <Form.Item name='username' label="Username" rules={[{ required: true, message: 'Please enter your username' }]}>
+          <Input placeholder='Enter your username' />
         </Form.Item>
-        <Form.Item name='password' label="Password" rules={[{ required: true, message: 'Please input your password!' }]} hasFeedback>
+        <Form.Item name='password' label="Password" rules={[{ required: true, message: 'Please enter your password' }]} hasFeedback>
           <Input.Password value={password} onChange={(e) => setPassword(e.target.value)} />
         </Form.Item>
-        <Form.Item name='confirm_password' label="Confirm Password" rules={[{ required: true, message: 'Please input your password confirmation!' }, { validator: compareToFirstPassword }]} hasFeedback>
+        <Form.Item name='confirm_password' label="Confirm Password" rules={[{ required: true, message: 'Please enter your password confirmation' }, { validator: compareToFirstPassword }]} hasFeedback>
           <Input.Password />
         </Form.Item>
         <Form.Item name='role' label="Role" initialValue='buyer' >

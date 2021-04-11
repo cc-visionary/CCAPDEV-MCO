@@ -5,11 +5,11 @@ import { Link } from 'react-router-dom'
 
 const { Text, Title } = Typography;
 
-const Cart = ({ cart, changeCartQuantity, deleteProductFromCart, deleteProductsFromCart, ...props }) => {
+const Cart = ({ shippingCost, cart, changeCartQuantity, deleteProductFromCart, deleteProductsFromCart, ...props }) => {
   const [ checkAll, setCheckAll] = useState(false)
   const [ checkboxes, setCheckboxes ] = useState(cart.map(() => false))
   const [ indeterminate, setIndeterminate ] = useState(false);
-  let totalCost = 0;
+  const totalCost = cart.reduce((sum, data) => sum + data.price * data.quantity, 0);
 
   const toggleCheckAll = (checked) => {
     if(indeterminate) checked = true
@@ -40,8 +40,6 @@ const Cart = ({ cart, changeCartQuantity, deleteProductFromCart, deleteProductsF
           {
             cart.length > 0 ?
             cart.map((item, i) => {
-              totalCost += item.price * item.quantity;
-
               return <div className="cart-item" key={item.key}>
                 <div className='contents'>
                   <div className="checkbox"><Checkbox checked={checkboxes[i]} onChange={(e) => toggleACheckbox(i, e.target.checked)} /></div>
@@ -72,8 +70,8 @@ const Cart = ({ cart, changeCartQuantity, deleteProductFromCart, deleteProductsF
           <div className="summary">
             <Title level={4}>Order Summary</Title>
             <div><Text type="secondary">Subtotal ({cart.length} items):</Text><Text>₱{parseFloat(totalCost).toFixed(2)}</Text></div>
-            <div><Text type="secondary">Shipping Fee:</Text><Text>₱0.00</Text></div>
-            <div><Text>Total:</Text><Text>₱{parseFloat(totalCost).toFixed(2)}</Text></div>
+            <div><Text type="secondary">Shipping Fee:</Text><Text>₱{shippingCost}</Text></div>
+            <div><Text>Total:</Text><Text>₱{parseFloat(totalCost + shippingCost).toFixed(2)}</Text></div>
           </div>
           <Link to='/checkout' disabled={cart.length == 0}><Button type='secondary' disabled={cart.length == 0} block >PROCEED TO CHECKOUT</Button></Link>
         </div>

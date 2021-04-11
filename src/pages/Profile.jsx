@@ -70,22 +70,22 @@ export default class Profile extends Component {
         <Form.Item name='avatar' label="Avatar" rules={[{ required: true, message: 'Please add an avatar!' }]}>
           <Upload listType="picture-card" maxCount={1} onChange={() => this.onChange()} ><UploadOutlined /> Update</Upload>
         </Form.Item>
-        <Form.Item name='fullname' label="Fullname" rules={[{ required: true, message: 'Please input your fullname!' }]}>
+        <Form.Item name='fullname' label="Fullname" rules={[{ required: true, message: 'Please enter your fullname!' }]}>
           <Input onChange={() => this.onChange()}/>
         </Form.Item>
-        <Form.Item name='email' label="Email" rules={[{ required: true, type: 'email', message: 'Please input your email!' }]}>
+        <Form.Item name='email' label="Email" rules={[{ type: 'email', message: 'Please enter a valid email'}, { required: true, message: 'Please enter your email!' }]}>
           <Input onChange={() => this.onChange()}/>
         </Form.Item>
-        <Form.Item name='birthday' label="Birthday" rules={[{ required: true, message: 'Please input your birthday!' }]}>
+        <Form.Item name='birthday' label="Birthday" rules={[{ required: true, message: 'Please enter your birthday!' }]}>
           <DatePicker onChange={() => this.onChange()} format='MM-DD-YYYY' />
         </Form.Item>
-        <Form.Item name='username' label="Username" rules={[{ required: true, message: 'Please input your username!' }]}>
+        <Form.Item name='username' label="Username" rules={[{ required: true, message: 'Please enter your username!' }]}>
           <Input disabled />
         </Form.Item>
-        <Form.Item name='password' label="Password" rules={[{ required: true, message: 'Please input your password!' }]} >
+        <Form.Item name='password' label="Password" rules={[{ required: true, message: 'Please enter your password!' }]} >
           <Input.Password onChange={() => this.onChange()} />
         </Form.Item>
-        <Form.Item name='role' label="Role" rules={[{ required: true, message: 'Please input your role!' }]}>
+        <Form.Item name='role' label="Role" rules={[{ required: true, message: 'Please enter your role!' }]}>
           <Select disabled>
             <Option value='buyer'>Buyer</Option>
             <Option value='seller'>Seller</Option>
