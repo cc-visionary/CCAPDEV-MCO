@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { Component } from 'react';
 import { message } from 'antd';
 import { HashRouter as Router, Switch, Route, BrowsetRouter } from "react-router-dom";
 
@@ -16,7 +16,7 @@ import Checkout from './pages/buyer/Checkout';
 import OrderHistory from './pages/buyer/OrderHistory';
 import moment from 'moment';
 
-const products = [
+const productsDummy = [
   {
     key: 1,
     product_image: 'https://external-content.duckduckgo.com/iu/?u=http%3A%2F%2Ftechreport.com%2Fr.x%2F2016_9_27_Razer_Deathadder_sheds_Chroma_skin_to_achieve_Elite_status%2Fdaelite_gallery02.png',
@@ -24,9 +24,9 @@ const products = [
     category: 'Peripheral',
     brand: 'Razer',
     price: 32,
-    stock: 2499.99,
+    stock: 2499,
     description: 'Good Mouse',
-    reviews: [2, 3],
+    reviews: [{reaction: 'not really good', rating: 2}, {reaction: 'fair', rating: 3}],
   },
   {
     key: 2,
@@ -37,7 +37,7 @@ const products = [
     price: 999,
     stock: 300,
     description: 'Bad Mouse',
-    reviews: [4, 5],
+    reviews: [{reaction: 'cool', rating: 4}, {reaction: 'awesome', rating: 5}],
   },
   {
     key: 3,
@@ -48,7 +48,7 @@ const products = [
     price: 20000,
     stock: 150,
     description: 'Cool Scan',
-    reviews: [4, 4, 3],
+    reviews: [{reaction: 'awesome cool', rating: 4}, {reaction: 'cool', rating: 4}, {reaction: 'nice', rating: 3}],
   },
   {
     key: 4,
@@ -59,7 +59,7 @@ const products = [
     price: 25000,
     stock: 200,
     description: 'Cool Print',
-    reviews: [2, 3, 4],
+    reviews: [{reaction: 'not satisfied', rating: 2}, {reaction: 'fair', rating: 3}, {reaction: 'cool', rating: 4}],
   },
   {
     key: 5,
@@ -71,7 +71,7 @@ const products = [
     stock: 20,
     description: 'Cool laptop',
     rating: 3,
-    reviews: [4, 1],
+    reviews: [{reaction: 'awesome', rating: 4}],
   },
   {
     key: 6,
@@ -82,7 +82,7 @@ const products = [
     price: 50000,
     stock: 25,
     description: 'Awesome Laptop',
-    reviews: [4, 4, 5],
+    reviews: [],
   },
   {
     key: 7,
@@ -97,41 +97,41 @@ const products = [
   },
 ]
 
-const orderList = [
+const orderListDummy = [
   {
     key: 1,
     order_id: '112311',
-    amount: 200.00,
-    items: 'Razer Mouse, Logitech Mouse',
-    date_ordered: '03-26-2021',
+    total: [{...productsDummy[3], quantity: 1}, {...productsDummy[4], quantity: 3}, {...productsDummy[5], quantity: 2}].reduce((sum, product) => sum + product.price * product.quantity, 0),
+    items: [{...productsDummy[3], quantity: 1}, {...productsDummy[4], quantity: 3}, {...productsDummy[5], quantity: 2}],
+    date_ordered: moment('03-26-2021', 'MM-DD-YYYY'),
   },
   {
     key: 2,
     order_id: '112312',
-    amount: 50000.00,
-    items: 'Lenovo Laptop',
-    date_ordered: '03-27-2021',
+    total: [{...productsDummy[3], quantity: 1}, {...productsDummy[1], quantity: 1}].reduce((sum, product) => sum + product.price * product.quantity, 0),
+    items: [{...productsDummy[3], quantity: 1}, {...productsDummy[1], quantity: 1}],
+    date_ordered: moment('03-27-2021', 'MM-DD-YYYY'),
   },
   {
     key: 3,
     order_id: '112313',
-    amount: 300.00,
-    items: 'Laptop Fan',
-    date_ordered: '03-27-2021',
+    total: [{...productsDummy[5], quantity: 1}].reduce((sum, product) => sum + product.price * product.quantity, 0),
+    items: [{...productsDummy[5], quantity: 1}],
+    date_ordered: moment('03-27-2021', 'MM-DD-YYYY'),
   },
   {
     key: 4,
     order_id: '112314',
-    amount: 50000.00,
-    items: 'Dell Laptop',
-    date_ordered: '03-27-2021',
+    total: [{...productsDummy[6], quantity: 2}].reduce((sum, product) => sum + product.price * product.quantity, 0),
+    items: [{...productsDummy[6], quantity: 2}],
+    date_ordered: moment('03-27-2021', 'MM-DD-YYYY'),
   },
 ];
 
 const cartDummy = [
-  { ...products[0], quantity: 2 },
-  { ...products[2], quantity: 1 },
-  { ...products[6], quantity: 1 }
+  { ...productsDummy[0], quantity: 2 },
+  { ...productsDummy[2], quantity: 1 },
+  { ...productsDummy[6], quantity: 1 }
 ]
 
 const shippingFee = 99.99;
@@ -140,23 +140,57 @@ const orderHistoryDummy = [
   {
     key: 1,
     contactInfo: [],
-    total: [{...products[0], quantity: 1}, {...products[2], quantity: 2}, {...products[3], quantity: 4}].reduce((sum, data) => sum + parseFloat(data.price) * parseFloat(data.quantity), 0) + shippingFee,
-    items: [{...products[0], quantity: 1}, {...products[2], quantity: 2}, {...products[3], quantity: 4}],
+    total: [{...productsDummy[0], quantity: 1}, {...productsDummy[2], quantity: 2}, {...productsDummy[3], quantity: 4}].reduce((sum, data) => sum + parseFloat(data.price) * parseFloat(data.quantity), 0) + shippingFee,
+    items: [{...productsDummy[0], quantity: 1}, {...productsDummy[2], quantity: 2}, {...productsDummy[3], quantity: 4}],
     shippingFee: shippingFee,
     date_ordered: moment('04-21-2020 ', 'MM-DD-YYYY'),
   }
 ]
 
-const App = () => {
-  const [userType, setUserType] = useState('buyer');
-  const [loggedIn, setLoggedIn] = useState(true);
-  const [cartList, setCartList] = useState(cartDummy);
-  const [orderHistory, setOrderHistory] = useState(orderHistoryDummy);
+export default class App extends Component {
+  constructor(props) {
+    super(props)
 
-  const addToCart = (product) => {
+    this.state = {
+      userType: 'buyer',
+      loggedIn: true,
+      products: productsDummy,
+      cart: cartDummy,
+      orderHistory: orderHistoryDummy,
+      orderList: orderListDummy
+    }
+  }
+
+  setUserType = ( userType ) => {
+    this.setState({ userType });
+  }
+
+  setLoggedIn = ( loggedIn ) => {
+    this.setState({ loggedIn });
+  }
+
+  setProducts = ( products ) => {
+    this.setState({ products });
+  }
+
+  setCart = ( cart ) => {
+    this.setState({ cart });
+  }
+
+  setOrderHistory = ( orderHistory ) => {
+    this.setState({ orderHistory });
+  }
+
+  setOrderList = ( orderList ) => {
+    this.setState({ orderList })
+  }
+
+  addToCart = (product) => {
+    const { cart } = this.state;
+
     let inCart = false
     
-    const newCart = cartList.map((data) => {
+    const newCart = cart.map((data) => {
       if(data.key === product.key && data.name === product.name) {
         inCart = true;
         data['quantity'] += product.quantity
@@ -165,53 +199,49 @@ const App = () => {
       return data;
     })
 
-    if(inCart) setCartList(newCart)
-    else setCartList([...cartList, product])  
+    if(inCart) this.setCart(newCart)
+    else this.setCart([...cart, product])  
 
     message.success('Successfully added to cart')
   }
 
-  const deleteProductFromCart = (index) => {
-    setCartList(cartList.filter((_, i) => !(i == index)))
+  addToOrderList = (order) => {
+    this.setOrderList((currOrderList) => [...currOrderList, {...order, key: currOrderList.length + 1}])
   }
 
-  const deleteProductsFromCart = (indexes) => {
-    setCartList(cartList.filter((_, i) => !indexes.includes(i)))
+  componentDidMount = () => {
+
   }
 
-  const changeCartQuantity = ( index, value ) => {
-    setCartList(cartList.map((data, i) => { 
-      if (i == index) data['quantity'] = value
-      return data;
-    }))
-  }
+  render() {
+    const { cart, products, orderList, orderHistory, loggedIn, userType } = this.state;
+    const { setLoggedIn, setUserType, setProducts, setCart, setOrderHistory, addToCart, addToOrderList } = this;
 
-  return (
-    <Router>
-      <Navigation cart={cartList} loggedIn={loggedIn} setLoggedIn={setLoggedIn} userType={userType} setUserType={setUserType} />
-      <div id="main">
-        {userType == 'seller' ? 
-        <Switch>
-          <Route exact path="/" component={(props) => <Dashboard products={products} orderList={orderList} {...props} />} />
-        </Switch>
-        : 
-        <Switch>
-          <Route exact path="/" component={LandingPage} className="main" />
-          <Route path="/profile" component={(props) => <Profile setLoggedIn={setLoggedIn} {...props} />} />
-          <Route path="/register" component={Register} />
-          <Route path="/products" component={(props) => <ProductCatalog products={products} {...props} />} />
-          <Route path="/product/:slug" component={(props) => <ProductPage addToCart={addToCart} {...props} />} />
-          <Route path="/category/:category" component={(props) => <ProductCatalog products={products} {...props} />} />
-          <Route path="/cart" component={(props) => <Cart shippingFee={shippingFee} cart={cartList} changeCartQuantity={changeCartQuantity} deleteProductFromCart={deleteProductFromCart} deleteProductsFromCart={deleteProductsFromCart} {...props} />} />
-          <Route path="/checkout" component={(props) => <Checkout orderHistory={orderHistory} setOrderHistory={setOrderHistory} shippingFee={shippingFee} cart={cartList} setCart={setCartList} {...props} />} />
-          <Route path="/order-history" component={(props) => <OrderHistory cart={cartList} setCart={setCartList} orderHistory={orderHistory} {...props} />} />
-          <Route component={PageNotFound} />
-        </Switch>
-        }
-      </div>
-      <Footer />
-    </Router>
-  );
+    return (
+      <Router>
+        <Navigation cart={cart} loggedIn={loggedIn} setLoggedIn={setLoggedIn} userType={userType} setUserType={setUserType} />
+        <div id="main">
+          {userType == 'seller' ? 
+          <Switch>
+            <Route exact path="/" component={(props) => <Dashboard products={products} setProducts={setProducts} orderList={orderList} {...props} />} />
+          </Switch>
+          : 
+          <Switch>
+            <Route exact path="/" component={LandingPage} className="main" />
+            <Route path="/profile" component={(props) => <Profile setLoggedIn={setLoggedIn} {...props} />} />
+            <Route path="/register" component={Register} />
+            <Route path="/products" component={(props) => <ProductCatalog products={products} {...props} />} />
+            <Route path="/product/:slug" component={(props) => <ProductPage addToCart={addToCart} {...props} />} />
+            <Route path="/category/:category" component={(props) => <ProductCatalog products={products} {...props} />} />
+            <Route path="/cart" component={(props) => <Cart shippingFee={shippingFee} cart={cart} setCart={setCart} {...props} />} />
+            <Route path="/checkout" component={(props) => <Checkout orderHistory={orderHistory} setOrderHistory={setOrderHistory} shippingFee={shippingFee} cart={cart} setCart={setCart} addToOrderList={addToOrderList} {...props} />} />
+            <Route path="/order-history" component={(props) => <OrderHistory products={products} setProducts={setProducts} orderHistory={orderHistory} {...props} />} />
+            <Route component={PageNotFound} />
+          </Switch>
+          }
+        </div>
+        <Footer />
+      </Router>
+    );
+  }
 }
-
-export default App;

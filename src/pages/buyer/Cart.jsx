@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 
 const { Text, Title } = Typography;
 
-const Cart = ({ shippingFee, cart, changeCartQuantity, deleteProductFromCart, deleteProductsFromCart, ...props }) => {
+const Cart = ({ shippingFee, cart, setCart, ...props }) => {
   const [ checkAll, setCheckAll] = useState(false)
   const [ checkboxes, setCheckboxes ] = useState(cart.map(() => false))
   const [ indeterminate, setIndeterminate ] = useState(false);
@@ -27,6 +27,21 @@ const Cart = ({ shippingFee, cart, changeCartQuantity, deleteProductFromCart, de
 
     if(newCheckboxes.includes(true) && newCheckboxes.includes(false)) setIndeterminate(true)
     else setIndeterminate(false)
+  }
+
+  const deleteProductFromCart = ( index ) => {
+    setCart(cart.filter((_, i) => i != index));
+  }
+
+  const deleteProductsFromCart = ( indexes ) => {
+    setCart(cart.filter((_, i) => !indexes.includes(i)))
+  }
+
+  const changeCartQuantity = ( index, value ) => {
+    setCart(cart.map((data, i) => { 
+      if (i == index) data['quantity'] = value
+      return data;
+    }))
   }
 
   return (

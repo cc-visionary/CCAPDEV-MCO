@@ -1,14 +1,16 @@
 import React, { useState } from 'react'
-import { Row, Col, Image, Collapse, Typography, Divider, Button, Modal } from 'antd';
+import { Row, Col, Image, Collapse, Typography, Divider, Button, Modal, Input, message } from 'antd';
 import { Link } from 'react-router-dom';
 import Rater from 'react-rater';
 
 const { Title, Text } = Typography;
 const { Panel } = Collapse;
 
-const OrderHistory = ({ cart, setCart, orderHistory }) => {
+const OrderHistory = ({ products, setProducts, orderHistory }) => {
   const [ reviewVisible, setReviewVisible ] = useState(false);
   const [ itemId, setItemId ] = useState(null);
+  const [ reaction, setReaction ] = useState('');
+  const [ rating, setRating ] = useState(0);
 
   const onOpenReview = (id) => {
     setReviewVisible(true);
@@ -18,16 +20,37 @@ const OrderHistory = ({ cart, setCart, orderHistory }) => {
   const onCloseReview = () => {
     setReviewVisible(false);
     setItemId(null);
+    setReaction('');
+    setRating(0);
   }
 
   const confirmReview = () => {
-
+    if(reaction == '') {
+      message.error('Reaction is required')
+      return 1;
+    }
+    if(rating == 0) {
+      message.error('Rating is required')
+      return 1;
+    }
+    
+    
+    setProducts(products.map(product => {
+      if(product.key == itemId) {
+        product.reviews.push({reaction:reaction, rating:rating})
+        return product
+      }
+      return product;
+    }))
+    
+    onCloseReview()
+    message.success('Review successfully published.')
   }
 
   return (
     <div id='order-history'>
       <Title level={3}>Order History</Title>
-      <Collapse accordion>
+      <Collapse defaultActiveKey={[0]} accordion>
         {
           orderHistory.map((item, i) => 
             <Panel header={`Order from ${item.date_ordered.format('MM-DD-YYYY')}`} key={i}>
@@ -70,8 +93,9 @@ const OrderHistory = ({ cart, setCart, orderHistory }) => {
           )
         }
       </Collapse>
-      <Modal title='Write a Review' visible={ reviewVisible } onOk={confirmReview()} onCancel={onCloseReview}>
-        
+      <Modal title='Write a Feedback' visible={ reviewVisible } onOk={confirmReview} onCancel={onCloseReview}>
+        <Input.TextArea value={reaction} onChange={(e) => setReaction(e.target.value)} />
+        <Rater rating={rating} onRate={({rating}) => setRating(rating)} />
       </Modal>
     </div>
   )

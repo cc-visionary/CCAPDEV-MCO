@@ -25,7 +25,7 @@ export default class Checkout extends Component {
   }
 
   onFinish = (values) => {
-    const { shippingFee, cart, orderHistory, setOrderHistory, setCart } = this.props;
+    const { shippingFee, cart, orderHistory, setOrderHistory, setCart, addToOrderList } = this.props;
 
     const newOrder = {
       key: orderHistory.length + 1,
@@ -38,6 +38,7 @@ export default class Checkout extends Component {
 
     this.setState({ redirect: true })
     setOrderHistory([...orderHistory, newOrder])
+    addToOrderList({orderId: '100231', total: cart.reduce((sum, data) => sum + parseFloat(data.price * data.quantity), 0).toFixed(2), items: cart, date_ordered: moment()})
     setCart([])
     message.success('Checkout was successful!');
   }
@@ -117,7 +118,7 @@ export default class Checkout extends Component {
                 </Form.Item>
               </Col>
             </Row>
-            <div class='buttons'>
+            <div className='buttons'>
               <Button type='link'><Link to='/cart'><Text type='secondary'><LeftOutlined/> Return to Cart</Text></Link></Button>
               <Button htmlType="submit">Continue</Button>
             </div>
@@ -127,7 +128,7 @@ export default class Checkout extends Component {
         <Title level={3}>Your Cart</Title>
           <Divider />
           {cart.map(data => {
-            return <Row gutter={16}>
+            return <Row gutter={16} key={data.key}>
               <Col span={3}><Image width={50} height={50} preview={false} src={data.product_image} /></Col>
               <Col span={14}><Text>{data.name}</Text><br /><Text type='secondary'>{data.brand}</Text></Col>
               <Col span={7}><Text className='prices'>₱{parseFloat(data.price * data.quantity).toFixed(2)}</Text></Col>

@@ -11,7 +11,7 @@ const Footer = () => {
         <Title level={3}>TechShop.</Title>
         <p>© Copyright 2021. Powered by TechShop</p>
       </div>
-      <div class="cards">
+      <div className="cards">
         <FaCcPaypal />
         <FaCcVisa />
         <FaCcMastercard />

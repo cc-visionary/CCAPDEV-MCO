@@ -8,18 +8,16 @@ import EditProduct from './EditProduct';
 
 const { Text, Title } = Typography;
 
-const Inventory = ({ products }) => {
-  const [items, setItems] = useState(products);
+const Inventory = ({ products, setProducts }) => {
   const [addDrawerVisible, setAddDrawerVisible] = useState(false);
   const [editDrawerVisible, setEditDrawerVisible] = useState(false);
-  const [uniqueKey, setUniqueKey] = useState(items.length);
+  const [uniqueKey, setUniqueKey] = useState(products.length);
   const [searchText, setSearchText] = useState('');
   const [editForm] = Form.useForm();
   const [addForm] = Form.useForm();
 
   const handleDelete = (key) => {
-    const data = [...data];
-    setItems(currItems => currItems.filter((item) => item.key !== key))
+    setProducts(products.filter((product) => product.key !== key))
   }
 
   const onSubmitAddProduct = () => {
@@ -37,26 +35,26 @@ const Inventory = ({ products }) => {
   const handleAddProduct = (values) => {
     values['key'] = uniqueKey + 1;
     setUniqueKey(currKey => currKey + 1);
-    setItems(currItems => [...currItems, values]);
+    setProducts([...products, {...values, key: products.length + 1, reviews: []}]);
     closeAddDrawer();
   }
 
   const showAddDrawer = () => {
-    setAddDrawerVisible(() => true);
+    setAddDrawerVisible(true);
   }
 
   const closeAddDrawer = () => {
-    setAddDrawerVisible(() => false);
+    setAddDrawerVisible(false);
     addForm.resetFields()
   }
 
   const showEditDrawer = (key) => {
-    editForm.setFieldsValue(items[key - 1])
-    setEditDrawerVisible(() => true);
+    editForm.setFieldsValue(products[key - 1])
+    setEditDrawerVisible(true);
   }
 
   const closeEditDrawer = () => {
-    setEditDrawerVisible(() => false);
+    setEditDrawerVisible(false);
     editForm.resetFields()
   }
 
@@ -73,9 +71,9 @@ const Inventory = ({ products }) => {
   }
 
   const handleEditProduct = (values) => {
-    const newItems = [...items];
-    newItems[values.key - 1] = values;
-    setItems(() => newItems)
+    const newProducts = [...products];
+    newProducts[values.key - 1] = {...values, reviews: newProducts[values.key - 1].reviews, key: newProducts[values.key - 1].key};
+    setProducts(newProducts)
     closeEditDrawer();
   }
 
@@ -85,7 +83,8 @@ const Inventory = ({ products }) => {
 
   let categories = []
   let brands = []
-  items.map((record) => {
+  console.log(products)
+  products.map((record) => {
     if(!categories.includes(record.category)) categories.push(record.category)
     if(!brands.includes(record.brand)) brands.push(record.brand)
   })
@@ -117,6 +116,7 @@ const Inventory = ({ products }) => {
       key: 'price',
       sorter: (a, b) => a.price - b.price,
       ellipsis: true,
+      render: (_, record) => <Text>₱{parseFloat(record.price).toFixed(2)}</Text>
     },
     {
       title: 'Stock',
@@ -133,14 +133,14 @@ const Inventory = ({ products }) => {
     {
       title: 'Reviews',
       dataIndex: 'reviews',
-      sorter: (a, b) => a.reduce((sum, val) => sum + val, 0) / a.length - b.reduce((sum, val) => sum + val, 0) / b.length,
-      render: (_, record) => record.reviews.length == 0 ? <Text>No Reviews</Text> : <Rater rating={record.reviews.reduce((sum, val) => sum + val, 0) / record.reviews.length} interactive={false} /> 
+      sorter: (a, b) => a.reviews.reduce((sum, val) => sum + val.rating, 0) / a.reviews.length - b.reviews.reduce((sum, val) => sum + val.rating, 0) / b.reviews.length,
+      render: (_, record) => record.reviews.length == 0 ? <Text>No Reviews</Text> : <Rater rating={record.reviews.reduce((sum, val) => sum + val.rating, 0) / record.reviews.length} interactive={false} /> 
     },
     {
       title: 'Actions',
       dataIndex: 'actions',
       key: 'actions',
-      render: (_, record) => items.length >= 1 ? (<div class="actions"><a onClick={() => showEditDrawer(record.key)}>Edit</a> <Popconfirm title="Are you sure you want to delete?" onConfirm={() => handleDelete(record.key)}><a>Delete</a></Popconfirm></div>) : null
+      render: (_, record) => products.length >= 1 ? (<div className="actions"><a onClick={() => showEditDrawer(record.key)}>Edit</a> <Popconfirm title="Are you sure you want to delete?" onConfirm={() => handleDelete(record.key)}><a>Delete</a></Popconfirm></div>) : null
     }
   ];
 
@@ -148,10 +148,10 @@ const Inventory = ({ products }) => {
     <div id="inventory">
       <Table 
         title={() => 
-          <Row gutter={16} align='middle' class="table-title">
+          <Row gutter={16} align='middle' className="table-title">
             <Col span={15}><Title level={3}>Inventory</Title></Col>
             <Col span={6}>
-              <Input value={searchText} placeholder="Search item by name" onChange={(e) => handleSearch(e)} />
+              <Input value={searchText} placeholder="Search product by name" onChange={(e) => handleSearch(e)} />
             </Col>
             <Col span={3}>
               <Button onClick={() => showAddDrawer()}><PlusOutlined /> New Product</Button>
@@ -159,7 +159,7 @@ const Inventory = ({ products }) => {
           </Row>
         } 
         columns={columns} 
-        dataSource={searchText ? items.filter((data) => data['name'].toLowerCase().includes(searchText.toLowerCase())) : items} 
+        dataSource={searchText ? products.filter((data) => data['name'].toLowerCase().includes(searchText.toLowerCase())) : products} 
       />
       <AddProduct form={addForm} visible={addDrawerVisible} onClose={closeAddDrawer} onSubmit={onSubmitAddProduct} />
       <EditProduct form={editForm} visible={editDrawerVisible} onClose={closeEditDrawer} onSubmit={onSubmitEditProduct} />

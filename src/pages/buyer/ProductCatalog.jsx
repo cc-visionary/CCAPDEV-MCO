@@ -150,7 +150,7 @@ class ProductCatalog extends Component {
                       />
                       <Title level={3}>{data.name}</Title>
                       <Text>{`₱${parseFloat(data.price).toFixed(2)}`}</Text>
-                      <div>{data.reviews.length != 0 ? <Rater rating={data.reviews.reduce((sum, review) => sum + parseFloat(review), 0) / data.reviews.length} interactive={false} /> : <></>}</div>
+                      <div>{data.reviews.length != 0 ? <Rater rating={data.reviews.reduce((sum, review) => sum + parseFloat(review.rating), 0) / data.reviews.length} interactive={false} /> : <></>}</div>
                     </Card>
                   </Link>
                 </Col>

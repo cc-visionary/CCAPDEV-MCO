@@ -5,7 +5,7 @@ import { DollarOutlined, UserOutlined, TagOutlined, ShoppingOutlined } from '@an
 import Inventory from '../../components/seller/Inventory';
 import OrderList from '../../components/seller/OrderList';
 
-const Dashboard = ({ products, orderList }) => {
+const Dashboard = ({ products, setProducts, orderList }) => {
   return (
     <div id="dashboard">
       <Row align='middle' gutter={[16, 16]}>
@@ -22,7 +22,7 @@ const Dashboard = ({ products, orderList }) => {
           <Statistic title="Total Earned" value={10000} prefix={<DollarOutlined />} />
         </Col>
       </Row>
-      <Inventory products={products} />
+      <Inventory products={products} setProducts={setProducts} />
       <OrderList orderList={orderList} />
     </div>
   );

@@ -60,7 +60,7 @@ const LandingPage = () => {
           <h1>Stay in Trend with TechShop</h1>
         </div>
         <div className="content">
-          <Row align='middle' gutter={30}>
+          <Row gutter={30}>
             <Col span={8}>
               <Card>
                 <span className="icon"><GoPackage /></span>
