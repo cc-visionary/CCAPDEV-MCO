@@ -8,7 +8,7 @@ import OrderList from '../../components/seller/OrderList';
 const Dashboard = ({ products, orderList }) => {
   return (
     <div id="dashboard">
-      <Row gutter={[16, 16]}>
+      <Row align='middle' gutter={[16, 16]}>
         <Col span={6}>
           <Statistic title="Customers" value={500} prefix={<UserOutlined />} />
         </Col>

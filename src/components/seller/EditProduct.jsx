@@ -25,7 +25,7 @@ const EditProduct = ({ form, visible, onClose, onSubmit }) => {
       }
     >
       <Form layout="vertical" form={form} hideRequiredMark>
-        <Row gutter={16}>
+        <Row align='middle' gutter={16}>
           <Col span={12}>
             <Form.Item
               name="name"
@@ -53,7 +53,7 @@ const EditProduct = ({ form, visible, onClose, onSubmit }) => {
             </Form.Item>
           </Col>
         </Row>
-        <Row gutter={16}>
+        <Row align='middle' gutter={16}>
           <Col span={12}>
             <Form.Item
               name="brand"
@@ -97,7 +97,7 @@ const EditProduct = ({ form, visible, onClose, onSubmit }) => {
             </Form.Item>
           </Col>
         </Row>
-        <Row gutter={16}>
+        <Row align='middle' gutter={16}>
           <Col span={6}>
             <Form.Item
               name="product-image"

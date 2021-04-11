@@ -2,12 +2,13 @@
   text-align: center;
 }
 
-.main {
+#main {
   margin: 0 132px;
+  min-height: 65vh;
 }
 
 @media screen and (max-width: 768px) {
-  .main {
+  #main {
     margin: 0 10px;
   }
 }

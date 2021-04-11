@@ -26,8 +26,7 @@ const products = [
     price: 32,
     stock: 2499.99,
     description: 'Good Mouse',
-    rating: 4.8,
-    nReviews: 455,
+    reviews: [],
   },
   {
     key: 2,
@@ -38,8 +37,7 @@ const products = [
     price: 999,
     stock: 300,
     description: 'Bad Mouse',
-    rating: 3,
-    nReviews: 231,
+    reviews: [],
   },
   {
     key: 3,
@@ -50,8 +48,7 @@ const products = [
     price: 20000,
     stock: 150,
     description: 'Cool Scan',
-    rating: 2.5,
-    nReviews: 223,
+    reviews: [],
   },
   {
     key: 4,
@@ -62,8 +59,7 @@ const products = [
     price: 25000,
     stock: 200,
     description: 'Cool Print',
-    rating: 2,
-    nReviews: 21,
+    reviews: [],
   },
   {
     key: 5,
@@ -75,7 +71,7 @@ const products = [
     stock: 20,
     description: 'Cool laptop',
     rating: 3,
-    nReviews: 321,
+    reviews: [],
   },
   {
     key: 6,
@@ -86,8 +82,7 @@ const products = [
     price: 50000,
     stock: 25,
     description: 'Awesome Laptop',
-    rating: 4,
-    nReviews: 455,
+    reviews: [],
   },
   {
     key: 7,
@@ -98,8 +93,7 @@ const products = [
     price: 2000,
     stock: 25,
     description: "One of the most favored gaming mouse recommended by gamers.",
-    rating: 4,
-    nReviews: 500,
+    reviews: [],
   },
 ]
 
@@ -195,7 +189,7 @@ const App = () => {
   return (
     <Router>
       <Navigation cart={cartList} loggedIn={loggedIn} setLoggedIn={setLoggedIn} userType={userType} setUserType={setUserType} />
-      <div className="main">
+      <div id="main">
         {userType == 'seller' ? 
         <Switch>
           <Route exact path="/" component={(props) => <Dashboard products={products} orderList={orderList} {...props} />} />
@@ -203,14 +197,14 @@ const App = () => {
         : 
         <Switch>
           <Route exact path="/" component={LandingPage} className="main" />
-          <Route path="/profile" component={Profile} />
+          <Route path="/profile" component={(props) => <Profile setLoggedIn={setLoggedIn} {...props} />} />
           <Route path="/register" component={Register} />
           <Route path="/products" component={(props) => <ProductCatalog products={products} {...props} />} />
           <Route path="/product/:slug" component={(props) => <ProductPage addToCart={addToCart} {...props} />} />
           <Route path="/category/:category" component={(props) => <ProductCatalog products={products} {...props} />} />
           <Route path="/cart" component={(props) => <Cart shippingFee={shippingFee} cart={cartList} changeCartQuantity={changeCartQuantity} deleteProductFromCart={deleteProductFromCart} deleteProductsFromCart={deleteProductsFromCart} {...props} />} />
           <Route path="/checkout" component={(props) => <Checkout orderHistory={orderHistory} setOrderHistory={setOrderHistory} shippingFee={shippingFee} cart={cartList} setCart={setCartList} {...props} />} />
-          <Route path="/order-history" component={(props) => <OrderHistory orderHistory={orderHistory} {...props} />} />
+          <Route path="/order-history" component={(props) => <OrderHistory cart={cartList} setCart={setCartList} orderHistory={orderHistory} {...props} />} />
           <Route component={PageNotFound} />
         </Switch>
         }

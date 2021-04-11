@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
-import { Row, Col, Button, Checkbox, InputNumber, Typography, Divider, Descriptions, Popconfirm, Empty } from 'antd';
-import { DeleteOutlined } from '@ant-design/icons'
-import { Link } from 'react-router-dom'
+import { Button, Checkbox, InputNumber, Typography, Divider, Popconfirm, Empty } from 'antd';
+import { DeleteOutlined } from '@ant-design/icons';
+import { Link } from 'react-router-dom';
 
 const { Text, Title } = Typography;
 

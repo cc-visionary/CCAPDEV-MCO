@@ -114,7 +114,7 @@ class ProductCatalog extends Component {
 
     return (
       <div id="product-catalog">
-        <Row className="header" gutter={[8, 8]}>
+        <Row align='middle' className="header" gutter={[8, 8]}>
           <Col span={12}>
             <Title>{category ? category : 'Products'}</Title>
           </Col>
@@ -130,7 +130,7 @@ class ProductCatalog extends Component {
               </Select>
           </Col>
         </Row>
-        <Row className="catalog" gutter={[16, 16]}>
+        <Row align='middle' className="catalog" gutter={[16, 16]}>
           { 
             currentPageElements.map(data => {
               return (
@@ -150,7 +150,7 @@ class ProductCatalog extends Component {
                       />
                       <Title level={3}>{data.name}</Title>
                       <Text>{`₱${parseFloat(data.price).toFixed(2)}`}</Text>
-                      <div><Rater rating={data.rating} interactive={false} /></div>
+                      <div>{data.reviews.length != 0 ? <Rater rating={data.reviews.reduce((sum, review) => sum + parseFloat(review), 0) / data.reviews.length} interactive={false} /> : <></>}</div>
                     </Card>
                   </Link>
                 </Col>

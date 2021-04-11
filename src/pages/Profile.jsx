@@ -52,9 +52,10 @@ export default class Profile extends Component {
   }
 
   onConfirmDelete() {
+    const { setLoggedIn } = this.props;
+
     if(this.state.confirmPassword == this.initialValues.password) {
-      this.setState({ showConfirmation : false, confirmPassword : '', redirect : true }, () => message.success('Account deleted successfully'));
-      
+      this.setState({ showConfirmation : false, confirmPassword : '', redirect : true }, () => { message.success('Account deleted successfully'); setLoggedIn(false) });
     } else {
       message.error('Delete failed. Password was doesn\'t match')
     }

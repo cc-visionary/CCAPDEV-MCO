@@ -11,7 +11,7 @@ const ProductPage = ({ addToCart, ...props }) => {
   const [ quantity, setQuantity ] = useState(1)
 
   return data ? 
-      <Row id="product-page">
+      <Row align='middle' id="product-page">
         <Col className='left' md={11} xs={24}>
           <Image 
             alt={'Photo of ' + data.name}
@@ -27,7 +27,7 @@ const ProductPage = ({ addToCart, ...props }) => {
           </div>
           <div className='price-reviews'>
             <Title>₱{parseFloat(data.price).toFixed(2)}</Title>
-            <Space><Rater interactive={false} rating={data.rating} /> <Button type='link'><Text underline>{data.nReviews} reviews</Text></Button></Space>
+            <Space><Rater interactive={false} rating={data.reviews.length == 0 ? 0 : data.reviews.reduce((sum, review) => sum + parseFloat(review), 0) / data.reviews.length} /> <Button type='link'><Text underline>{data.reviews.length == 0 ? 'No' : data.reviews.length} reviews</Text></Button></Space>
           </div>
           <div className='add-to-cart'>
             <div class='quantity'><Text>Quantity: </Text><InputNumber value={quantity} min={1} onChange={value => setQuantity(value)} /></div>

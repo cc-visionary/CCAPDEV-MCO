@@ -29,7 +29,7 @@ const LandingPage = () => {
   return (
     <div id="landing-page">
       <div className="main-landing">
-        <Row>
+        <Row align='middle'>
           <Col className="left" xl={12}>
             <div className="header">
               <Title>Welcome to TechShop.</Title>
@@ -60,7 +60,7 @@ const LandingPage = () => {
           <h1>Stay in Trend with TechShop</h1>
         </div>
         <div className="content">
-          <Row gutter={30}>
+          <Row align='middle' gutter={30}>
             <Col span={8}>
               <Card>
                 <span className="icon"><GoPackage /></span>
