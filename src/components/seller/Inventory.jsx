@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
-import { Table, Popconfirm, Form, Button, Typography, Input, Space, Highlighter } from 'antd';
-import { SearchOutlined, PlusOutlined } from '@ant-design/icons'
+import { Table, Popconfirm, Form, Button, Typography, Input, Row, Col } from 'antd';
+import { SearchOutlined, PlusOutlined } from '@ant-design/icons';
+import Rater from 'react-rater';
 
 import AddProduct from './AddProduct';
 import EditProduct from './EditProduct';
 
-const { Title } = Typography;
+const { Text, Title } = Typography;
 
 const Inventory = ({ products }) => {
   const [items, setItems] = useState(products);
@@ -132,13 +133,14 @@ const Inventory = ({ products }) => {
     {
       title: 'Reviews',
       dataIndex: 'reviews',
-      key: 'reviews',
+      sorter: (a, b) => a.reduce((sum, val) => sum + val, 0) / a.length - b.reduce((sum, val) => sum + val, 0) / b.length,
+      render: (_, record) => record.reviews.length == 0 ? <Text>No Reviews</Text> : <Rater rating={record.reviews.reduce((sum, val) => sum + val, 0) / record.reviews.length} interactive={false} /> 
     },
     {
       title: 'Actions',
       dataIndex: 'actions',
       key: 'actions',
-      render: (_, record) => items.length >= 1 ? (<div class="actions"><a onClick={() => showEditDrawer(record.key)}>Edit</a><Popconfirm title="Are you sure you want to delete?" onConfirm={() => handleDelete(record.key)}><a>Delete</a></Popconfirm></div>) : null
+      render: (_, record) => items.length >= 1 ? (<div class="actions"><a onClick={() => showEditDrawer(record.key)}>Edit</a> <Popconfirm title="Are you sure you want to delete?" onConfirm={() => handleDelete(record.key)}><a>Delete</a></Popconfirm></div>) : null
     }
   ];
 
@@ -146,13 +148,15 @@ const Inventory = ({ products }) => {
     <div id="inventory">
       <Table 
         title={() => 
-          <div class="table-title">
-            <Title level={3}>Inventory</Title>
-            <div class="add-search">
+          <Row gutter={16} align='middle' class="table-title">
+            <Col span={15}><Title level={3}>Inventory</Title></Col>
+            <Col span={6}>
               <Input value={searchText} placeholder="Search item by name" onChange={(e) => handleSearch(e)} />
+            </Col>
+            <Col span={3}>
               <Button onClick={() => showAddDrawer()}><PlusOutlined /> New Product</Button>
-            </div>
-          </div>
+            </Col>
+          </Row>
         } 
         columns={columns} 
         dataSource={searchText ? items.filter((data) => data['name'].toLowerCase().includes(searchText.toLowerCase())) : items} 

@@ -26,7 +26,7 @@ const products = [
     price: 32,
     stock: 2499.99,
     description: 'Good Mouse',
-    reviews: [],
+    reviews: [2, 3],
   },
   {
     key: 2,
@@ -37,7 +37,7 @@ const products = [
     price: 999,
     stock: 300,
     description: 'Bad Mouse',
-    reviews: [],
+    reviews: [4, 5],
   },
   {
     key: 3,
@@ -48,7 +48,7 @@ const products = [
     price: 20000,
     stock: 150,
     description: 'Cool Scan',
-    reviews: [],
+    reviews: [4, 4, 3],
   },
   {
     key: 4,
@@ -59,7 +59,7 @@ const products = [
     price: 25000,
     stock: 200,
     description: 'Cool Print',
-    reviews: [],
+    reviews: [2, 3, 4],
   },
   {
     key: 5,
@@ -71,7 +71,7 @@ const products = [
     stock: 20,
     description: 'Cool laptop',
     rating: 3,
-    reviews: [],
+    reviews: [4, 1],
   },
   {
     key: 6,
@@ -82,7 +82,7 @@ const products = [
     price: 50000,
     stock: 25,
     description: 'Awesome Laptop',
-    reviews: [],
+    reviews: [4, 4, 5],
   },
   {
     key: 7,
