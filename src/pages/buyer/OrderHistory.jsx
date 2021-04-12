@@ -56,7 +56,7 @@ const OrderHistory = ({ user, products, setProducts, orderHistory }) => {
 
   return (
     <div id='order-history'>
-      <Title level={3}>Order History</Title>
+      <Title level={3}>&nbsp;Order History</Title>
       <Collapse defaultActiveKey={[0]} accordion>
         {
           orderHistory.map((item, i) => 

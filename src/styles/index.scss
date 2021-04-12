@@ -1,21 +1,22 @@
-@import url('https://fonts.googleapis.com/css2?family=Open+Sans&family=Poppins&family=Varela+Round&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans&family=Poppins&family=Varela+Round&display=swap");
 
-@import './variables.scss';
-@import './App.scss';
-@import './components/BoxButton.scss';
-@import './components/Footer.scss';
-@import './components/Navigation.scss';
-@import './components/buyer/CartPopover.scss';
-@import './components/buyer/RatingCard.scss';
-@import './pages/LandingPage.scss';
-@import './pages/Profile.scss';
-@import './pages/Register.scss';
-@import './pages/buyer/ProductPage.scss';
-@import './pages/buyer/ProductCatalog.scss';
-@import './pages/buyer/Cart.scss';
-@import './pages/buyer/Checkout.scss';
-@import '~antd/dist/antd.css';
-@import '~react-rater/lib/react-rater.scss';
+@import "./variables.scss";
+@import "./App.scss";
+@import "./components/BoxButton.scss";
+@import "./components/Footer.scss";
+@import "./components/Navigation.scss";
+@import "./components/buyer/CartPopover.scss";
+@import "./components/buyer/RatingCard.scss";
+@import "./pages/LandingPage.scss";
+@import "./pages/Profile.scss";
+@import "./pages/Register.scss";
+@import "./pages/buyer/ProductPage.scss";
+@import "./pages/buyer/ProductCatalog.scss";
+@import "./pages/buyer/Cart.scss";
+@import "./pages/buyer/Checkout.scss";
+@import "./pages/seller/Dashboard.scss";
+@import "~antd/dist/antd.css";
+@import "~react-rater/lib/react-rater.scss";
 
 .react-rater-star {
   $react-rater-hover: lighten($rating-color, 10%);
@@ -32,7 +33,7 @@
   }
   &.is-active-half:before {
     color: $react-rater-active;
-    content: '\2605';
+    content: "\2605";
     position: absolute;
     left: 0;
     width: 50%;
@@ -45,8 +46,8 @@
 
 body {
   margin: 0;
-  font-family: 'Varela Round', 'Poppins', 'Open Sans', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+  font-family: "Varela Round", "Poppins", "Open Sans", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -56,6 +57,6 @@ body {
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }

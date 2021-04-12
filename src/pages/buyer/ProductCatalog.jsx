@@ -145,8 +145,8 @@ class ProductCatalog extends Component {
     return (
       <div id="product-catalog">
         <Row align='middle' className="header" gutter={[8, 8]}>
-          <Col span={7}>
-            <Title>{category ? category : 'Products'}</Title>
+          <Col span={7} className="header-name">
+            <Title>&nbsp;{category ? category : 'Products'}</Title>
           </Col>
           <Col span={7}>
             <Input placeholder="Search product by name" value={searchValue} onChange={this.handleSearch} />
