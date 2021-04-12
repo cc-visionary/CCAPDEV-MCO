@@ -6,7 +6,7 @@ import Rater from 'react-rater';
 const { Title, Text } = Typography;
 const { Panel } = Collapse;
 
-const OrderHistory = ({ products, setProducts, orderHistory }) => {
+const OrderHistory = ({ user, products, setProducts, orderHistory }) => {
   const [ reviewVisible, setReviewVisible ] = useState(false);
   const [ itemId, setItemId ] = useState(null);
   const [ reaction, setReaction ] = useState('');
@@ -33,18 +33,24 @@ const OrderHistory = ({ products, setProducts, orderHistory }) => {
       message.error('Rating is required')
       return 1;
     }
+
+    if(products[products.map(product => product.key).indexOf(itemId)].reviews.map((review) => review.user.userId).includes(user.userId)) {
+      message.error('Review failed. User has already submitted a feedback for this product')
+      onCloseReview()
+      return 1;
+    }
     
     
     setProducts(products.map(product => {
       if(product.key == itemId) {
-        product.reviews.push({reaction:reaction, rating:rating})
+        product.reviews.push({user: user, reaction:reaction, rating:rating})
         return product
       }
       return product;
     }))
     
     onCloseReview()
-    message.success('Review successfully published.')
+    message.success('Review has been successfully submitted.')
   }
 
   return (
@@ -53,7 +59,7 @@ const OrderHistory = ({ products, setProducts, orderHistory }) => {
       <Collapse defaultActiveKey={[0]} accordion>
         {
           orderHistory.map((item, i) => 
-            <Panel header={`Order from ${item.date_ordered.format('MM-DD-YYYY')}`} key={i}>
+            <Panel header={`Order ${item.orderId} from ${item.dateOrdered.format('MM-DD-YYYY')}`} key={i}>
               <Row gutter={16}>
                 <Col span={2}></Col>
                 <Col span={10}>Name</Col>
@@ -78,12 +84,12 @@ const OrderHistory = ({ products, setProducts, orderHistory }) => {
               }
             <Divider />
             <Row gutter={16}>
-              <Col span={15}><Text type='secondary'>Date Ordered: {item.date_ordered.format('MMM DD, YYYY')}</Text></Col>
+              <Col span={15}><Text type='secondary'>Date Ordered: {item.dateOrdered.format('MMM DD, YYYY')}</Text></Col>
               <Col span={3}><Text>Shipping Fee:</Text></Col>
               <Col span={3}><Text>₱{parseFloat(item.shippingFee).toFixed(2)}</Text></Col>
             </Row>
             <Row gutter={16}>
-              <Col span={15}><Text type='secondary'>Time Ordered: {item.date_ordered.format('HH:mm:ss ZZ')}</Text></Col>
+              <Col span={15}><Text type='secondary'>Time Ordered: {item.dateOrdered.format('HH:mm:ss ZZ')}</Text></Col>
               <Col span={3}><Text>Total:</Text></Col>
               <Col span={3}><Text>₱{parseFloat(item.total).toFixed(2)}</Text></Col>
             </Row>

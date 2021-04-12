@@ -25,23 +25,25 @@ export default class Checkout extends Component {
   }
 
   onFinish = (values) => {
-    const { products, setProducts, shippingFee, cart, orderHistory, setOrderHistory, setCart, addToOrderList } = this.props;
+    const { user, products, setProducts, shippingFee, cart, orderHistory, setOrderHistory, setCart, orderList, setOrderList } = this.props;
 
     const newOrder = {
+      orderId: 112310 + orderList.length + 1,
       key: orderHistory.length + 1,
       contactInfo: values,
       total: cart.reduce((sum, item) => sum + products[products.map(data => data.key).indexOf(item.key)].price * item.quantity, 0) + shippingFee,
       items: cart.map((item) => ({...products[products.map(data => data.key).indexOf(item.key)], quantity: item.quantity})),
-      shippingFee: shippingFee,
-      date_ordered: moment()
+      shippingFee,
+      user,
+      dateOrdered: moment()
     }
 
     this.setState({ redirect: true })
     // add to Order History
-    setOrderHistory([...orderHistory, newOrder])
+    setOrderHistory([newOrder, ...orderHistory])
 
     // add to Order List 
-    addToOrderList({orderId: '100231', total: newOrder.total, items: cart.map((item) => ({...products[products.map(data => data.key).indexOf(item.key)], quantity: item.quantity})), shippingFee: shippingFee, date_ordered: moment()})
+    setOrderList([newOrder, ...orderList])
 
     // update item stocks
     setProducts(products.map(product => {
@@ -60,7 +62,7 @@ export default class Checkout extends Component {
 
   render () {
     const { redirect } = this.state;
-    const { products, cart, shippingFee } = this.props;
+    const { user, products, cart, shippingFee } = this.props;
 
     const subtotal = cart.reduce((sum, item) => sum + parseFloat(products[products.map(data => data.key).indexOf(item.key)].price * item.quantity), 0).toFixed(2);
 
@@ -73,14 +75,14 @@ export default class Checkout extends Component {
           <Form id='checkout-info' name='checkout-info' layout='vertical' onFinish={this.onFinish}>
             <Title level={3}>Customer Info</Title>
             <Divider />
-            <Form.Item  name='email' label='Email' rules={[{ type: 'email', message: 'Please enter a valid email'}, { required: true, message: 'Please enter your email'},]}>
+            <Form.Item initialValue={user.email} name='email' label='Email' rules={[{ type: 'email', message: 'Please enter a valid email'}, { required: true, message: 'Please enter your email'},]}>
               <Input placeholder='Enter your email' />
             </Form.Item>
             <Title level={3}>Shipping Address</Title>
             <Divider />
             <Row gutter={16}>
               <Col span={12}>
-                <Form.Item name='fullname' label='Full Name' rules={[{ required: true, message: 'Please enter your fullname' }]}>
+                <Form.Item initialValue={user.fullname} name='fullname' label='Full Name' rules={[{ required: true, message: 'Please enter your fullname' }]}>
                   <Input placeholder='Enter your full name' />
                 </Form.Item>
               </Col>

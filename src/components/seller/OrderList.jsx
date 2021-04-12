@@ -22,7 +22,7 @@ const OrderList = ({ orderList }) => {
   const columns = [
     {
       title: 'Order ID',
-      dataIndex: 'order_id',
+      dataIndex: 'orderId',
     },
     {
       title: 'Items',
@@ -37,10 +37,10 @@ const OrderList = ({ orderList }) => {
     },
     {
       title: 'Date Ordered',
-      dataIndex: 'date_ordered',
+      dataIndex: 'dateOrdered',
       defaultSortOrder: 'descend',
-      sorter: (a, b) => moment(a.date_ordered, 'MM-DD-YYYY') - moment(b.date_ordered, 'MM-DD-YYYY'),
-      render: (_, record) => <Text>{record.date_ordered.format('MM-DD-YYYY')}</Text>
+      sorter: (a, b) => moment(a.dateOrdered, 'MM-DD-YYYY') - moment(b.dateOrdered, 'MM-DD-YYYY'),
+      render: (_, record) => <Text>{record.dateOrdered.format('MM-DD-YYYY')}</Text>
     },
   ];  
 
@@ -58,7 +58,7 @@ const OrderList = ({ orderList }) => {
           <Divider />
           {
             currData.items.map((data, i) => 
-                <Row align='middle' gutter={16}>
+                <Row key={i} align='middle' gutter={16}>
                   <Col span={2}><Image width={25} height={25} src={data.product_image} preview={false} /></Col>
                   <Col span={10}>{data.name}<br /><Text type='secondary'>{data.brand}</Text></Col>
                   <Col span={4}>₱{parseFloat(data.price).toFixed(2)}</Col>

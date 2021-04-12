@@ -18,6 +18,15 @@ import moment from 'moment';
 
 const shippingFee = 99.99;
 
+const userDummy = [
+  {userId: 1032, image: 'https://cdn.iconscout.com/icon/free/png-256/avatar-380-456332.png', fullname: 'John Doe', email: 'john-ish-doe-ish@gmail.com', password: 'coolguy123', userType: 'buyer', loggedIn: true},
+  {userId: 1033, fullname: 'Kate Meeks', email: 'kate.meek443@gmail.com', userType: 'buyer', loggedIn: false},
+  {userId: 1034, fullname: 'Joseph Bourne', email: 'joseph.bourne.a.lover143@gmail.com', userType: 'buyer', loggedIn: false},
+  {userId: 1035, fullname: 'Mark Edwards', email: 'cool.mark.edwards@gmail.com', userType: 'buyer', loggedIn: false},
+  {userId: 1036, fullname: 'Hazel Nut', email: 'hazel.nut.coffee@gmail.com', userType: 'buyer', loggedIn: false},
+  {userId: 1037, fullname: 'James Jones Junior', email: 'james.jones.junior@gmail.com', userType: 'buyer', loggedIn: false},
+]
+
 const productsDummy = [
   {
     key: 1,
@@ -28,7 +37,7 @@ const productsDummy = [
     price: 32,
     stock: 2499,
     description: 'Good Mouse',
-    reviews: [{reaction: 'not really good', rating: 2}, {reaction: 'fair', rating: 3}],
+    reviews: [{user: userDummy[0], reaction: 'very very good', rating: 5}, {user: userDummy[1], reaction: 'fairlygood', rating: 3}, {user: userDummy[2], reaction: 'fair', rating: 3}],
     orders: 15
   },
   {
@@ -40,7 +49,7 @@ const productsDummy = [
     price: 999,
     stock: 300,
     description: 'Bad Mouse',
-    reviews: [{reaction: 'cool', rating: 4}, {reaction: 'awesome', rating: 5}],
+    reviews: [{user: userDummy[2], reaction: 'cool', rating: 4}, {userDummy: userDummy[4], reaction: 'awesome', rating: 5}],
     orders: 23
   },
   {
@@ -52,7 +61,7 @@ const productsDummy = [
     price: 20000,
     stock: 150,
     description: 'Cool Scan',
-    reviews: [{reaction: 'awesome cool', rating: 4}, {reaction: 'cool', rating: 4}, {reaction: 'nice', rating: 3}],
+    reviews: [{user: userDummy[0], reaction: 'awesome cool', rating: 4}, {user: userDummy[2], reaction: 'cool', rating: 4}, {user: userDummy[5], reaction: 'nice', rating: 3}],
     orders: 20
   },
   {
@@ -64,7 +73,7 @@ const productsDummy = [
     price: 25000,
     stock: 200,
     description: 'Cool Print',
-    reviews: [{reaction: 'not satisfied', rating: 2}, {reaction: 'fair', rating: 3}, {reaction: 'cool', rating: 4}],
+    reviews: [{user: userDummy[4], reaction: 'not satisfied', rating: 2}, {user: userDummy[6], reaction: 'fair', rating: 3}, {user: userDummy[7], reaction: 'cool', rating: 4}],
     orders: 18
   },
   {
@@ -76,86 +85,56 @@ const productsDummy = [
     price: 50000,
     stock: 20,
     description: 'Cool laptop',
-    rating: 3,
-    reviews: [{reaction: 'awesome', rating: 4}],
+    rating: 0,
+    reviews: [{user: userDummy[4], reaction: 'awesome', rating: 4}],
     orders: 13
-  },
-  {
-    key: 6,
-    product_image: 'https://www.pngarts.com/files/4/Dell-Laptop-PNG-Image.png',
-    name: 'Dell Laptop',
-    category: 'Laptop',
-    brand: 'Dell',
-    price: 50000,
-    stock: 0,
-    description: 'Awesome Laptop',
-    reviews: [],
-    orders: 0
-  },
-  {
-    key: 7,
-    product_image: 'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.nanotek.lk%2Fuploads%2Fproduct%2F822-20180919151235-logitech613.png&f=1&nofb=1',
-    name: 'Logitech G703 LightSpeed Wireless Gaming Mouse',
-    category: 'Peripheral',
-    brand: 'Logitech',
-    price: 2000,
-    stock: 1,
-    description: "One of the most favored gaming mouse recommended by gamers.",
-    reviews: [],
-    orders: 0
   },
 ]
 
 const orderListDummy = [
   {
     key: 1,
-    order_id: '112311',
-    total: [{...productsDummy[3], quantity: 1}, {...productsDummy[4], quantity: 3}, {...productsDummy[5], quantity: 2}].reduce((sum, product) => sum + product.price * product.quantity, 0) + shippingFee,
-    items: [{...productsDummy[3], quantity: 1}, {...productsDummy[4], quantity: 3}, {...productsDummy[5], quantity: 2}],
+    orderId: '112311',
+    total: [{...productsDummy[3], quantity: 1}, {...productsDummy[4], quantity: 3}].reduce((sum, product) => sum + product.price * product.quantity, 0) + shippingFee,
+    items: [{...productsDummy[3], quantity: 1}, {...productsDummy[4], quantity: 3}],
     shippingFee: shippingFee,
-    date_ordered: moment('03-26-2021', 'MM-DD-YYYY'),
+    dateOrdered: moment('03-26-2021', 'MM-DD-YYYY'),
   },
   {
     key: 2,
-    order_id: '112312',
+    orderId: '112312',
     total: [{...productsDummy[3], quantity: 1}, {...productsDummy[1], quantity: 1}].reduce((sum, product) => sum + product.price * product.quantity, 0) + shippingFee,
     items: [{...productsDummy[3], quantity: 1}, {...productsDummy[1], quantity: 1}],
     shippingFee: shippingFee,
-    date_ordered: moment('03-27-2021', 'MM-DD-YYYY'),
+    dateOrdered: moment('03-27-2021', 'MM-DD-YYYY'),
   },
   {
     key: 3,
-    order_id: '112313',
-    total: [{...productsDummy[5], quantity: 1}].reduce((sum, product) => sum + product.price * product.quantity, 0) + shippingFee,
-    items: [{...productsDummy[5], quantity: 1}],
+    orderId: '112313',
+    total: [{...productsDummy[4], quantity: 1}].reduce((sum, product) => sum + product.price * product.quantity, 0) + shippingFee,
+    items: [{...productsDummy[4], quantity: 1}],
     shippingFee: shippingFee,
-    date_ordered: moment('03-27-2021', 'MM-DD-YYYY'),
+    dateOrdered: moment('03-27-2021', 'MM-DD-YYYY'),
   },
   {
     key: 4,
-    order_id: '112314',
-    total: [{...productsDummy[6], quantity: 2}].reduce((sum, product) => sum + product.price * product.quantity, 0) + shippingFee,
-    items: [{...productsDummy[6], quantity: 2}],
+    orderId: '112314',
+    total: [{...productsDummy[3], quantity: 2}].reduce((sum, product) => sum + product.price * product.quantity, 0) + shippingFee,
+    items: [{...productsDummy[3], quantity: 2}],
     shippingFee: shippingFee,
-    date_ordered: moment('03-27-2021', 'MM-DD-YYYY'),
+    dateOrdered: moment('03-27-2021', 'MM-DD-YYYY'),
   },
 ];
 
 const cartDummy = [
   { key: 1, quantity: 2 },
   { key: 3, quantity: 1 },
-  { key: 7, quantity: 1 }
+  { key: 5, quantity: 1 }
 ]
 
 const orderHistoryDummy = [
-  {
-    key: 1,
-    contactInfo: [],
-    total: [{...productsDummy[0], quantity: 1}, {...productsDummy[2], quantity: 2}, {...productsDummy[3], quantity: 4}].reduce((sum, data) => sum + parseFloat(data.price) * parseFloat(data.quantity), 0) + shippingFee,
-    items: [{...productsDummy[0], quantity: 1}, {...productsDummy[2], quantity: 2}, {...productsDummy[3], quantity: 4}],
-    shippingFee: shippingFee,
-    date_ordered: moment('04-21-2020 ', 'MM-DD-YYYY'),
-  }
+  orderListDummy[0],
+  orderListDummy[3]
 ]
 
 export default class App extends Component {
@@ -163,8 +142,7 @@ export default class App extends Component {
     super(props)
 
     this.state = {
-      userType: 'buyer',
-      loggedIn: true,
+      user: userDummy[0],
       products: productsDummy,
       cart: cartDummy,
       orderHistory: orderHistoryDummy,
@@ -173,11 +151,11 @@ export default class App extends Component {
   }
 
   setUserType = ( userType ) => {
-    this.setState({ userType });
+    this.setState({ user: { ...this.state.user, userType } });
   }
 
   setLoggedIn = ( loggedIn ) => {
-    this.setState({ loggedIn });
+    this.setState({ user: { ...this.state.user, loggedIn } });
   }
 
   setProducts = ( products ) => {
@@ -216,23 +194,19 @@ export default class App extends Component {
     message.success('Successfully added to cart')
   }
 
-  addToOrderList = (order) => {
-    this.setOrderList([...this.state.orderList, {...order, key: this.state.orderList.length + 1, order_id: 112310 + this.state.orderList.length + 1}])
-  }
-
   componentDidMount = () => {
 
   }
 
   render() {
-    const { cart, products, orderList, orderHistory, loggedIn, userType } = this.state;
-    const { setLoggedIn, setUserType, setProducts, setCart, setOrderHistory, addToCart, addToOrderList } = this;
+    const { cart, products, orderList, orderHistory, user} = this.state;
+    const { setLoggedIn, setUserType, setProducts, setCart, setOrderHistory, setOrderList, addToCart } = this;
 
     return (
       <Router>
-        <Navigation products={products} cart={cart} loggedIn={loggedIn} setLoggedIn={setLoggedIn} userType={userType} setUserType={setUserType} />
+        <Navigation products={products} cart={cart} user={user} setLoggedIn={setLoggedIn} setUserType={setUserType} />
         <div id="main">
-          {userType == 'seller' ? 
+          {user.userType == 'seller' ? 
           <Switch>
             <Route exact path="/" component={(props) => <Dashboard cart={cart} setCart={setCart} products={products} setProducts={setProducts} orderList={orderList} {...props} />} />
           </Switch>
@@ -245,8 +219,8 @@ export default class App extends Component {
             <Route path="/product/:slug" component={(props) => <ProductPage addToCart={addToCart} {...props} />} />
             <Route path="/category/:category" component={(props) => <ProductCatalog products={products} {...props} />} />
             <Route path="/cart" component={(props) => <Cart shippingFee={shippingFee} cart={cart} products={products} setCart={setCart} {...props} />} />
-            <Route path="/checkout" component={(props) => <Checkout orderHistory={orderHistory} products={products} setProducts={setProducts} setOrderHistory={setOrderHistory} shippingFee={shippingFee} cart={cart} setCart={setCart} addToOrderList={addToOrderList} {...props} />} />
-            <Route path="/order-history" component={(props) => <OrderHistory products={products} setProducts={setProducts} orderHistory={orderHistory} {...props} />} />
+            <Route path="/checkout" component={(props) => <Checkout user={user} orderHistory={orderHistory} products={products} setProducts={setProducts} setOrderHistory={setOrderHistory} shippingFee={shippingFee} cart={cart} setCart={setCart} orderList={orderList} setOrderList={setOrderList} {...props} />} />
+            <Route path="/order-history" component={(props) => <OrderHistory user={user} products={products} setProducts={setProducts} orderHistory={orderHistory} {...props} />} />
             <Route component={PageNotFound} />
           </Switch>
           }

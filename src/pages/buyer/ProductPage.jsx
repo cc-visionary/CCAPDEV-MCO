@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Rater from 'react-rater';
 import { Button, Typography, Image, Space, Row, Col, Divider, InputNumber } from 'antd';
+import RatingCard from '../../components/buyer/RatingCard';
 
 import BoxButton from '../../components/BoxButton';
 
@@ -9,8 +10,11 @@ const { Title, Text, Paragraph } = Typography;
 const ProductPage = ({ addToCart, ...props }) => {
   const { data } = props.location;
   const [ quantity, setQuantity ] = useState(1)
+  const [ visible, setVisible ] = useState(false) 
 
-  console.log(data.stock)
+  const onClose = () => {
+    setVisible(false)
+  }
 
   return data ? 
       <Row align='middle' id="product-page">
@@ -29,7 +33,7 @@ const ProductPage = ({ addToCart, ...props }) => {
           </div>
           <div className='price-reviews'>
             <Title>₱{parseFloat(data.price).toFixed(2)}</Title>
-            <Space><Rater interactive={false} rating={data.reviews.length == 0 ? 0 : data.reviews.reduce((sum, review) => sum + parseFloat(review.rating), 0) / data.reviews.length} /> <Button type='link'><Text underline>{data.reviews.length == 0 ? 'No' : data.reviews.length} reviews</Text></Button></Space>
+            <Space><Rater interactive={false} rating={data.reviews.length == 0 ? 0 : data.reviews.reduce((sum, review) => sum + parseFloat(review.rating), 0) / data.reviews.length} /> <Button onClick={() => setVisible(true)} type='link'><Text underline>{data.reviews.length == 0 ? 'No' : data.reviews.length} reviews</Text></Button></Space>
           </div>
           {
             data.stock > 0 ?
@@ -40,6 +44,7 @@ const ProductPage = ({ addToCart, ...props }) => {
             <div className='out-of-stock'>Out of Stock</div>
           }
         </Col>
+        <RatingCard visible={visible} onClose={onClose} />
       </Row> : 
       <Row id="not-exist"><Title>Product does not exist...</Title></Row>
 }
