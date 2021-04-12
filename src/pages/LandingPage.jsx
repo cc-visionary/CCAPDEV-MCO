@@ -33,7 +33,7 @@ const LandingPage = () => {
           <Col className="left" xl={12}>
             <div className="header">
               <Title>Welcome to TechTitan.</Title>
-              <p>Where you get your latest and exclusive computer and accessories.</p>
+              <p>Where you get the latest and exclusive computer and accessories.</p>
             </div>
             <div className="buttons">
               <BoxButton path={'/products'} link>Shop Now</BoxButton>
@@ -65,21 +65,21 @@ const LandingPage = () => {
               <Card>
                 <span className="icon"><GoPackage /></span>
                 <Title level={3}>Latest Technology</Title>
-                <p>Our technology are new to help you stay updated to new trends</p>
+                <p>Our technology are new to keep you updated to new trends</p>
               </Card>
             </Col>
             <Col span={8}>
               <Card>
                 <span className="icon"><ImPriceTag /></span>
                 <Title level={3}>Best Prices</Title>
-                <p>Enjoy the best prices for high quality computer and accessories.</p>
+                <p>Enjoy the best prices for high quality computers and accessories.</p>
               </Card>
             </Col>
             <Col span={8}>
               <Card>
                 <span className="icon"><MdLocalShipping /></span>
                 <Title level={3}>Fast Delivery</Title>
-                <p>We provide fast deliver worldwide. You can order from anywhere, anytime and receive it within 1-2 weeks.</p>
+                <p>We provide fast delivery worldwide. You can order from anywhere, anytime and receive your item within 1-2 weeks.</p>
               </Card>
             </Col>
           </Row>
