@@ -5,6 +5,8 @@ import RatingCard from '../../components/buyer/RatingCard';
 
 import BoxButton from '../../components/BoxButton';
 
+import ProductNotFoundImage from '../../assets/images/product_not_found.svg';
+
 const { Title, Text, Paragraph } = Typography;
 
 const ProductPage = ({ addToCart, ...props }) => {
@@ -46,7 +48,7 @@ const ProductPage = ({ addToCart, ...props }) => {
         </Col>
         <RatingCard reviews={data.reviews} visible={visible} onClose={onClose} />
       </Row> : 
-      <Row id="not-exist"><Title>Product does not exist...</Title></Row>
+      <div id="not-exist"><div><Image src={ProductNotFoundImage} preview={false} /></div><div><Title>Product does not exist...</Title></div></div>
 }
 
 export default ProductPage;

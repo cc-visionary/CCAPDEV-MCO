@@ -1,5 +1,5 @@
 import React from 'react';
-import { Row, Col, Typography, Card } from 'antd';
+import { Row, Col, Typography, Card, Image } from 'antd';
 import { AiOutlineLaptop, AiFillDatabase, AiOutlinePrinter, AiOutlineMenu } from 'react-icons/ai';
 import { BiMouseAlt } from 'react-icons/bi';
 import { FiMonitor } from 'react-icons/fi';
@@ -11,7 +11,7 @@ import { ImPriceTag } from 'react-icons/im';
 import { Link } from 'react-router-dom';
 
 import BoxButton from '../components/BoxButton'
-import mainImage from '../assets/images/landing_page_main_image.png'; 
+import MainImage from '../assets/images/landing_page_main_image.svg'; 
 
 const categories = [
   {'icon': <AiOutlineLaptop />, 'category': 'Laptop'},
@@ -39,7 +39,7 @@ const LandingPage = () => {
               <BoxButton path={'/products'} link>Shop Now</BoxButton>
             </div>
           </Col>
-          <Col className="right" xl={12}><img src={mainImage} alt="Main Image" /></Col>
+          <Col className="right" xl={12}><Image preview={false} src={MainImage} alt="Main Image" /></Col>
         </Row>
       </div>
       <div className="category">

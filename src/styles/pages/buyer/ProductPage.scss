@@ -24,9 +24,13 @@
 
 #not-exist {
   display: block;
-  padding: 30vh 0;
+  padding: 2.5vh 0;
 
   * {
     text-align: center;
+  }
+  
+  img {
+    max-height: 50vh;
   }
 }

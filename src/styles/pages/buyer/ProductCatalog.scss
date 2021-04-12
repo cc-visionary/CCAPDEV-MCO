@@ -7,4 +7,14 @@
   .catalog-card {
     min-height: 300px;
   }
+
+  .product-not-exist {
+    display: block;
+    text-align: center;
+    padding: 5vh;
+
+    img {
+      max-height: 40vh;
+    }
+  }
 }
