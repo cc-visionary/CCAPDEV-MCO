@@ -71,9 +71,13 @@ module.exports = {
         ],
       },
       {
-        test: /\.(png|jpe?g|gif|svg)$/i,
+        test: /\.(png|jpe?g|gif|svg|ico)$/i,
         use: [
           {
+            options: {
+              name: "[name].[ext]",
+              outputPath: "images/"
+            },
             loader: 'file-loader',
           },
         ],
@@ -94,7 +98,8 @@ module.exports = {
   plugins: [
     new HtmlWebPackPlugin({
       template: './src/index.html',
-      filename: "./index.html"
+      filename: "./index.html",
+      favicon: "./src/assets/images/logo_dark.ico"
     }),
   ]
 };
