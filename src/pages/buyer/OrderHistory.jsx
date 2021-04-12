@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { Row, Col, Image, Collapse, Typography, Divider, Button, Modal, Input, message } from 'antd';
 import { Link } from 'react-router-dom';
 import Rater from 'react-rater';
+import moment from 'moment';
 
 const { Title, Text } = Typography;
 const { Panel } = Collapse;
@@ -43,7 +44,7 @@ const OrderHistory = ({ user, products, setProducts, orderHistory }) => {
     
     setProducts(products.map(product => {
       if(product.key == itemId) {
-        product.reviews.push({user: user, reaction:reaction, rating:rating})
+        product.reviews.push({user: user, reaction:reaction, rating:rating, dateReviewed: moment()})
         return product
       }
       return product;
@@ -98,8 +99,8 @@ const OrderHistory = ({ user, products, setProducts, orderHistory }) => {
         }
       </Collapse>
       <Modal title='Write a Feedback' visible={ reviewVisible } onOk={confirmReview} onCancel={onCloseReview}>
-        <Input.TextArea value={reaction} onChange={(e) => setReaction(e.target.value)} />
-        <Rater rating={rating} onRate={({rating}) => setRating(rating)} />
+        <Input.TextArea placeholder='Enter your reaction' value={reaction} onChange={(e) => setReaction(e.target.value)} />
+        <Rater style={{'fontSize': '3em', 'display':'block', 'textAlign': 'center'}} rating={rating} onRate={({rating}) => setRating(rating)} />
       </Modal>
     </div>
   )

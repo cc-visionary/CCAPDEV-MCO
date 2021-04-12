@@ -1,0 +1,25 @@
+#rating-card {
+  font-size: 1.5em;
+  padding: 25px;
+
+  .average-rating {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 15px;
+  }
+
+  .percentage-item {
+    display: flex;
+
+    .percentage {
+      flex: 1;
+    }
+  }
+
+  .reactions {
+    max-height: 300px;
+    overflow: auto;
+  }
+}

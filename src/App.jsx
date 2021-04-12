@@ -37,7 +37,7 @@ const productsDummy = [
     price: 32,
     stock: 2499,
     description: 'Good Mouse',
-    reviews: [{user: userDummy[0], reaction: 'very very good', rating: 5}, {user: userDummy[1], reaction: 'fairlygood', rating: 3}, {user: userDummy[2], reaction: 'fair', rating: 3}],
+    reviews: [{user: userDummy[0], reaction: 'very very good', rating: 5, dateReviewed: moment('01-20-2021', 'MM-DD-YYYY')}, {user: userDummy[1], reaction: 'fairlygood', rating: 3, dateReviewed: moment('01-20-2021', 'MM-DD-YYYY')}, {user: userDummy[2], reaction: 'fair', rating: 3, dateReviewed: moment('01-20-2021', 'MM-DD-YYYY')}],
     orders: 15
   },
   {
@@ -49,7 +49,7 @@ const productsDummy = [
     price: 999,
     stock: 300,
     description: 'Bad Mouse',
-    reviews: [{user: userDummy[2], reaction: 'cool', rating: 4}, {userDummy: userDummy[4], reaction: 'awesome', rating: 5}],
+    reviews: [{user: userDummy[2], reaction: 'cool', rating: 4, dateReviewed: moment('01-25-2021', 'MM-DD-YYYY')}, {user: userDummy[4], reaction: 'awesome', rating: 5, dateReviewed: moment('12-20-2020', 'MM-DD-YYYY')}],
     orders: 23
   },
   {
@@ -61,7 +61,7 @@ const productsDummy = [
     price: 20000,
     stock: 150,
     description: 'Cool Scan',
-    reviews: [{user: userDummy[0], reaction: 'awesome cool', rating: 4}, {user: userDummy[2], reaction: 'cool', rating: 4}, {user: userDummy[5], reaction: 'nice', rating: 3}],
+    reviews: [{user: userDummy[0], reaction: 'awesome cool', rating: 4, dateReviewed: moment('01-14-2021', 'MM-DD-YYYY')}, {user: userDummy[2], reaction: 'cool', rating: 4, dateReviewed: moment('02-15-2021', 'MM-DD-YYYY')}, {user: userDummy[5], reaction: 'nice', rating: 3, dateReviewed: moment('01-20-2021', 'MM-DD-YYYY')}],
     orders: 20
   },
   {
@@ -73,7 +73,7 @@ const productsDummy = [
     price: 25000,
     stock: 200,
     description: 'Cool Print',
-    reviews: [{user: userDummy[4], reaction: 'not satisfied', rating: 2}, {user: userDummy[6], reaction: 'fair', rating: 3}, {user: userDummy[7], reaction: 'cool', rating: 4}],
+    reviews: [{user: userDummy[1], reaction: 'not satisfied', rating: 2, dateReviewed: moment('01-22-2021', 'MM-DD-YYYY')}, {user: userDummy[2], reaction: 'not satisfied', rating: 2, dateReviewed: moment('01-22-2021', 'MM-DD-YYYY')}, {user: userDummy[4], reaction: 'fair', rating: 3, dateReviewed: moment('03-04-2021', 'MM-DD-YYYY')}, {user: userDummy[5], reaction: 'cool', rating: 4, dateReviewed: moment('01-20-2021', 'MM-DD-YYYY')}],
     orders: 18
   },
   {
@@ -86,7 +86,7 @@ const productsDummy = [
     stock: 20,
     description: 'Cool laptop',
     rating: 0,
-    reviews: [{user: userDummy[4], reaction: 'awesome', rating: 4}],
+    reviews: [{user: userDummy[4], reaction: 'awesome', rating: 4, dateReviewed: moment('01-24-2021', 'MM-DD-YYYY')}],
     orders: 13
   },
 ]

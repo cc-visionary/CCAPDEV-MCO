@@ -6,6 +6,7 @@
 @import './components/Footer.scss';
 @import './components/Navigation.scss';
 @import './components/buyer/CartPopover.scss';
+@import './components/buyer/RatingCard.scss';
 @import './pages/LandingPage.scss';
 @import './pages/Profile.scss';
 @import './pages/Register.scss';
@@ -14,7 +15,33 @@
 @import './pages/buyer/Cart.scss';
 @import './pages/buyer/Checkout.scss';
 @import '~antd/dist/antd.css';
-@import '~react-rater/lib/react-rater.css';
+@import '~react-rater/lib/react-rater.scss';
+
+.react-rater-star {
+  $react-rater-hover: lighten($rating-color, 10%);
+  $react-rater-active: $rating-color;
+  font-size: 1.5em;
+  cursor: pointer;
+  color: $react-rater-link;
+  position: relative;
+  &.will-be-active {
+    color: $react-rater-hover;
+  }
+  &.is-active {
+    color: $react-rater-active;
+  }
+  &.is-active-half:before {
+    color: $react-rater-active;
+    content: '\2605';
+    position: absolute;
+    left: 0;
+    width: 50%;
+    overflow: hidden;
+  }
+  &.is-disabled {
+    cursor: default;
+  }
+}
 
 body {
   margin: 0;
