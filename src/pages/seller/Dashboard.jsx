@@ -5,21 +5,21 @@ import { DollarOutlined, UserOutlined, TagOutlined, ShoppingOutlined } from '@an
 import Inventory from '../../components/seller/Inventory';
 import OrderList from '../../components/seller/OrderList';
 
-const Dashboard = ({ cart, setCart, products, setProducts, orderList }) => {
+const Dashboard = ({ users, cart, setCart, products, setProducts, orderList }) => {
   return (
     <div id="dashboard">
       <Row align='middle' gutter={[16, 16]}>
         <Col span={6}>
-          <Statistic title="Customers" value={500} prefix={<UserOutlined />} />
+          <Statistic title="Customers" value={users.length} prefix={<UserOutlined />} />
         </Col>
         <Col span={6}>
-          <Statistic title="Products" value={50} prefix={<TagOutlined />} />
+          <Statistic title="Products" value={products.length} prefix={<TagOutlined />} />
         </Col>
         <Col span={6}>
-          <Statistic title="Items Sold" value={1000} prefix={<ShoppingOutlined />} />
+          <Statistic title="Items Sold" value={orderList.reduce((sum, order) => sum + order.items.reduce((s, item) => s + item.quantity, 0), 0)} prefix={<ShoppingOutlined />} />
         </Col>
         <Col span={6}>
-          <Statistic title="Total Earned" value={10000} prefix={<DollarOutlined />} />
+          <Statistic title="Total Sold" value={orderList.reduce((sum, order) => sum + order.total, 0).toFixed(2)} prefix={<DollarOutlined />} />
         </Col>
       </Row>
       <Inventory cart={cart} setCart={setCart} products={products} setProducts={setProducts} />

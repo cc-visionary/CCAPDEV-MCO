@@ -212,7 +212,7 @@ export default class App extends Component {
         <div id="main">
           {user.userType == 'seller' ? 
           <Switch>
-            <Route exact path="/" component={(props) => <Dashboard cart={cart} setCart={setCart} products={products} setProducts={setProducts} orderList={orderList} {...props} />} />
+            <Route exact path="/" component={(props) => <Dashboard users={userDummy} cart={cart} setCart={setCart} products={products} setProducts={setProducts} orderList={orderList} {...props} />} />
             <Route path="/profile" component={(props) => <Profile user={user} setUser={setUser} setLoggedIn={setLoggedIn} {...props} />} />
             <Route component={PageNotFound} />
           </Switch>

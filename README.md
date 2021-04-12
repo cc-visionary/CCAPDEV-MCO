@@ -25,7 +25,8 @@ with subcategories of Laptops, Monitors, Data Storage, Peripherals, Networking, 
 - View, Edit and Delete Profile
 
 ## Screenshots
-
+### Landing Page
+![Landing Page](src/assets/screenshots/landing_page.png)
 ## Credits
 
 ## Author(s)
