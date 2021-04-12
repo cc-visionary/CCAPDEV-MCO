@@ -9,7 +9,7 @@ import ProductNotFoundImage from '../../assets/images/product_not_found.svg';
 
 const { Title, Text, Paragraph } = Typography;
 
-const ProductPage = ({ addToCart, ...props }) => {
+const ProductPage = ({ cart, addToCart, ...props }) => {
   const { data } = props.location;
   const [ quantity, setQuantity ] = useState(1)
   const [ visible, setVisible ] = useState(false) 
@@ -48,9 +48,9 @@ const ProductPage = ({ addToCart, ...props }) => {
               <Title>₱{parseFloat(data.price).toFixed(2)}</Title>
             </div>
             {
-              data.stock > 0 ?
+              data.stock > 0 && data.stock - (cart.map((c) => c.key).indexOf(data.key) != -1 ? cart[cart.map((c) => c.key).indexOf(data.key)].quantity : 0) > 0 ?
               <div className='add-to-cart'>
-                <div className='quantity'><Text>Quantity: </Text><InputNumber value={quantity} min={1} max={data.stock} onChange={value => setQuantity(value)} /></div>
+                <div className='quantity'><Text>Quantity: </Text><InputNumber value={quantity} min={1} max={data.stock - (cart.map((c) => c.key).indexOf(data.key) != -1 ? cart[cart.map((c) => c.key).indexOf(data.key)].quantity : 0)} onChange={value => setQuantity(value)} /></div>
                 <BoxButton onClick={() => addToCart({ key: data.key, quantity })}>Add to Cart</BoxButton>
               </div> :
               <div className='out-of-stock'>Out of Stock</div>

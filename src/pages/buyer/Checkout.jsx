@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Image, Button, Row, Col, Divider, Typography, Form, Input, Select, message } from 'antd';
+import { Image, Button, Row, Col, Divider, Typography, Form, Input, InputNumber, Select, message } from 'antd';
 import { Link, Redirect } from 'react-router-dom';
 import { LeftOutlined } from '@ant-design/icons';
 import axios from 'axios';
@@ -49,7 +49,9 @@ export default class Checkout extends Component {
     setProducts(products.map(product => {
       const item_keys = newOrder.items.map(item => item.key);
       if(item_keys.includes(product.key)) {
-        product['stock'] -= cart[item_keys.indexOf(product.key)].quantity;
+        const quantity = cart[item_keys.indexOf(product.key)].quantity;
+        product['stock'] -= quantity;
+        product['orders'] += quantity;
       }
 
       return product;
@@ -121,12 +123,12 @@ export default class Checkout extends Component {
             <Row gutter={16}>
               <Col span={6}>
                 <Form.Item name='postal-code' label='Postal Code' rules={[{ required: true, message: 'Please enter your postal code' }]}  >
-                  <Input placeholder='Enter your postal code' />
+                  <InputNumber style={{'width': '100%'}} step={false} placeholder='Enter your postal code' />
                 </Form.Item>
               </Col>
               <Col span={6}>
                 <Form.Item name='telephone' label='Telephone' rules={[{ required: true, message: 'Please enter your phone number' }]}  >
-                  <Input placeholder='Enter your telephone' />
+                  <InputNumber style={{'width': '100%'}} step={false} placeholder='Enter your telephone' />
                 </Form.Item>
               </Col>
               <Col span={12}>

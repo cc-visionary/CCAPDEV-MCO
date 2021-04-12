@@ -38,7 +38,7 @@ const productsDummy = [
     stock: 2499,
     description: 'Good Mouse',
     reviews: [{user: userDummy[0], reaction: 'very very good', rating: 5, dateReviewed: moment('01-20-2021', 'MM-DD-YYYY')}, {user: userDummy[1], reaction: 'fairlygood', rating: 3, dateReviewed: moment('01-20-2021', 'MM-DD-YYYY')}, {user: userDummy[2], reaction: 'fair', rating: 3, dateReviewed: moment('01-20-2021', 'MM-DD-YYYY')}],
-    orders: 15
+    orders: 0
   },
   {
     key: 2,
@@ -50,7 +50,7 @@ const productsDummy = [
     stock: 300,
     description: 'Bad Mouse',
     reviews: [{user: userDummy[2], reaction: 'cool', rating: 4, dateReviewed: moment('01-25-2021', 'MM-DD-YYYY')}, {user: userDummy[4], reaction: 'awesome', rating: 5, dateReviewed: moment('12-20-2020', 'MM-DD-YYYY')}],
-    orders: 23
+    orders: 1
   },
   {
     key: 3,
@@ -62,7 +62,7 @@ const productsDummy = [
     stock: 150,
     description: 'Cool Scan',
     reviews: [{user: userDummy[0], reaction: 'awesome cool', rating: 4, dateReviewed: moment('01-14-2021', 'MM-DD-YYYY')}, {user: userDummy[2], reaction: 'cool', rating: 4, dateReviewed: moment('02-15-2021', 'MM-DD-YYYY')}, {user: userDummy[5], reaction: 'nice', rating: 3, dateReviewed: moment('01-20-2021', 'MM-DD-YYYY')}],
-    orders: 20
+    orders: 0
   },
   {
     key: 4,
@@ -74,7 +74,7 @@ const productsDummy = [
     stock: 200,
     description: 'Cool Print',
     reviews: [{user: userDummy[1], reaction: 'not satisfied', rating: 2, dateReviewed: moment('01-22-2021', 'MM-DD-YYYY')}, {user: userDummy[2], reaction: 'not satisfied', rating: 2, dateReviewed: moment('01-22-2021', 'MM-DD-YYYY')}, {user: userDummy[4], reaction: 'fair', rating: 3, dateReviewed: moment('03-04-2021', 'MM-DD-YYYY')}, {user: userDummy[5], reaction: 'cool', rating: 4, dateReviewed: moment('01-20-2021', 'MM-DD-YYYY')}],
-    orders: 18
+    orders: 4
   },
   {
     key: 5,
@@ -87,7 +87,7 @@ const productsDummy = [
     description: 'Cool laptop',
     rating: 0,
     reviews: [{user: userDummy[4], reaction: 'awesome', rating: 4, dateReviewed: moment('01-24-2021', 'MM-DD-YYYY')}],
-    orders: 13
+    orders: 4
   },
 ]
 
@@ -221,7 +221,7 @@ export default class App extends Component {
             <Route exact path="/" component={LandingPage} className="main" />
             <Route path="/register" component={Register} />
             <Route path="/products" component={(props) => <ProductCatalog products={products} {...props} />} />
-            <Route path="/product/:slug" component={(props) => <ProductPage addToCart={addToCart} {...props} />} />
+            <Route path="/product/:slug" component={(props) => <ProductPage cart={cart} addToCart={addToCart} {...props} />} />
             <Route path="/category/:category" component={(props) => <ProductCatalog products={products} {...props} />} />
             <Route path="/cart" component={(props) => <Cart shippingFee={shippingFee} cart={cart} products={products} setCart={setCart} {...props} />} />
             <Route path="/checkout" component={(props) => <Checkout user={user} orderHistory={orderHistory} products={products} setProducts={setProducts} setOrderHistory={setOrderHistory} shippingFee={shippingFee} cart={cart} setCart={setCart} orderList={orderList} setOrderList={setOrderList} {...props} />} />
