@@ -32,7 +32,7 @@ const LandingPage = () => {
         <Row align='middle'>
           <Col className="left" xl={12}>
             <div className="header">
-              <Title>Welcome to TechShop.</Title>
+              <Title>Welcome to TechTitan.</Title>
               <p>Where you get your latest and exclusive computer and accessories.</p>
             </div>
             <div className="buttons">
@@ -57,7 +57,7 @@ const LandingPage = () => {
       </div>
       <div className="trend">
         <div className="header">
-          <h1>Stay in Trend with TechShop</h1>
+          <h1>Stay in Trend with TechTitan</h1>
         </div>
         <div className="content">
           <Row gutter={30}>

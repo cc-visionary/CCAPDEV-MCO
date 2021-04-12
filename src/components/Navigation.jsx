@@ -9,6 +9,8 @@ import Login from './Login';
 import CartPopover from './buyer/CartPopover';
 import ProfileMenu from './ProfileMenu';
 
+import Logo from '../assets/images/logo_light.svg';
+
 const { Text, Title } = Typography;
 
 const Navigation = ({ products, cart, user, setLoggedIn, setUserType, setUser }) => {
@@ -48,8 +50,8 @@ const Navigation = ({ products, cart, user, setLoggedIn, setUserType, setUser })
   return (
     <div id="navigation">
       <div className="left">
-        <div className="menu-button"><Button type="text" icon={<AiOutlineMenu />} /></div>
-        <Link to='/'><Title className="shop-name">TechShop.</Title></Link>
+        <div className="menu-button"><Image src={Logo} width={75} preview={false} /></div>
+        <Link to='/'><Title className="shop-name">TechTitan.</Title></Link>
       </div>
       <div className="right">
         { user.loggedIn && user.userType == 'buyer' ? <Popover content={(props) => <CartPopover products={products} cart={cart} {...props} />} title={() => <Text type='secondary'>Recently Added Product</Text>} placement='bottomLeft' ><Badge count={cart.length}><Button size="large" type="text" icon={<ShoppingCartOutlined />} /></Badge></Popover> : null }

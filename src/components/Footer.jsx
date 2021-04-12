@@ -8,8 +8,8 @@ const Footer = () => {
   return (
     <div id="footer">
       <div className="title">
-        <Title level={3}>TechShop.</Title>
-        <p>© Copyright 2021. Powered by TechShop</p>
+        <Title level={3}>TechTitan.</Title>
+        <p>© Copyright 2021. Powered by TechTitan</p>
       </div>
       <div className="cards">
         <FaCcPaypal />
