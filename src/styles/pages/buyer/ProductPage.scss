@@ -20,6 +20,14 @@
       margin-bottom: 10px;
     }
   }
+
+  .add-to-cart {
+    display: flex;
+
+    * {
+      flex: 1;
+    }
+  }
 }
 
 #not-exist {

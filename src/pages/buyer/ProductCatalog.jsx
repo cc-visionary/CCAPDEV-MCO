@@ -200,7 +200,7 @@ class ProductCatalog extends Component {
         :
         <div className='product-not-exist'>
           <Image src={ProductNotFoundImage} preview={false} />
-          <Title >Product '{searchValue}' does not exist...</Title>
+          <Title >{searchValue == '' && category ? 'No product exists in this category...' : `Product '${searchValue}' does not exist...`}</Title>
         </div>
         }
         
