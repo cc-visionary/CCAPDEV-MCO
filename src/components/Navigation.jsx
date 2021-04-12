@@ -11,7 +11,7 @@ import ProfileMenu from './ProfileMenu';
 
 const { Text, Title } = Typography;
 
-const Navigation = ({ products, cart, user, userType, setUserType }) => {
+const Navigation = ({ products, cart, user, setLoggedIn, setUserType, setUser }) => {
   const [loginVisible, setLoginVisible] = useState(false);
   const [redirect, setRedirect] = useState(false);
   const [form] = Form.useForm();
@@ -41,8 +41,7 @@ const Navigation = ({ products, cart, user, userType, setUserType }) => {
   };
 
   const logout = () => {
-    setLoggedIn(false)
-    setUserType('buyer')
+    setUser({ ...user, userType: 'buyer', loggedIn: false })
     setRedirect(true);
   }
 
@@ -57,7 +56,7 @@ const Navigation = ({ products, cart, user, userType, setUserType }) => {
         { !user.loggedIn ? 
           <BoxButton onClick={() => setLoginVisible(true)}>Login</BoxButton> : 
           <Dropdown overlay={<ProfileMenu logout={() => setLoginVisible(false)} logout={() => logout()} userType={user.userType} setUserType={setUserType} setRedirect={setRedirect} />} placement="bottomRight">
-            <Button size="large" type="text" icon={user.image ? <Image height={25} width={25} src={user.image} preview={false} /> : <UserOutlined />} /> 
+            <Button size="large" type="text" icon={user.avatar ? <Image height={25} width={25} src={user.avatar} preview={false} /> : <UserOutlined />} /> 
           </Dropdown>
         }
       </div>

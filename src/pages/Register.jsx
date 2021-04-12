@@ -57,8 +57,8 @@ const Register = () => {
         <Form.Item name='confirm_password' label="Confirm Password" rules={[{ required: true, message: 'Please enter your password confirmation' }, { validator: compareToFirstPassword }]} hasFeedback>
           <Input.Password />
         </Form.Item>
-        <Form.Item name='role' label="Role" initialValue='buyer' >
-          <Select defaultValue='buyer' >
+        <Form.Item name='userType' label=" User Type" initialValue='buyer' >
+          <Select >
             <Option value='buyer'>Buyer</Option>
             <Option value='seller' disabled>Seller</Option>
           </Select>

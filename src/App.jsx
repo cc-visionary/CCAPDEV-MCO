@@ -19,12 +19,12 @@ import moment from 'moment';
 const shippingFee = 99.99;
 
 const userDummy = [
-  {userId: 1032, image: 'https://cdn.iconscout.com/icon/free/png-256/avatar-380-456332.png', fullname: 'John Doe', email: 'john-ish-doe-ish@gmail.com', password: 'coolguy123', userType: 'buyer', loggedIn: true},
-  {userId: 1033, fullname: 'Kate Meeks', email: 'kate.meek443@gmail.com', userType: 'buyer', loggedIn: false},
-  {userId: 1034, fullname: 'Joseph Bourne', email: 'joseph.bourne.a.lover143@gmail.com', userType: 'buyer', loggedIn: false},
-  {userId: 1035, fullname: 'Mark Edwards', email: 'cool.mark.edwards@gmail.com', userType: 'buyer', loggedIn: false},
-  {userId: 1036, fullname: 'Hazel Nut', email: 'hazel.nut.coffee@gmail.com', userType: 'buyer', loggedIn: false},
-  {userId: 1037, fullname: 'James Jones Junior', email: 'james.jones.junior@gmail.com', userType: 'buyer', loggedIn: false},
+  {userId: 1032, avatar: 'https://cdn.iconscout.com/icon/free/png-256/avatar-380-456332.png', fullname: 'John Doe', username: 'johndoe', birthday: moment('03-20-1999', 'MM-DD-YYYY'), email: 'john-ish-doe-ish@gmail.com', password: 'coolguy123', userType: 'buyer', loggedIn: true},
+  {userId: 1033, fullname: 'Kate Meeks', email: 'kate.meek443@gmail.com', username: 'sweetgirl123', userType: 'buyer', loggedIn: false},
+  {userId: 1034, fullname: 'Joseph Bourne', email: 'joseph.bourne.a.lover143@gmail.com', username: 'xXbatmanXx143', userType: 'buyer', loggedIn: false},
+  {userId: 1035, fullname: 'Mark Edwards', email: 'cool.mark.edwards@gmail.com', username: 'coolkidXD', userType: 'buyer', loggedIn: false},
+  {userId: 1036, fullname: 'Hazel Nut', email: 'hazel.nut.coffee@gmail.com', username:'coffeelover42', userType: 'buyer', loggedIn: false},
+  {userId: 1037, fullname: 'James Jones Junior', email: 'james.jones.junior@gmail.com', username: 'ufclover', userType: 'buyer', loggedIn: false},
 ]
 
 const productsDummy = [
@@ -150,6 +150,10 @@ export default class App extends Component {
     }
   }
 
+  setUser = ( user ) => {
+    this.setState({ user })
+  }
+
   setUserType = ( userType ) => {
     this.setState({ user: { ...this.state.user, userType } });
   }
@@ -200,20 +204,21 @@ export default class App extends Component {
 
   render() {
     const { cart, products, orderList, orderHistory, user} = this.state;
-    const { setLoggedIn, setUserType, setProducts, setCart, setOrderHistory, setOrderList, addToCart } = this;
+    const { setUser, setLoggedIn, setUserType, setProducts, setCart, setOrderHistory, setOrderList, addToCart } = this;
 
     return (
       <Router>
-        <Navigation products={products} cart={cart} user={user} setLoggedIn={setLoggedIn} setUserType={setUserType} />
+        <Navigation products={products} cart={cart} user={user} setUser={setUser} setLoggedIn={setLoggedIn} setUserType={setUserType} />
         <div id="main">
           {user.userType == 'seller' ? 
           <Switch>
             <Route exact path="/" component={(props) => <Dashboard cart={cart} setCart={setCart} products={products} setProducts={setProducts} orderList={orderList} {...props} />} />
+            <Route path="/profile" component={(props) => <Profile user={user} setUser={setUser} setLoggedIn={setLoggedIn} {...props} />} />
+            <Route component={PageNotFound} />
           </Switch>
           : 
           <Switch>
             <Route exact path="/" component={LandingPage} className="main" />
-            <Route path="/profile" component={(props) => <Profile setLoggedIn={setLoggedIn} {...props} />} />
             <Route path="/register" component={Register} />
             <Route path="/products" component={(props) => <ProductCatalog products={products} {...props} />} />
             <Route path="/product/:slug" component={(props) => <ProductPage addToCart={addToCart} {...props} />} />
@@ -221,6 +226,7 @@ export default class App extends Component {
             <Route path="/cart" component={(props) => <Cart shippingFee={shippingFee} cart={cart} products={products} setCart={setCart} {...props} />} />
             <Route path="/checkout" component={(props) => <Checkout user={user} orderHistory={orderHistory} products={products} setProducts={setProducts} setOrderHistory={setOrderHistory} shippingFee={shippingFee} cart={cart} setCart={setCart} orderList={orderList} setOrderList={setOrderList} {...props} />} />
             <Route path="/order-history" component={(props) => <OrderHistory user={user} products={products} setProducts={setProducts} orderHistory={orderHistory} {...props} />} />
+            <Route path="/profile" component={(props) => <Profile user={user} setUser={setUser} setLoggedIn={setLoggedIn} {...props} />} />
             <Route component={PageNotFound} />
           </Switch>
           }

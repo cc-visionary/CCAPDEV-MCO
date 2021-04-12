@@ -24,17 +24,8 @@ export default class Profile extends Component {
       hasChanged: false,
       showConfirmation: false,
       redirect: false,
-      confirmPassword: ''
-    }
-
-    this.initialValues = {
-      'avatar': '',
-      'username': 'username',
-      'fullname': 'full name',
-      'password': 'password',
-      'email': 'email@email.com',
-      'birthday': moment('03-27-2021', 'MM-DD-YYYY'),
-      'role': 'seller',
+      confirmPassword: '',
+      fileList: [{url: this.props.user.avatar}]
     }
   }
 
@@ -43,8 +34,12 @@ export default class Profile extends Component {
   }
   
   onFinish(values) {
+    const { user, setUser } = this.props
+
     console.log(values)
-    this.setState({ hasChanged : false, redirect : true }, () => message.success('Changes were made successfully'))
+
+    
+    this.setState({ hasChanged : false, redirect : true }, () => { setUser({ ...values, loggedIn: user.loggedIn, avatar: user.avatar }) ; message.success('Changes were made successfully') })
   }
 
   onDelete() {
@@ -52,24 +47,20 @@ export default class Profile extends Component {
   }
 
   onConfirmDelete() {
-    const { setLoggedIn } = this.props;
+    const { user, setLoggedIn } = this.props;
 
-    if(this.state.confirmPassword == this.initialValues.password) {
+    if(this.state.confirmPassword == user.password) {
       this.setState({ showConfirmation : false, confirmPassword : '', redirect : true }, () => { message.success('Account deleted successfully'); setLoggedIn(false) });
     } else {
       message.error('Delete failed. Password was doesn\'t match')
     }
   }
 
-  handleConfirmChangePassword(e) {
-    this.setState({ confirmPassword : e.target.value });
-  }
-
   render() {
     return this.state.redirect ? <Redirect to='/' /> : (
-      <Form {...layout} id="profile" name="profile" onFinish={(e) => this.onFinish(e)} initialValues={this.initialValues} >
+      <Form {...layout} id="profile" name="profile" onFinish={(e) => this.onFinish(e)} initialValues={this.props.user} >
         <Form.Item name='avatar' label="Avatar" rules={[{ required: true, message: 'Please add an avatar!' }]}>
-          <Upload accept='.png, .jpg, .jpeg' listType="picture-card" maxCount={1} onChange={() => this.onChange()} ><UploadOutlined /> Update</Upload>
+          <Upload accept='.png, .jpg, .jpeg' fileList={this.state.fileList} listType="picture-card" maxCount={1} onChange={({ fileList }) => this.setState({ fileList: fileList, hasChanged: true })} ><UploadOutlined /> Update</Upload>
         </Form.Item>
         <Form.Item name='fullname' label="Fullname" rules={[{ required: true, message: 'Please enter your fullname!' }]}>
           <Input onChange={() => this.onChange()}/>
@@ -86,7 +77,7 @@ export default class Profile extends Component {
         <Form.Item name='password' label="Password" rules={[{ required: true, message: 'Please enter your password!' }]} >
           <Input.Password onChange={() => this.onChange()} />
         </Form.Item>
-        <Form.Item name='role' label="Role" rules={[{ required: true, message: 'Please enter your role!' }]}>
+        <Form.Item name='userType' label="User Type" rules={[{ required: true, message: 'Please enter your user type!' }]}>
           <Select disabled>
             <Option value='buyer'>Buyer</Option>
             <Option value='seller'>Seller</Option>
@@ -99,7 +90,7 @@ export default class Profile extends Component {
           </Button>
         </Form.Item>
         <Modal visible={this.state.showConfirmation} onCancel={() => this.setState({ showConfirmation: false })} onOk={() => this.onConfirmDelete()} title="Please confirm deletion with your password">
-          <Input value={this.state.confirmPassword} onChange={(e) => this.handleConfirmChangePassword(e)} type="password" />
+          <Input.Password value={this.state.confirmPassword} onChange={(e) => this.setState({ confirmPassword : e.target.value })} />
         </Modal>
       </Form>
     )

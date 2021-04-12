@@ -44,7 +44,7 @@ const ProductPage = ({ addToCart, ...props }) => {
             <div className='out-of-stock'>Out of Stock</div>
           }
         </Col>
-        <RatingCard visible={visible} onClose={onClose} />
+        <RatingCard reviews={data.reviews} visible={visible} onClose={onClose} />
       </Row> : 
       <Row id="not-exist"><Title>Product does not exist...</Title></Row>
 }

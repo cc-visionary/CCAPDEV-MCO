@@ -70,12 +70,12 @@ const OrderList = ({ orderList }) => {
           }
         <Divider />
         <Row gutter={16}>
-          <Col span={16}><Text type='secondary'>Date Ordered: {currData.date_ordered.format('MMM DD, YYYY')}</Text></Col>
+          <Col span={16}><Text type='secondary'>Date Ordered: {currData.dateOrdered.format('MMM DD, YYYY')}</Text></Col>
           <Col span={4}><Text>Shipping Fee:</Text></Col>
           <Col span={4}><Text>₱{parseFloat(currData.shippingFee).toFixed(2)}</Text></Col>
         </Row>
         <Row gutter={16}>
-          <Col span={16}><Text type='secondary'>Time Ordered: {currData.date_ordered.format('HH:mm:ss ZZ')}</Text></Col>
+          <Col span={16}><Text type='secondary'>Time Ordered: {currData.dateOrdered.format('HH:mm:ss ZZ')}</Text></Col>
           <Col span={4}><Text>Total:</Text></Col>
           <Col span={4}><Text>₱{parseFloat(currData.total).toFixed(2)}</Text></Col>
         </Row>
