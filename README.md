@@ -9,13 +9,17 @@ with subcategories of Laptops, Monitors, Data Storage, Peripherals, Networking, 
 - Has Buyer and Seller Roles
   - Buyer can:
     - view products which they can buy
+      - searchable by name
       - sortable by popularity and price
       - filterable by category
     - add those products to their cart
     - checkout
+    - view product rating
+    - view order history
   - Seller can:
     - add products to be sold
     - view item stock
+    - view order list
 - Landing Page
 - Login and Logout
 - View, Edit and Delete Profile
