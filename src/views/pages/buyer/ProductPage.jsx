@@ -5,7 +5,7 @@ import RatingCard from '../../components/buyer/RatingCard';
 
 import BoxButton from '../../components/BoxButton';
 
-import ProductNotFoundImage from '../../assets/images/product_not_found.svg';
+import ProductNotFoundImage from '../../../assets/images/product_not_found.svg';
 
 const { Title, Text, Paragraph } = Typography;
 

@@ -5,7 +5,7 @@ import { useParams } from 'react-router-dom'
 import Rater from 'react-rater'
 import { ConsoleView } from 'react-device-detect';
 
-import ProductNotFoundImage from '../../assets/images/product_not_found.svg';
+import ProductNotFoundImage from '../../../assets/images/product_not_found.svg';
 
 const { Text, Title } = Typography;
 const { Option } = Select;

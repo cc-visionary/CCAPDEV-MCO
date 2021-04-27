@@ -1,7 +1,7 @@
 import React from 'react';
 import { Typography, Image } from 'antd';
 
-import PageNotFoundImage from '../assets/images/page_not_found.svg';
+import PageNotFoundImage from '../../assets/images/page_not_found.svg';
 
 const { Title } = Typography;
 
