@@ -25,8 +25,6 @@ app.post('/products', ProductController.addProduct);
 
 app.put('/products', ProductController.updateProduct);
 
-app.delete('/products', ProductController.deleteProducts);
-
 app.delete('/products/:slug', ProductController.deleteProduct);
 
 app.get('/products/:slug', ProductController.getProduct);
@@ -34,6 +32,10 @@ app.get('/products/:slug', ProductController.getProduct);
 app.get('/orders', OrderController.getAllOrders)
 
 app.get('/cart/:userId', CartController.getItemsFromCart);
+
+app.post('/cart', CartController.addItemToCart);
+
+app.delete('/cart', CartController.deleteItemFromCart);
 
 /*
     exports the object `app` (defined above)

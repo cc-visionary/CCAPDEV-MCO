@@ -1,7 +1,8 @@
 // import module `express`, `cors`, `session`, `body-parser`, `path`
 const express = require('express');
-const cors = require('cors');
 const session = require('express-session');
+fileUpload = require('express-fileupload');
+const cors = require('cors');
 const bodyParser = require('body-parser');
 const path = require('path');
 
@@ -17,8 +18,10 @@ const corsOptions = {
 app.use(express.static('dist'));
 
 app.use(cors(corsOptions));
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ limit: "50mb", extended: true, parameterLimit: 50000 }));
+app.use(bodyParser.json({ limit: "50mb" }));
+app.use(express.static(path.join(__dirname, 'public')));
+app.use(fileUpload());
 
 // import module `routes` from `./routes/routes.js`
 const routes = require('./routes/routes.js');

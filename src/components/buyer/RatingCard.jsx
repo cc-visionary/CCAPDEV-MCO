@@ -6,8 +6,10 @@ import moment from 'moment';
 
 const { Text } = Typography
 
-const RatingCard = ({ reviews, visible, onClose }) => {
+const RatingCard = ({ users, reviews, visible, onClose }) => {
   const averageRate = (reviews.reduce((sum, review) => sum + review.rating, 0) / reviews.length).toFixed(1);
+  
+  const userIds = users.map(user => user.userId);
 
   return <Modal  title='Customer Reviews' visible={visible} onCancel={onClose} footer={false}>
     <div id='rating-card'>
@@ -22,7 +24,17 @@ const RatingCard = ({ reviews, visible, onClose }) => {
         })
       }
       <List header={`${reviews.length} reactions`} itemLayout='horizontal' dataSource={reviews}>
-        <div className='reactions'>{reviews.map((item, i) => <li key={i}><Comment author={item.user.username} content={item.reaction} avatar={item.user.avatar ? item.user.avatar : <UserOutlined />} datetime={<Tooltip title={item.dateReviewed}><span>{moment(item.dateReviewed, 'MM-DD-YYYY').fromNow()}</span></Tooltip>} /></li>)} </div> 
+        <div className='reactions'>
+          {users.length > 0 ? reviews.map((item, i) => {
+            const user = users[userIds.indexOf(item.userId)];
+
+            return (
+              <li key={i}>
+                <Comment author={user.username} content={item.reaction} avatar={user.avatar ? user.avatar : <UserOutlined />} datetime={<Tooltip title={item.dateReviewed}><span>{moment(item.dateReviewed, 'MM-DD-YYYY').fromNow()}</span></Tooltip>} />
+              </li>
+            )}
+          ) : null } 
+        </div> 
       </List> 
     </div>
   </Modal>

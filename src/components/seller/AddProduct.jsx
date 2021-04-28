@@ -1,10 +1,11 @@
 import React from 'react';
-import { Drawer, Button, Form, Row, Col, Input, InputNumber, Select, Upload } from 'antd';
-import { UploadOutlined } from '@ant-design/icons';
+import { Drawer, Button, Form, Row, Col, Input, InputNumber, Select } from 'antd';
+
+import { ImageUpload } from '../';
 
 const { Option } = Select;
 
-const AddProduct = ({ form, visible, onClose, onSubmit }) => {
+const AddProduct = ({ form, visible, onClose, onSubmit, imageUrl, setImageUrl }) => {
   return(
     <Drawer 
       title="Add a New Product" 
@@ -106,7 +107,7 @@ const AddProduct = ({ form, visible, onClose, onSubmit }) => {
               name="product_image"
               label="Product Image"
             >
-              <Upload accept='.png, .jpg, .jpeg' axCount={1} listType="picture-card"><UploadOutlined /> Update</Upload>
+              <ImageUpload imageUrl={imageUrl} setImageUrl={setImageUrl} />
             </Form.Item>
           </Col>
           <Col span={18}>

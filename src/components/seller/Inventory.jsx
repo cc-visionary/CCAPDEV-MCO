@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { Table, Popconfirm, Form, Button, Typography, Input, Row, Col } from 'antd';
+import { Table, Popconfirm, Form, Button, Typography, Input, Row, Col, message } from 'antd';
 import { SearchOutlined, PlusOutlined } from '@ant-design/icons';
 import Rater from 'react-rater';
 
 import { AddProduct, EditProduct } from '../';
-import { ProductService } from '../../services';
+import { ProductService, CartService } from '../../services';
 
 const { Text, Title } = Typography;
 
@@ -12,19 +12,25 @@ const Inventory = ({ cart, setCart, ...props }) => {
   const [products, setProducts] = useState([]);
   const [addDrawerVisible, setAddDrawerVisible] = useState(false);
   const [editDrawerVisible, setEditDrawerVisible] = useState(false);
-  const [uniqueKey, setUniqueKey] = useState(Math.max(products.map(product => product.key)));
+  const [uniqueKey, setUniqueKey] = useState(-1);
   const [searchText, setSearchText] = useState('');
-  const [fileList, setFileList] = useState([]);
+  const [imageUrl, setImageUrl] = useState(null);
   const [editForm] = Form.useForm();
   const [addForm] = Form.useForm();
 
   useEffect(() => {
     setProducts(props.products);
+    if(props.products.length > 0) setUniqueKey(props.products[props.products.length - 1].key + 1)
   }, [props.products])
 
   const handleDelete = (key) => {
+    const productKeys = products.map(product => product.key);
+    ProductService.deleteProduct(products[productKeys.indexOf(key)].slug);
+    CartService.deleteCartByItem(products[productKeys.indexOf(key)].key);
+
     setCart(cart.filter((product) => product.key != key))
     setProducts(products.filter((product) => product.key != key))
+    message.success("Successfully deleted " + products[productKeys.indexOf(key)] + " from the database.");
   }
 
   const onSubmitAddProduct = () => {
@@ -40,18 +46,21 @@ const Inventory = ({ cart, setCart, ...props }) => {
   }
 
   const handleAddProduct = (values) => {
-    const newProduct = {
+    let newProduct = {
       ...values, 
-      key: uniqueKey + 1, 
+      key: uniqueKey, 
       slug: values.name.replaceAll(' ', '-').toLowerCase(),
       reviews: [], 
       orders: 0
     }
-    ProductService.addProduct(newProduct).then(() => {
-      setUniqueKey(currKey => currKey + 1);
-      setProducts([...products, newProduct]);
-      closeAddDrawer();
-    })
+    newProduct['product_image'] = imageUrl;
+    
+    ProductService.addProduct(newProduct);
+
+    setUniqueKey(currKey => currKey + 1);
+    setProducts([...products, newProduct]);
+    closeAddDrawer();
+    message.success("Successfully added " + newProduct.name + " to the database.");
   }
 
   const showAddDrawer = () => {
@@ -60,19 +69,20 @@ const Inventory = ({ cart, setCart, ...props }) => {
 
   const closeAddDrawer = () => {
     setAddDrawerVisible(false);
+    setImageUrl(null)
     addForm.resetFields()
   }
 
   const showEditDrawer = (key) => {
     const index = products.map(product => product.key).indexOf(key)
     editForm.setFieldsValue(products[index]);
-    setFileList([{uid: '-1', name: products[index].name, status: 'done', url: products[index].product_image}]);
+    setImageUrl(products[index].product_image)
     setEditDrawerVisible(true);
   }
 
   const closeEditDrawer = () => {
     setEditDrawerVisible(false);
-    setFileList([])
+    setImageUrl(null)
     editForm.resetFields()
   }
 
@@ -89,11 +99,15 @@ const Inventory = ({ cart, setCart, ...props }) => {
   }
 
   const handleEditProduct = (values) => {
-    const newProducts = [...products];
+    const newProduct = [...products];
     const index = products.map(product => product.key).indexOf(values.key)
-    newProducts[index] = {...values, reviews: newProducts[index].reviews, key: newProducts[index].key, orders: newProducts[index].orders};
-    setProducts(newProducts)
+    newProduct[index] = {...values, product_image: imageUrl, reviews: newProduct[index].reviews, key: newProduct[index].key, orders: newProduct[index].orders};
+
+    ProductService.updateProduct(newProduct)
+    
+    setProducts(newProduct);
     closeEditDrawer();
+    message.success("Successfully updated item " + newProduct.name + " in the database.");
   }
 
   const handleSearch = (e) => {
@@ -186,8 +200,8 @@ const Inventory = ({ cart, setCart, ...props }) => {
         columns={columns} 
         dataSource={searchText ? products.filter((data) => data['name'].toLowerCase().includes(searchText.toLowerCase())) : products} 
       />
-      <AddProduct form={addForm} visible={addDrawerVisible} onClose={closeAddDrawer} onSubmit={onSubmitAddProduct} />
-      <EditProduct form={editForm} visible={editDrawerVisible} fileList={fileList} setFileList={setFileList} onClose={closeEditDrawer} onSubmit={onSubmitEditProduct} />
+      <AddProduct form={addForm} visible={addDrawerVisible} onClose={closeAddDrawer} onSubmit={onSubmitAddProduct} imageUrl={imageUrl} setImageUrl={setImageUrl} />
+      <EditProduct form={editForm} visible={editDrawerVisible} onClose={closeEditDrawer} onSubmit={onSubmitEditProduct} imageUrl={imageUrl} setImageUrl={setImageUrl} />
     </div>
   );
 }

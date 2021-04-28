@@ -11,5 +11,6 @@ import Footer from './Footer';
 import Login from './Login';
 import Navigation from './Navigation';
 import ProfileMenu from './ProfileMenu';
+import ImageUpload from './ImageUpload'
 
-export { CartPopover, RatingCard, AddProduct, EditProduct, Inventory, OrderList, BoxButton, Footer, Login, Navigation, ProfileMenu };
+export { CartPopover, RatingCard, AddProduct, EditProduct, Inventory, OrderList, BoxButton, Footer, Login, Navigation, ProfileMenu, ImageUpload };

@@ -3,7 +3,7 @@ import Rater from 'react-rater';
 import { Button, Typography, Image, Space, Row, Col, Divider, InputNumber } from 'antd';
 
 import { RatingCard, BoxButton } from '../../components';
-import { ProductService } from '../../services';
+import { ProductService, UserService } from '../../services';
 
 import ProductNotFoundImage from '../../assets/images/product_not_found.svg';
 
@@ -14,6 +14,7 @@ class ProductPage extends Component {
     super(props)
 
     this.state = {
+      users: [],
       data: null,
       quantity: 1,
       visible: false
@@ -24,11 +25,15 @@ class ProductPage extends Component {
     ProductService.getProduct(this.props.match.params.slug).then(res => {
       this.setState({ data: res.data });
     })
+
+    UserService.getAllUsers().then(res => {
+      this.setState({ users: res.data })
+    });
   }
 
   render = () => {
     const { cart, addToCart } = this.props;
-    const { data, quantity, visible } = this.state;
+    const { data, users, quantity, visible } = this.state;
 
     const averageRating = data ? (data.reviews.reduce((sum, review) => sum + parseFloat(review.rating), 0) / data.reviews.length).toFixed(1) : 0;
 
@@ -68,7 +73,7 @@ class ProductPage extends Component {
               <div className='out-of-stock'>Out of Stock</div>
             }
           </Col>
-          <RatingCard reviews={data.reviews} visible={visible} onClose={() => this.setState({ visible : false })} />
+          <RatingCard users={users} reviews={data.reviews} visible={visible} onClose={() => this.setState({ visible : false })} />
         </Row>
         <div>
           <Title level={3}>Description</Title>

@@ -1,8 +1,9 @@
 import React from 'react';
-import { Drawer, Button, Form, Row, Col, Input, InputNumber, Select, Upload } from 'antd';
-import { UploadOutlined } from '@ant-design/icons';
+import { Drawer, Button, Form, Row, Col, Input, InputNumber, Select } from 'antd';
 
-const EditProduct = ({ form, fileList, setFileList, visible, onClose, onSubmit }) => {
+import { ImageUpload } from '../'
+
+const EditProduct = ({ form, visible, onClose, onSubmit, imageUrl, setImageUrl }) => {
   return(
     <Drawer 
       title="Edit" 
@@ -103,7 +104,7 @@ const EditProduct = ({ form, fileList, setFileList, visible, onClose, onSubmit }
               name="product_image"
               label="Product Image"
             >
-              <Upload accept='.png, .jpg, .jpeg' maxCount={1} fileList={fileList} onChange={({fileList}) => setFileList(fileList)} listType="picture-card"><UploadOutlined /> Update</Upload>
+              <ImageUpload imageUrl={imageUrl} setImageUrl={setImageUrl} />
             </Form.Item>
           </Col>
           <Col span={18}>

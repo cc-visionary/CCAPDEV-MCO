@@ -19,12 +19,8 @@ class ProductService {
     return axios.put(PRODUCT_API_BASE_URL, product);
   }
 
-  deleteProduct(product) {
-    return axios.delete(PRODUCT_API_BASE_URL + `/${product.slug}`);
-  }
-
-  deleteProducts(products) {
-    return axios.delete(PRODUCT_API_BASE_URL, products);
+  deleteProduct(slug) {
+    return axios.delete(PRODUCT_API_BASE_URL + `/${slug}`);
   }
 }
 

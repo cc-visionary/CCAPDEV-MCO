@@ -7,12 +7,12 @@ class CartService {
     return axios.get(CART_API_BASE_URL, { userId });
   }
 
-  deleteCartByItem(itemName) {
-
+  deleteCartByItem(key) {
+    return axios.delete(CART_API_BASE_URL, { key })
   }
 
   deleteCartByUser(userId) {
-
+    return axios.delete(CART_API_BASE_URL, { userId })
   }
 }
 

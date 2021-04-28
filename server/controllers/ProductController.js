@@ -10,25 +10,19 @@ const ProductController = {
   getProduct: (req, res) => {
     const { slug } = req.params;
 
-    const query = { slug };
-
     // finds the product which matches the name from the slug
-    db.findOne(collection, query, (result) => res.status(200).json(result));
+    db.findOne(collection, { slug }, (result) => res.status(200).json(result));
   },
   addProduct: (req, res) => {
-    db.insertOne(collection, req.body);
+    db.insertOne(collection, req.body)
   },
   updateProduct: (req, res) => {
     db.updateOne(collection, { key: req.body.key }, req.body)
   },
   deleteProduct: (req, res) => {
+    const { slug } = req.params;
     
-  },
-  getProducts: (req, res) => {
-
-  },
-  deleteProducts: (req, res) => {
-
+    db.deleteOne(collection, { slug })
   },
 };
 /*
