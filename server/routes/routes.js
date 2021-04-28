@@ -17,11 +17,23 @@ const app = express();
 
 app.get('/users', UserController.getAllUsers);
 
+app.post('/users', UserController.addUser);
+
 app.get('/products', ProductController.getAllProducts);
+
+app.post('/products', ProductController.addProduct);
+
+app.put('/products', ProductController.updateProduct);
+
+app.delete('/products', ProductController.deleteProducts);
+
+app.delete('/products/:slug', ProductController.deleteProduct);
 
 app.get('/products/:slug', ProductController.getProduct);
 
 app.get('/orders', OrderController.getAllOrders)
+
+app.get('/cart/:userId', CartController.getItemsFromCart);
 
 /*
     exports the object `app` (defined above)

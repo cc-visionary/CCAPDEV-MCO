@@ -16,13 +16,13 @@ const RatingCard = ({ reviews, visible, onClose }) => {
         <div><Text type='secondary'>{reviews.length} customer ratings</Text></div>
       </div>
       {
-        [5, 4, 3, 2, 1].map(rate => {
+        [5, 4, 3, 2, 1].map((rate, i) => {
           const percentage = ((reviews.map((review) => review.rating).filter((review) => review == rate).length / reviews.length) * 100).toFixed(0);
-          return <div className='percentage-item'><Text>{rate} star</Text>&nbsp;<Progress className='percentage' percent={percentage} status="active" strokeColor='#FFE234' /></div>
+          return <div className='percentage-item' key={i}><Text>{rate} star</Text>&nbsp;<Progress className='percentage' percent={percentage} status="active" strokeColor='#FFE234' /></div>
         })
       }
       <List header={`${reviews.length} reactions`} itemLayout='horizontal' dataSource={reviews}>
-        <div className='reactions'>{reviews.map((item) => <li><Comment author={item.user.username} content={item.reaction} avatar={item.user.avatar ? item.user.avatar : <UserOutlined />} datetime={<Tooltip title={item.dateReviewed.format('YYYY-MM-DD HH:mm:ss')}><span>{item.dateReviewed.fromNow()}</span></Tooltip>} /></li>)} </div> 
+        <div className='reactions'>{reviews.map((item, i) => <li key={i}><Comment author={item.user.username} content={item.reaction} avatar={item.user.avatar ? item.user.avatar : <UserOutlined />} datetime={<Tooltip title={item.dateReviewed}><span>{moment(item.dateReviewed, 'MM-DD-YYYY').fromNow()}</span></Tooltip>} /></li>)} </div> 
       </List> 
     </div>
   </Modal>

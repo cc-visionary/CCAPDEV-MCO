@@ -5,6 +5,8 @@ import { useParams } from 'react-router-dom'
 import Rater from 'react-rater'
 import { ConsoleView } from 'react-device-detect';
 
+import { ProductService } from '../../../server/services';
+
 import ProductNotFoundImage from '../../assets/images/product_not_found.svg';
 
 const { Text, Title } = Typography;
@@ -14,6 +16,7 @@ class ProductCatalog extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      products: [],
       offset: 0,
       currentPageElements: [],
       elementsPerPage: 12,  //change as per your need
@@ -28,33 +31,24 @@ class ProductCatalog extends Component {
   componentDidMount() {
     const { category } = this.props.params;
 
-    if(category) {
-      const filteredProducts = this.props.products.filter(data => data.category == category);
-      this.setState({
-        allElements: filteredProducts,
-      }, () => {
-        this.setPaginationStates();
-        this.handleSort('featured');
-      });
-    } else {
-      this.setState({
-        allElements: this.props.products,
-      }, () => {
-        this.setPaginationStates();
-        this.handleSort('featured');
-      });
-    }
-    // this.getAllElements();
-  }
-
-  async getAllElements() {
-    const allElements = await Axios.get("https://jsonplaceholder.typicode.com/posts");
-    console.log(allElements);
-    this.setState({
-      allElements: allElements.data
-    }, () => {
-      this.setPaginationStates();
+    ProductService.getAllProducts().then(res => {
+      const products = res.data;
+      
+      this.setState({ products });
+      if(category) {
+        const filteredProducts = products.filter(data => data.category == category);
+        this.setState({ allElements: filteredProducts }, () => {
+          this.setPaginationStates();
+          this.handleSort('featured');
+        });
+      } else {
+        this.setState({ allElements: products }, () => {
+          this.setPaginationStates();
+          this.handleSort('featured');
+        });
+      }
     });
+
   }
 
   setPaginationStates = () => {
@@ -119,13 +113,13 @@ class ProductCatalog extends Component {
     }
 
     if(filterBrand == 'All') {
-      this.setState({  allElements : this.props.products.filter(data => data.name.toLowerCase().includes(search.toLowerCase())) }, () => {
+      this.setState({  allElements : this.state.products.filter(data => data.name.toLowerCase().includes(search.toLowerCase())) }, () => {
         this.setElementsForCurrentPage()
         this.setPaginationStates()
       })
     }
     else {
-      this.setState({  allElements : this.props.products.filter(data => data.name.toLowerCase().includes(search.toLowerCase())).filter(data => data.brand == filterBrand ) }, () => {
+      this.setState({  allElements : this.state.products.filter(data => data.name.toLowerCase().includes(search.toLowerCase())).filter(data => data.brand == filterBrand ) }, () => {
         this.setElementsForCurrentPage()
         this.setPaginationStates()
       })
@@ -138,7 +132,7 @@ class ProductCatalog extends Component {
 
 
     let brands = []
-    this.props.products.map((record) => {
+    this.state.products.map((record) => {
       if(!brands.includes(record.brand)) brands.push(record.brand)
     })
 
@@ -173,7 +167,7 @@ class ProductCatalog extends Component {
               currentPageElements.map(data => {
                 return (
                   <Col className='catalog-item' key={data.key} xl={6} md={12} xs={24}>
-                    <Link to={{pathname: `/product/${data.name.toLowerCase().replaceAll(' ', '-')}`, data: data}}>
+                    <Link to={{pathname: `/product/${data.name.toLowerCase().replaceAll(' ', '-')}`}}>
                       <Card
                         key={data.key}
                         className='catalog-card'

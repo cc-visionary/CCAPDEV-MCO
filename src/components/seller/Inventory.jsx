@@ -1,21 +1,26 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Table, Popconfirm, Form, Button, Typography, Input, Row, Col } from 'antd';
 import { SearchOutlined, PlusOutlined } from '@ant-design/icons';
 import Rater from 'react-rater';
 
-import AddProduct from './AddProduct';
-import EditProduct from './EditProduct';
+import { AddProduct, EditProduct } from '../';
+import { ProductService } from '../../../server/services';
 
 const { Text, Title } = Typography;
 
-const Inventory = ({ cart, setCart, products, setProducts }) => {
+const Inventory = ({ cart, setCart, ...props }) => {
+  const [products, setProducts] = useState([]);
   const [addDrawerVisible, setAddDrawerVisible] = useState(false);
   const [editDrawerVisible, setEditDrawerVisible] = useState(false);
-  const [uniqueKey, setUniqueKey] = useState(products.length);
+  const [uniqueKey, setUniqueKey] = useState(Math.max(products.map(product => product.key)));
   const [searchText, setSearchText] = useState('');
   const [fileList, setFileList] = useState([]);
   const [editForm] = Form.useForm();
   const [addForm] = Form.useForm();
+
+  useEffect(() => {
+    setProducts(props.products);
+  }, [props.products])
 
   const handleDelete = (key) => {
     setCart(cart.filter((product) => product.key != key))
@@ -35,10 +40,18 @@ const Inventory = ({ cart, setCart, products, setProducts }) => {
   }
 
   const handleAddProduct = (values) => {
-    values['key'] = uniqueKey + 1;
-    setUniqueKey(currKey => currKey + 1);
-    setProducts([...products, {...values, key: products.length + 1, reviews: [], orders: 0}]);
-    closeAddDrawer();
+    const newProduct = {
+      ...values, 
+      key: uniqueKey + 1, 
+      slug: values.name.replaceAll(' ', '-').toLowerCase(),
+      reviews: [], 
+      orders: 0
+    }
+    ProductService.addProduct(newProduct).then(() => {
+      setUniqueKey(currKey => currKey + 1);
+      setProducts([...products, newProduct]);
+      closeAddDrawer();
+    })
   }
 
   const showAddDrawer = () => {
@@ -163,7 +176,7 @@ const Inventory = ({ cart, setCart, products, setProducts }) => {
           <Row gutter={16} align='middle' className="table-title">
             <Col span={15}><Title level={3}>Inventory</Title></Col>
             <Col span={6}>
-              <Input value={searchText} placeholder="Search product by name" onChange={(e) => handleSearch(e)} />
+              <Input value={searchText} placeholder="Search product by name" prefix={<SearchOutlined />} onChange={(e) => handleSearch(e)} />
             </Col>
             <Col span={3}>
               <Button onClick={() => showAddDrawer()}><PlusOutlined /> New Product</Button>

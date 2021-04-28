@@ -5,7 +5,7 @@ const collection = 'orders';
 
 const OrderController = {
   getAllOrders: (req, res) => {
-    db.findMany(collection, {}, (result) => res.send(result));
+    db.findMany(collection, {}, (result) => res.status(200).json(result));
   },
   addOrderToList: (req, res) => {
 

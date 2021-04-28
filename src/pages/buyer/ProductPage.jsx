@@ -1,26 +1,38 @@
-import React, { useState } from 'react';
+import React, { Component } from 'react';
 import Rater from 'react-rater';
 import { Button, Typography, Image, Space, Row, Col, Divider, InputNumber } from 'antd';
-import RatingCard from '../../components/buyer/RatingCard';
 
-import BoxButton from '../../components/BoxButton';
+import { RatingCard, BoxButton } from '../../components';
+import { ProductService } from '../../../server/services';
 
 import ProductNotFoundImage from '../../assets/images/product_not_found.svg';
 
 const { Title, Text, Paragraph } = Typography;
 
-const ProductPage = ({ cart, addToCart, ...props }) => {
-  const { data } = props.location;
-  const [ quantity, setQuantity ] = useState(1)
-  const [ visible, setVisible ] = useState(false) 
+class ProductPage extends Component {
+  constructor(props) {
+    super(props)
 
-  const onClose = () => {
-    setVisible(false)
+    this.state = {
+      data: null,
+      quantity: 1,
+      visible: false
+    }
   }
 
-  const averageRating = data ? (data.reviews.reduce((sum, review) => sum + parseFloat(review.rating), 0) / data.reviews.length).toFixed(1) : 0;
+  componentDidMount = () => {
+    ProductService.getProduct(this.props.match.params.slug).then(res => {
+      this.setState({ data: res.data });
+    })
+  }
 
-  return data ? 
+  render = () => {
+    const { cart, addToCart } = this.props;
+    const { data, quantity, visible } = this.state;
+
+    const averageRating = data ? (data.reviews.reduce((sum, review) => sum + parseFloat(review.rating), 0) / data.reviews.length).toFixed(1) : 0;
+
+    return data ? 
       <div>
         <Row align='middle' id="product-page">
           <Col className='left' md={11} xs={24}>
@@ -39,7 +51,7 @@ const ProductPage = ({ cart, addToCart, ...props }) => {
             <Row align='middle' className='reviews-orders'>
               <Col><Text underline>{averageRating}</Text><Rater interactive={false} rating={data.reviews.length == 0 ? 0 : averageRating} /></Col>
               <Col><Divider type='vertical' /></Col>
-              <Col><Button style={{'fontSize': '1em'}} onClick={() => setVisible(true)} type='link'><Text underline>{data.reviews.length == 0 ? 'No' : data.reviews.length}</Text>&nbsp;<Text>reviews</Text></Button></Col>
+              <Col><Button style={{'fontSize': '1em'}} onClick={() => this.setState({ visible : true })} type='link'><Text underline>{data.reviews.length == 0 ? 'No' : data.reviews.length}</Text>&nbsp;<Text>reviews</Text></Button></Col>
               <Col><Divider type='vertical' /></Col>
               <Col><Text>{data.orders} sold</Text></Col>
             </Row>
@@ -56,7 +68,7 @@ const ProductPage = ({ cart, addToCart, ...props }) => {
               <div className='out-of-stock'>Out of Stock</div>
             }
           </Col>
-          <RatingCard reviews={data.reviews} visible={visible} onClose={onClose} />
+          <RatingCard reviews={data.reviews} visible={visible} onClose={() => this.setState({ visible : false })} />
         </Row>
         <div>
           <Title level={3}>Description</Title>
@@ -66,6 +78,7 @@ const ProductPage = ({ cart, addToCart, ...props }) => {
       </div>
        : 
       <div id="not-exist"><div><Image src={ProductNotFoundImage} preview={false} /></div><div><Title>Product does not exist...</Title></div></div>
+  }
 }
 
 export default ProductPage;

@@ -5,7 +5,7 @@ const collection = 'users';
 
 const UserController = {
   getAllUsers: (req, res) => {
-    db.findMany(collection, {}, (result) => res.send(result));
+    db.findMany(collection, {}, (result) => res.status(200).json(result));
   },
   addUser: (req, res) => {
     db.insertOne(collection, req)

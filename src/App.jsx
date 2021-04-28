@@ -4,18 +4,10 @@ import { HashRouter as Router, Switch, Route, BrowsetRouter } from "react-router
 import axios from 'axios';
 import moment from 'moment';
 
-import Navigation from './components/Navigation';
-import Footer from './components/Footer';
-import Profile from './pages/Profile';
-import Register from './pages/Register';
-import LandingPage from './pages/LandingPage';
-import PageNotFound from './pages/PageNotFound';
-import Dashboard from './pages/seller/Dashboard';
-import ProductCatalog from './pages/buyer/ProductCatalog';
-import ProductPage from './pages/buyer/ProductPage';
-import Cart from './pages/buyer/Cart';
-import Checkout from './pages/buyer/Checkout';
-import OrderHistory from './pages/buyer/OrderHistory';
+import { Navigation, Footer } from './components';
+import { Profile, Register, LandingPage, PageNotFound, Dashboard, ProductCatalog, ProductPage, Cart, Checkout, OrderHistory } from './pages';
+
+import { UserService, ProductService, CartService } from '../server/services';
 
 const shippingFee = 99.99;
 
@@ -31,10 +23,8 @@ export default class App extends Component {
 
     this.state = {
       user: [],
-      products: [],
       cart: cartDummy,
       orderHistory: [],
-      orders: []
     }
   }
 
@@ -90,16 +80,16 @@ export default class App extends Component {
   }
 
   render() {
-    const { cart, products, orders, orderHistory, user} = this.state;
+    const { cart, orders, orderHistory, user} = this.state;
     const { setUser, setLoggedIn, setUserType, setProducts, setCart, setOrderHistory, setOrders, addToCart } = this;
 
     return (
       <Router>
-        <Navigation products={products} cart={cart} user={user} setUser={setUser} setLoggedIn={setLoggedIn} setUserType={setUserType} />
+        <Navigation cart={cart} user={user} setUser={setUser} setLoggedIn={setLoggedIn} setUserType={setUserType} />
         <div id="main">
           {user.userType == 'seller' ? 
           <Switch>
-            <Route exact path="/" component={(props) => <Dashboard users={userDummy} cart={cart} setCart={setCart} products={products} setProducts={setProducts} orders={orders} {...props} />} />
+            <Route exact path="/" component={(props) => <Dashboard cart={cart} setCart={setCart} {...props} />} />
             <Route path="/profile" component={(props) => <Profile user={user} setUser={setUser} setLoggedIn={setLoggedIn} {...props} />} />
             <Route component={PageNotFound} />
           </Switch>
@@ -107,12 +97,12 @@ export default class App extends Component {
           <Switch>
             <Route exact path="/" component={LandingPage} className="main" />
             <Route path="/register" component={Register} />
-            <Route path="/products" component={(props) => <ProductCatalog products={products} {...props} />} />
+            <Route path="/products" component={(props) => <ProductCatalog {...props} />} />
             <Route path="/product/:slug" component={(props) => <ProductPage cart={cart} addToCart={addToCart} {...props} />} />
-            <Route path="/category/:category" component={(props) => <ProductCatalog products={products} {...props} />} />
-            <Route path="/cart" component={(props) => <Cart shippingFee={shippingFee} cart={cart} products={products} setCart={setCart} {...props} />} />
-            <Route path="/checkout" component={(props) => <Checkout user={user} orderHistory={orderHistory} products={products} setProducts={setProducts} setOrderHistory={setOrderHistory} shippingFee={shippingFee} cart={cart} setCart={setCart} orders={orders} setOrders={setOrders} {...props} />} />
-            <Route path="/order-history" component={(props) => <OrderHistory user={user} products={products} setProducts={setProducts} orderHistory={orderHistory} {...props} />} />
+            <Route path="/category/:category" component={ProductCatalog} />
+            <Route path="/cart" component={(props) => <Cart shippingFee={shippingFee} cart={cart} setCart={setCart} {...props} />} />
+            <Route path="/checkout" component={(props) => <Checkout user={user} orderHistory={orderHistory} setProducts={setProducts} setOrderHistory={setOrderHistory} shippingFee={shippingFee} cart={cart} setCart={setCart} orders={orders} setOrders={setOrders} {...props} />} />
+            <Route path="/order-history" component={(props) => <OrderHistory user={user} setProducts={setProducts} orderHistory={orderHistory} {...props} />} />
             <Route path="/profile" component={(props) => <Profile user={user} setUser={setUser} setLoggedIn={setLoggedIn} {...props} />} />
             <Route component={PageNotFound} />
           </Switch>
