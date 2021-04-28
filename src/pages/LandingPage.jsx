@@ -11,7 +11,7 @@ import { ImPriceTag } from 'react-icons/im';
 import { Link } from 'react-router-dom';
 
 import BoxButton from '../components/BoxButton'
-import MainImage from '../../assets/images/landing_page_main_image.svg'; 
+import MainImage from '../assets/images/landing_page_main_image.svg'; 
 
 const categories = [
   {'icon': <AiOutlineLaptop />, 'category': 'Laptop'},

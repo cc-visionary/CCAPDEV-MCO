@@ -9,7 +9,7 @@ import Login from './Login';
 import CartPopover from './buyer/CartPopover';
 import ProfileMenu from './ProfileMenu';
 
-import Logo from '../../assets/images/logo_light.svg';
+import Logo from '../assets/images/logo_light.svg';
 
 const { Text, Title } = Typography;
 

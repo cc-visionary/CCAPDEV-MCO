@@ -25,10 +25,10 @@ export default class Checkout extends Component {
   }
 
   onFinish = (values) => {
-    const { user, products, setProducts, shippingFee, cart, orderHistory, setOrderHistory, setCart, orderList, setOrderList } = this.props;
+    const { user, products, setProducts, shippingFee, cart, orderHistory, setOrderHistory, setCart, orders, setOrders } = this.props;
 
     const newOrder = {
-      orderId: 112310 + orderList.length + 1,
+      orderId: 112310 + orders.length + 1,
       key: orderHistory.length + 1,
       contactInfo: values,
       total: cart.reduce((sum, item) => sum + products[products.map(data => data.key).indexOf(item.key)].price * item.quantity, 0) + shippingFee,
@@ -43,7 +43,7 @@ export default class Checkout extends Component {
     setOrderHistory([newOrder, ...orderHistory])
 
     // add to Order List 
-    setOrderList([newOrder, ...orderList])
+    setOrders([newOrder, ...orders])
 
     // update item stocks
     setProducts(products.map(product => {
