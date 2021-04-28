@@ -4,7 +4,7 @@ import { SearchOutlined, PlusOutlined } from '@ant-design/icons';
 import Rater from 'react-rater';
 
 import { AddProduct, EditProduct } from '../';
-import { ProductService } from '../../../server/services';
+import { ProductService } from '../../services';
 
 const { Text, Title } = Typography;
 

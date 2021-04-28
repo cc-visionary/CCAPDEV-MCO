@@ -5,7 +5,7 @@ import moment from 'moment';
 const { Text, Title } = Typography;
 const { Panel } = Collapse;
 
-const OrderList = ({ orders }) => {
+const OrderList = ({ products, orders }) => {
   const [ visible, setVisible ] = useState(false)
   const [ currData, setCurrData ] = useState(orders[0])
 
@@ -16,7 +16,6 @@ const OrderList = ({ orders }) => {
 
   const onClose = () => {
     setVisible(false);
-    setIndex(orders[0]);
   }
 
   const columns = [
@@ -52,28 +51,30 @@ const OrderList = ({ orders }) => {
           <Title level={4}>Order #{currData.orderId}</Title>
           <Divider />
           <Row gutter={16}>
-              <Col span={2}></Col>
-              <Col span={10}>Name</Col>
-              <Col span={4}>Price per Item</Col>
-              <Col span={4}>Quantity</Col>
-              <Col span={4}>Subtotal</Col>
-            </Row>
-            <Divider />
-            {
-              currData.items.map((data, i) => 
-                  <Row key={i} align='middle' gutter={16}>
-                    <Col span={2}><Image width={25} height={25} src={data.product_image} preview={false} /></Col>
-                    <Col span={10}>{data.name}<br /><Text type='secondary'>{data.brand}</Text></Col>
-                    <Col span={4}>₱{parseFloat(data.price).toFixed(2)}</Col>
-                    <Col span={4}>{data.quantity}</Col>
-                    <Col span={4}>₱{parseFloat(data.price * data.quantity).toFixed(2)}</Col>
-                    { currData.items.length - 1 == i ? <></> : <Divider /> }
-                  </Row>
-              )
-            }
+            <Col span={2}></Col>
+            <Col span={10}>Name</Col>
+            <Col span={4}>Price per Item</Col>
+            <Col span={4}>Quantity</Col>
+            <Col span={4}>Subtotal</Col>
+          </Row>
+          <Divider />
+          {
+            currData.items.map((data, i) => {
+              const product = products[products.map(product => product.key).indexOf(data.key)]; 
+              
+              return <Row key={i} align='middle' gutter={16}>
+                <Col span={2}><Image width={25} height={25} src={product.product_image} preview={false} /></Col>
+                <Col span={10}>{product.name}<br /><Text type='secondary'>{product.brand}</Text></Col>
+                <Col span={4}>₱{parseFloat(product.price).toFixed(2)}</Col>
+                <Col span={4}>{data.quantity}</Col>
+                <Col span={4}>₱{parseFloat(product.price * data.quantity).toFixed(2)}</Col>
+                { currData.items.length - 1 == i ? <></> : <Divider /> }
+              </Row>
+            })
+          }
           <Divider />
           <Row gutter={16}>
-            <Col span={16}><Text type='secondary'>User ID: {currData.user.userId}</Text></Col>
+            <Col span={16}><Text type='secondary'>User ID: {currData.userId}</Text></Col>
             <Col span={4}><Text>Shipping Fee:</Text></Col>
             <Col span={4}><Text>₱{parseFloat(currData.shippingFee).toFixed(2)}</Text></Col>
           </Row>

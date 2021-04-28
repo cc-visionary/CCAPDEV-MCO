@@ -3,7 +3,7 @@ import Rater from 'react-rater';
 import { Button, Typography, Image, Space, Row, Col, Divider, InputNumber } from 'antd';
 
 import { RatingCard, BoxButton } from '../../components';
-import { ProductService } from '../../../server/services';
+import { ProductService } from '../../services';
 
 import ProductNotFoundImage from '../../assets/images/product_not_found.svg';
 

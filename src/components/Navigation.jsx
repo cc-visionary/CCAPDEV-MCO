@@ -1,23 +1,27 @@
-import React, {useState, useCallback}  from 'react';
+import React, {useState, useCallback, useEffect}  from 'react';
 import { Button, Typography, Form, Dropdown, Popover, Badge, Image } from 'antd';
 import { ShoppingCartOutlined, UserOutlined } from '@ant-design/icons';
 import { Link, Redirect } from 'react-router-dom';
-import { AiOutlineMenu } from 'react-icons/ai';
 
-import BoxButton from './BoxButton';
-import Login from './Login';
-import CartPopover from './buyer/CartPopover';
-import ProfileMenu from './ProfileMenu';
+import { BoxButton, Login, CartPopover, ProfileMenu } from './';
+import { ProductService } from '../services';
 
 import Logo from '../assets/images/logo_light.svg';
 
 const { Text, Title } = Typography;
 
-const Navigation = ({ products, cart, user, setLoggedIn, setUserType, setUser }) => {
+const Navigation = ({ cart, user, setLoggedIn, setUserType, setUser }) => {
+  const [products, setProducts] = useState([]);
   const [loginVisible, setLoginVisible] = useState(false);
   const [redirect, setRedirect] = useState(false);
   const [form] = Form.useForm();
 
+  useEffect(() => {
+    ProductService.getAllProducts().then(res => {
+      setProducts(res.data);
+    })
+  }, [])
+   
   const onOk = useCallback((values) => {
     form
       .validateFields()

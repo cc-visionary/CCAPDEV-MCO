@@ -7,7 +7,7 @@ import moment from 'moment';
 import { Navigation, Footer } from './components';
 import { Profile, Register, LandingPage, PageNotFound, Dashboard, ProductCatalog, ProductPage, Cart, Checkout, OrderHistory } from './pages';
 
-import { UserService, ProductService, CartService } from '../server/services';
+import { UserService, ProductService, CartService } from './services';
 
 const shippingFee = 99.99;
 
@@ -22,7 +22,7 @@ export default class App extends Component {
     super(props)
 
     this.state = {
-      user: [],
+      user: {},
       cart: cartDummy,
       orderHistory: [],
     }
@@ -77,6 +77,9 @@ export default class App extends Component {
   }
 
   componentDidMount = () => {
+    UserService.getAllUsers().then(res => {
+      this.setState({ user : res.data[0] })
+    })
   }
 
   render() {

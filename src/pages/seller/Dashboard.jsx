@@ -3,7 +3,7 @@ import { Statistic, Row, Col } from 'antd';
 import { DollarOutlined, UserOutlined, TagOutlined, ShoppingOutlined } from '@ant-design/icons';
 
 import { Inventory, OrderList } from '../../components';
-import { UserService, ProductService, OrderService } from '../../../server/services';
+import { UserService, ProductService, OrderService } from '../../services';
 
 class Dashboard extends Component {
   constructor(props) {
@@ -51,7 +51,7 @@ class Dashboard extends Component {
           </Col>
         </Row>
         <Inventory cart={cart} setCart={setCart} products={products} />
-        <OrderList orders={orders} />
+        <OrderList orders={orders} products={products} />
       </div>
     );
   }
