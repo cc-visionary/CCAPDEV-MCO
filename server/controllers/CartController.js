@@ -10,6 +10,9 @@ const CartController = {
   addItemToCart: (req, res) => {
     db.insertOne(collection, req.body);
   },
+  updateCartItem: (req, res) => {
+    db.updateOne(collection, { key: req.body.key , userId: req.body.userId }, req)
+  },
   deleteItemFromCart: (req, res) => {
     const query = req.body.key ? { key : req.body.key } : { userId : req.body.userId }
 

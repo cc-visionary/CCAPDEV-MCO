@@ -33,6 +33,8 @@ app.get('/orders', OrderController.getAllOrders)
 
 app.get('/cart/:userId', CartController.getItemsFromCart);
 
+axios.put('/cart', CartController.updateCartItem);
+
 app.post('/cart', CartController.addItemToCart);
 
 app.delete('/cart', CartController.deleteItemFromCart);

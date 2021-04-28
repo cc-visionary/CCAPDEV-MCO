@@ -7,12 +7,16 @@ class CartService {
     return axios.get(CART_API_BASE_URL, { userId });
   }
 
+  updateCart(cartItem) {
+    return axios.put(CART_API_BASE_URL, cartItem);
+  }
+
   deleteCartByItem(key) {
-    return axios.delete(CART_API_BASE_URL, { key })
+    return axios.delete(CART_API_BASE_URL, { key });
   }
 
   deleteCartByUser(userId) {
-    return axios.delete(CART_API_BASE_URL, { userId })
+    return axios.delete(CART_API_BASE_URL, { userId });
   }
 }
 
