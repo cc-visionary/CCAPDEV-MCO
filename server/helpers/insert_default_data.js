@@ -31,7 +31,7 @@ const products = [
     price: 32,
     stock: 2499,
     description: 'Good Mouse',
-    reviews: [{user: users[0], reaction: 'very very good', rating: 5, dateReviewed: '01-20-2021'}, {user: users[1], reaction: 'fairlygood', rating: 3, dateReviewed: '01-20-2021'}, {user: users[2], reaction: 'fair', rating: 3, dateReviewed: '01-20-2021'}],
+    reviews: [{userId: users[0].userId, reaction: 'very very good', rating: 5, dateReviewed: '01-20-2021'}, {userId: users[1].userId, reaction: 'fairlygood', rating: 3, dateReviewed: '01-20-2021'}, {userId: users[2].userId, reaction: 'fair', rating: 3, dateReviewed: '01-20-2021'}],
     orders: 0
   },
   {
@@ -44,7 +44,7 @@ const products = [
     price: 999,
     stock: 300,
     description: 'Bad Mouse',
-    reviews: [{user: users[2], reaction: 'cool', rating: 4, dateReviewed: '01-25-2021'}, {user: users[4], reaction: 'awesome', rating: 5, dateReviewed: '12-20-2020'}],
+    reviews: [{userId: users[2].userId, reaction: 'cool', rating: 4, dateReviewed: '01-25-2021'}, {userId: users[4].userId, reaction: 'awesome', rating: 5, dateReviewed: '12-20-2020'}],
     orders: 1
   },
   {
@@ -57,7 +57,7 @@ const products = [
     price: 20000,
     stock: 150,
     description: 'Cool Scan',
-    reviews: [{user: users[0], reaction: 'awesome cool', rating: 4, dateReviewed: '01-14-2021'}, {user: users[2], reaction: 'cool', rating: 4, dateReviewed: '02-15-2021'}, {user: users[5], reaction: 'nice', rating: 3, dateReviewed: '01-20-2021'}],
+    reviews: [{userId: users[0].userId, reaction: 'awesome cool', rating: 4, dateReviewed: '01-14-2021'}, {userId: users[2].userId, reaction: 'cool', rating: 4, dateReviewed: '02-15-2021'}, {userId: users[5].userId, reaction: 'nice', rating: 3, dateReviewed: '01-20-2021'}],
     orders: 0
   },
   {
@@ -70,7 +70,7 @@ const products = [
     price: 25000,
     stock: 200,
     description: 'Cool Print',
-    reviews: [{user: users[1], reaction: 'not satisfied', rating: 2, dateReviewed: '01-22-2021'}, {user: users[2], reaction: 'not satisfied', rating: 2, dateReviewed: '01-22-2021'}, {user: users[4], reaction: 'fair', rating: 3, dateReviewed: '03-04-2021'}, {user: users[5], reaction: 'cool', rating: 4, dateReviewed: '01-20-2021'}],
+    reviews: [{userId: users[1].userId, reaction: 'not satisfied', rating: 2, dateReviewed: '01-22-2021'}, {userId: users[2].userId, reaction: 'not satisfied', rating: 2, dateReviewed: '01-22-2021'}, {userId: users[4].userId, reaction: 'fair', rating: 3, dateReviewed: '03-04-2021'}, {userId: users[5].userId, reaction: 'cool', rating: 4, dateReviewed: '01-20-2021'}],
     orders: 4
   },
   {
@@ -84,45 +84,47 @@ const products = [
     stock: 20,
     description: 'Cool laptop',
     rating: 0,
-    reviews: [{user: users[4], reaction: 'awesome', rating: 4, dateReviewed: '01-24-2021'}],
+    reviews: [{userId: users[4].userId, reaction: 'awesome', rating: 4, dateReviewed: '01-24-2021'}],
     orders: 4
   },
 ]
+
+const productKeys = products.map(product => product.key);
 
 const orderlist = [
   {
     key: 1,
     orderId: '112311',
-    user: users[0],
-    total: [{...products[3], quantity: 1}, {...products[4], quantity: 3}].reduce((sum, product) => sum + product.price * product.quantity, 0) + shippingFee,
-    items: [{...products[3], quantity: 1}, {...products[4], quantity: 3}],
+    userId: users[0].userId,
+    total: [{key: products[3].key, quantity: 1}, {key: products[4].key, quantity: 3}].reduce((sum, product) => sum + products[productKeys.indexOf(product.key)].price * product.quantity, 0) + shippingFee,
+    items: [{key: products[3].key, quantity: 1}, {key: products[4].key, quantity: 3}],
     shippingFee: shippingFee,
     dateOrdered: '03-26-2021',
   },
   {
     key: 2,
     orderId: '112312',
-    user: users[1],
-    total: [{...products[3], quantity: 1}, {...products[1], quantity: 1}].reduce((sum, product) => sum + product.price * product.quantity, 0) + shippingFee,
-    items: [{...products[3], quantity: 1}, {...products[1], quantity: 1}],
+    userId: users[1].userId,
+    total: [{key: products[3].key, quantity: 1}, {key: products[1].key, quantity: 1}].reduce((sum, product) => sum + products[productKeys.indexOf(product.key)].price * product.quantity, 0) + shippingFee,
+    items: [{key: products[3].key, quantity: 1}, {key: products[1].key, quantity: 1}],
     shippingFee: shippingFee,
     dateOrdered: '03-27-2021',
   },
   {
     key: 3,
     orderId: '112313',
-    user: users[2],
-    total: [{...products[4], quantity: 1}].reduce((sum, product) => sum + product.price * product.quantity, 0) + shippingFee,
-    items: [{...products[4], quantity: 1}],
+    userId: users[2].userId,
+    total: [{key: products[4].key, quantity: 1}].reduce((sum, product) => sum + products[productKeys.indexOf(product.key)].price * product.quantity, 0) + shippingFee,
+    items: [{key: products[4].key, quantity: 1}],
     shippingFee: shippingFee,
     dateOrdered: '03-27-2021',
   },
   {
     key: 4,
     orderId: '112314',
-    user: users[3],
-    total: [{...products[3], quantity: 2}].reduce((sum, product) => sum + product.price * product.quantity, 0) + shippingFee,
-    items: [{...products[3], quantity: 2}],
+    userId: users[3].userId,
+    total: [{key: products[3].key, quantity: 2}].reduce((sum, product) => sum + products[productKeys.indexOf(product.key)].price * product.quantity, 0) + shippingFee,
+    items: [{key: products[3].key, quantity: 2}],
     shippingFee: shippingFee,
     dateOrdered: '03-27-2021',
   },
