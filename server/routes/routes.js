@@ -19,7 +19,13 @@ app.get('/users', UserController.getAllUsers);
 
 app.post('/users', UserController.addUser);
 
+app.delete('/users/:userId', UserController.deleteUser);
+
+app.get('/users/login', UserController.getLogin);
+
 app.post('/users/login', UserController.login);
+
+app.post('/users/logout', UserController.logout);
 
 app.put('/users', UserController.updateUser);
 

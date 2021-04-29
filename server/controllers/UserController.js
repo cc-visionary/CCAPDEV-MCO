@@ -4,10 +4,6 @@ const db = require('../models/database.js');
 // import UserSchema from `../models/UserModel.js`
 const User = require('../models/UserModel');
 
-const bcrypt = require('bcrypt');
-const saltRounds = 10;
-
-
 const defaultCallback = (res, result) => res.status(200).json(result)
 
 const UserController = {
@@ -15,51 +11,101 @@ const UserController = {
     db.findMany(User, {}, (result) => defaultCallback(res, result));
   },
   addUser: (req, res) => {
-    bcrypt(req.body['password'], saltRounds, (err, hash) => {
-      const user = {
-        userId: req.body.userId,
-        avatar: req.body.avatar,
-        fullname: req.body.fullname,
-        username: req.body.username,
-        birthday: req.body.birthday,
-        email: req.body.email,
-        password: hash,
-        userType: req.body.userType,
-        loggedIn: req.body.loggedIn,
-      };
+    const user = {
+      userId: req.body.userId,
+      avatar: req.body.avatar,
+      fullname: req.body.fullname,
+      username: req.body.username,
+      birthday: req.body.birthday,
+      email: req.body.email,
+      password: req.body.password,
+      userType: req.body.userType,
+    };
 
-      db.insertOne(User, user, (result) => defaultCallback(res, result));
+    db.insertOne(User, user, (result) => {
+      if(result) {
+        res.status(200).json({ success: true })
+      } else {
+        res.json({ success: false, errorMessage: 'Failed to add user...' })
+      }
     });
   },
   updateUser: (req, res) => {
-    bcrypt(req.body['password'], saltRounds, (err, hash) => {
-      const user = {
-        userId: req.body.userId,
-        avatar: req.body.avatar,
-        fullname: req.body.fullname,
-        username: req.body.username,
-        birthday: req.body.birthday,
-        email: req.body.email,
-        password: hash,
-        userType: req.body.userType,
-        loggedIn: req.body.loggedIn,
-      };
+    const user = {
+      userId: req.body.userId,
+      avatar: req.body.avatar,
+      fullname: req.body.fullname,
+      username: req.body.username,
+      birthday: req.body.birthday,
+      email: req.body.email,
+      password: req.body.password,
+      userType: req.body.userType,
+    };
 
-      db.updateOne(User, { userId : req.body.userId }, user, (result) => defaultCallback(res, result));
+    db.updateOne(User, { userId : req.body.userId }, user, (result) => {
+      if(result) {
+        res.status(200).json({ success: true })
+      } else {
+        res.json({ success: false, errorMessage: 'Failed to update profile...' })
+      }
     });
   },
+  deleteUser: (req, res) => {
+    db.deleteOne(User, { userId: parseInt(req.params.userId) }, (result) => {
+      if(result) {
+        res.status(200).json({ success: true })
+      } else {
+        res.json({ success: false, errorMessage: 'Failed to delete profile...' })
+      }
+    });
+  },
+  getLogin: (req, res) => {
+    if(req.session.userId) {
+      const user = {
+        userId: req.session.userId, 
+        avatar: req.session.avatar,
+        username: req.session.username,
+        fullname: req.session.fullname,
+        email: req.session.email,
+        birthday: req.session.birthday,
+        userType: req.session.userType
+      };
+      res.status(200).json({ success: true, user });
+    } else {
+      res.json({ success: false });
+    }
+  },
   login: (req, res) => {
-    const { username, password, rememberMe } = req.body; 
-
+    const { username, password, rememberMe } = req.body;
     db.findOne(User, { username }, (result) => {
       if(result) {
+        if(password === result.password) {
+          req.session.userId = result.userId;
+          req.session.avatar = result.avatar;
+          req.session.username = result.username;
+          req.session.fullname = result.fullname;
+          req.session.email = result.email;
+          req.session.birthday = result.birthday;
+          req.session.userType = result.userType;
 
+          res.status(200).json({success: true, user : result})
+        } else {
+          res.json({success: false, errorMessage: 'Incorrect password...'})
+        }
       } else {
-        
+        res.json({success: false, errorMessage: 'Username doesn\'t exist...'})
       }
-      
-      console.log(result);
     })
+  },
+  logout: (req, res) => {
+    req.session.destroy((err) => {
+      if(err) {
+        res.json({ success: false });
+        throw err;
+      }
+
+      res.json({ success: true });
+  });
   }
 };
 /*

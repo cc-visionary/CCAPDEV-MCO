@@ -96,12 +96,12 @@ const OrderHistory = ({ user, products, setProducts, orderHistory }) => {
             <Row gutter={16}>
               <Col span={15}></Col>
               <Col span={3}><Text>Shipping Fee:</Text></Col>
-              <Col span={3}><Text>₱{parseFloat(item.shippingFee).toFixed(2)}</Text></Col>
+              <Col span={3}><Text>₱{parseFloat(item.shippingFee.$numberDecimal).toFixed(2)}</Text></Col>
             </Row>
             <Row gutter={16}>
               <Col span={15}><Text type='secondary'>Date Ordered: {item.dateOrdered}</Text></Col>
               <Col span={3}><Text>Total:</Text></Col>
-              <Col span={3}><Text>₱{parseFloat(item.total).toFixed(2)}</Text></Col>
+              <Col span={3}><Text>₱{parseFloat(item.total.$numberDecimal).toFixed(2)}</Text></Col>
             </Row>
           </Panel>
           )

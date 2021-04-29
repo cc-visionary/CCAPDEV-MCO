@@ -14,12 +14,12 @@ db.connect();
 const shippingFee = 99.99;
 
 const users = [
-  {userId: 1032, avatar: 'https://cdn.iconscout.com/icon/free/png-256/avatar-380-456332.png', fullname: 'John Doe', username: 'johndoe', birthday: '03-20-1999', email: 'john-ish-doe-ish@gmail.com', password: 'coolguy123', userType: 'buyer'},
+  {userId: 1032, avatar: 'https://cdn.iconscout.com/icon/free/png-256/avatar-380-456332.png', fullname: 'John Doe', username: 'buyer', birthday: '03-20-1999', email: 'john-ish-doe-ish@gmail.com', password: 'buyerpass', userType: 'buyer'},
   {userId: 1033, avatar: 'https://cdn.iconscout.com/icon/free/png-256/avatar-380-456332.png', fullname: 'Kate Meeks', birthday: '05-22-2001', email: 'kate.meek443@gmail.com', username: 'sweetgirl123', password: 'lksad', userType: 'buyer'},
   {userId: 1034, avatar: 'https://cdn.iconscout.com/icon/free/png-256/avatar-380-456332.png', fullname: 'Joseph Bourne', birthday: '02-12-1980', email: 'joseph.bourne.a.lover143@gmail.com', username: 'xXbatmanXx143', password: 'qweqasd', userType: 'buyer'},
   {userId: 1035, avatar: 'https://cdn.iconscout.com/icon/free/png-256/avatar-380-456332.png', fullname: 'Mark Edwards', birthday: '12-04-1995', email: 'cool.mark.edwards@gmail.com', username: 'coolkidXD', password: 'axzcas', userType: 'buyer'},
   {userId: 1036, avatar: 'https://cdn.iconscout.com/icon/free/png-256/avatar-380-456332.png', fullname: 'Hazel Nut', birthday: '08-02-2002', email: 'hazel.nut.coffee@gmail.com', username:'coffeelover42', password: 'asda1231', userType: 'buyer'},
-  {userId: 1037, avatar: 'https://cdn.iconscout.com/icon/free/png-256/avatar-380-456332.png', fullname: 'James Jones Junior', birthday: '11-15-1992', email: 'james.jones.junior@gmail.com', username: 'ufclover', password: 'clas13a', userType: 'buyer'},
+  {userId: 1037, avatar: 'https://cdn.iconscout.com/icon/free/png-256/avatar-380-456332.png', fullname: 'James Jones Junior', birthday: '11-15-1992', email: 'james.jones.junior@gmail.com', username: 'seller', password: 'sellerpass', userType: 'seller'},
 ]
 
 const products = [

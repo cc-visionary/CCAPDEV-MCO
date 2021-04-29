@@ -46,8 +46,8 @@ const LandingPage = () => {
         <Title>Category</Title>
         <div className="category-list">
           {
-            categories.map((x) => {
-              return <Link to={`/category/${x['category']}`} className="item">
+            categories.map((x, i) => {
+              return <Link key={i} to={`/category/${x['category']}`} className="item">
                 <div className="item-icon">{x['icon']}</div>
                 <div className="item-name">{x['category']}</div>
               </Link>

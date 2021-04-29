@@ -5,7 +5,7 @@ const mongoose = require('mongoose');
 const url = 'mongodb://localhost:27017/tech-titan';
 
 // name of the database
-const dbName = 'database';
+const dbName = 'tech-titan';
 
 // additional connection options
 const options = {
@@ -18,9 +18,9 @@ const database = {
     connects to database
   */
   connect: () => {
-    mongoose.connect(url, options, (error) => {
-      if(error) throw error;
-      console.log('Connected to: ' + url);
+    mongoose.connect(url, options, (err) => {
+      if(err) throw err;
+      console.log('Connected to ' + url)
     });
   },
   dropCollection: (collection, callback) => {
@@ -33,6 +33,7 @@ const database = {
   /* inserts a single `doc` to the database based on the model `model` */
   insertOne: (model, doc, callback) => {
     model.create(doc, (error, result) => {
+      console.log(error)
       if(error) return false;
       console.log('Added 1 document to ' + model.collection.name + ' collection ');
       return callback(result);
@@ -50,7 +51,7 @@ const database = {
     searches for a single document in the model `model` based on the contents of object `query` 
     callback function is called when the database has finished the execution of findOne() function
   */
-  findOne: (model, query, callback) => {
+  findOne: (model, query, callback, projection=null) => {
     model.findOne(query, projection, (error, result) => {
       if(error) return false;
       console.log('Requested 1 data from ' + model.collection.name + ' collection ');

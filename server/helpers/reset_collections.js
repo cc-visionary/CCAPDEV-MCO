@@ -15,3 +15,4 @@ db.dropCollection('users', () => console.log(''));
 db.dropCollection('products', () => console.log(''));
 db.dropCollection('orders', () => console.log(''));
 db.dropCollection('carts', () => console.log(''));
+db.dropCollection('sessions', () => console.log(''));

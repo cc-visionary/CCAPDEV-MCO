@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const ORDER_API_BASE_URL = "http://localhost:3000/api/orders";
+const ORDER_API_BASE_URL = "http://localhost:3000/orders";
 
 class OrderService {
   getAllOrders() {

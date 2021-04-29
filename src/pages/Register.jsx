@@ -16,16 +16,29 @@ const layout = {
 
 const { Option } = Select;
 
-const Register = () => {
+const Register = ({ uniqueUserId, logUserIn }) => {
   const [ password, setPassword ] = useState('')
   const [ redirect, setRedirect ] = useState(false)
   const [ imageUrl, setImageUrl ] = useState(null);
 
   const onFinish = (values) => {
+    if(imageUrl === null) {
+      message.error('Please add an avatar...');
+      return;
+    }
+
+    values['userId'] = uniqueUserId;
     values['avatar'] = imageUrl;
-    UserService.createUser(values).then(() => {
-      message.success('Account was registered successfully!');
-      setRedirect(true)
+    UserService.createUser(values).then((res) => {
+      const { success, errorMessage } = res.data;
+      console.log(success)
+      if(success) {
+        setRedirect(true)
+        logUserIn(values)
+        message.success('Account was registered successfully!');
+      } else {
+        message.error(errorMessage);
+      }
     })
   }
 
@@ -42,7 +55,7 @@ const Register = () => {
   : 
   (
     <Form {...layout} id="register" name="register" onFinish={(e) => onFinish(e)} >
-        <Form.Item name='avatar' label="Avatar" rules={[{ required: true, message: 'Please add an avatar' }]}>
+        <Form.Item name='avatar' label="Avatar" >
           <ImageUpload imageUrl={imageUrl} setImageUrl={setImageUrl} />
         </Form.Item>
         <Form.Item name='fullname' label="Fullname" rules={[{ required: true, message: 'Please enter your fullname' }]}>

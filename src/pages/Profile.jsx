@@ -33,7 +33,7 @@ export default class Profile extends Component {
   }
 
   setImageUrl = (imageUrl) => {
-    this.setState({ imageUrl });
+    this.setState({ imageUrl, hasChanged: true });
   }
 
   onChange = () => {
@@ -43,12 +43,22 @@ export default class Profile extends Component {
   onFinish = (values) => {
     const { user, setUser } = this.props
 
+    if(imageUrl === null) {
+      message.error('Please add an avatar...');
+      return;
+    }
+
     values['avatar'] = imageUrl;
-    UserService.updateUser(values).then(() => {
-      this.setState({ imageUrl: null, hasChanged : false, redirect : true }, () => { 
-        setUser({ ...values, loggedIn: user.loggedIn, avatar: user.avatar }); 
-        message.success('Changes were made successfully');
-      })
+    UserService.updateUser(values).then((res) => {
+      const { success, errorMessage } = res.data;
+      if(success) {
+        this.setState({ imageUrl: null, hasChanged : false, redirect : true }, () => { 
+          setUser(values); 
+          message.success('Changes were made successfully');
+        })
+      } else {
+        message.error(errorMessage)
+      }
     })
   }
 
@@ -57,10 +67,18 @@ export default class Profile extends Component {
   }
 
   onConfirmDelete = () => {
-    const { user, setLoggedIn } = this.props;
+    const { user, logUserOut } = this.props;
 
     if(this.state.confirmPassword == user.password) {
-      this.setState({ showConfirmation : false, confirmPassword : '', redirect : true }, () => { message.success('Account deleted successfully'); setLoggedIn(false) });
+      UserService.deleteUser(user.userId).then(res => {
+        const { success, errorMessage } = res.data;
+        if(success) {
+          this.setState({ showConfirmation : false, confirmPassword : '', redirect : true }, () => message.success('Account deleted successfully'));
+          logUserOut()
+        } else {
+          message.error(errorMessage)
+        }
+      }) 
     } else {
       message.error('Delete failed. Password was doesn\'t match')
     }
@@ -73,11 +91,11 @@ export default class Profile extends Component {
   render() {
     const { user } = this.props;
 
-    user['birthday'] = moment(user['birthday'], 'MM-DD-YYYY');
+    user['birthday'] = moment(user['birthday']);
 
     return this.state.redirect ? <Redirect to='/' /> : (
       <Form {...layout} id="profile" name="profile" onFinish={(e) => this.onFinish(e)} initialValues={user} >
-        <Form.Item name='avatar' label="Avatar" rules={[{ required: true, message: 'Please add an avatar!' }]}>
+        <Form.Item name='avatar' label="Avatar">
           <ImageUpload imageUrl={this.state.imageUrl} setImageUrl={this.setImageUrl} />
         </Form.Item>
         <Form.Item name='fullname' label="Fullname" rules={[{ required: true, message: 'Please enter your fullname!' }]}>
@@ -102,7 +120,7 @@ export default class Profile extends Component {
           </Select>
         </Form.Item>
         <Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 8 }}>
-          <Button type="danger" style={{'marginRight' : '10px'}} onClick={() => this.onDelete()}>Delete</Button>
+          <Button type="danger" style={{'marginRight' : '10px'}} onClick={() => this.onDelete()} disabled={user.userType === 'seller'}>Delete</Button>
           <Button type="primary" htmlType="submit" disabled={!this.state.hasChanged}>
             Submit
           </Button>
