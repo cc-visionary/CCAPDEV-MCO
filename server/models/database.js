@@ -34,7 +34,7 @@ const database = {
   insertOne: (model, doc, callback) => {
     model.create(doc, (error, result) => {
       if(error) return false;
-      console.log('Added ' + result.length + ' documents to ' + model.collection.name + ' collection ');
+      console.log('Added 1 document to ' + model.collection.name + ' collection ');
       return callback(result);
     });
   },
@@ -53,7 +53,7 @@ const database = {
   findOne: (model, query, callback) => {
     model.findOne(query, projection, (error, result) => {
       if(error) return false;
-      console.log('Requested ' + result.length + ' data from ' + model.collection.name + ' collection ');
+      console.log('Requested 1 data from ' + model.collection.name + ' collection ');
       return callback(result);
   });
   },
@@ -61,8 +61,8 @@ const database = {
     searches for multiple documents in the model `model` based on the contents of object `query`
     callback function is called when the database has finished the execution of findMany() function
   */
-  findMany: (model, query, callback, projection=null) => {
-    model.find(query, projection, (error, result) => {
+  findMany: (model, query, callback, sort=null, projection=null) => {
+    model.find(query, projection, sort, (error, result) => {
       if(error) return false;
       console.log('Requested ' + result.length + ' data from ' + model.collection.name + ' collection ');
       return callback(result);
@@ -72,7 +72,7 @@ const database = {
   deleteOne: (model, conditions, callback) => {
     model.deleteOne(conditions, (error, result) => {
       if(error) return false;
-      console.log('Deleted ' + result.deletedCount + ' documents from ' + model.collection.name + ' collection ');
+      console.log('Deleted 1 document from ' + model.collection.name + ' collection ');
       return callback(result);
   });
   },
@@ -91,7 +91,7 @@ const database = {
   updateOne: (model, filter, update, callback) => {
     model.updateOne(filter, update, (error, result) => {
       if(error) return false;
-      console.log('Updated ' + result.nModified + ' documents from ' + model.collection.name + ' collection ');
+      console.log('Updated 1 document from ' + model.collection.name + ' collection ');
       return callback(result);
     });
   },

@@ -93,7 +93,7 @@ const products = [
 
 const orderlist = [
   {
-    orderId: 112311,
+    orderId: 100,
     userId: users[0].userId,
     total: [{...products[3], quantity: 1}, {...products[4], quantity: 3}].reduce((sum, product) => sum + product.price * product.quantity, 0) + shippingFee,
     items: [{...products[3], quantity: 1}, {...products[4], quantity: 3}],
@@ -101,7 +101,7 @@ const orderlist = [
     dateOrdered: '03-26-2021',
   },
   {
-    orderId: 112312,
+    orderId: 101,
     userId: users[1].userId,
     total: [{...products[3], quantity: 1}, {...products[1], quantity: 1}].reduce((sum, product) => sum + product.price * product.quantity, 0) + shippingFee,
     items: [{...products[3], quantity: 1}, {...products[1], quantity: 1}],
@@ -109,7 +109,7 @@ const orderlist = [
     dateOrdered: '03-27-2021',
   },
   {
-    orderId: 112313,
+    orderId: 102,
     userId: users[2].userId,
     total: [{...products[4], quantity: 1}].reduce((sum, product) => sum + product.price * product.quantity, 0) + shippingFee,
     items: [{...products[4], quantity: 1}],
@@ -117,7 +117,7 @@ const orderlist = [
     dateOrdered: '03-27-2021',
   },
   {
-    orderId: 112314,
+    orderId: 103,
     userId: users[3].userId,
     total: [{...products[3], quantity: 2}].reduce((sum, product) => sum + product.price * product.quantity, 0) + shippingFee,
     items: [{...products[3], quantity: 2}],

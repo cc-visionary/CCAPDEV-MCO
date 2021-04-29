@@ -18,7 +18,7 @@ const OrderSchema = new Schema({
     required: true
   },
   items: {
-    type: [Schema.Types.Mixed],
+    type: [],
     required: true
   },
   shippingFee: {

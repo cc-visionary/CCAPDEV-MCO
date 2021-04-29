@@ -63,8 +63,6 @@ const OrderHistory = ({ user, products, setProducts, orderHistory }) => {
     message.success('Review has been successfully submitted.')
   }
 
-  console.log(orderHistory)
-
   return (
     <div id='order-history'>
       <Title level={3}>&nbsp;Order History</Title>
@@ -86,9 +84,9 @@ const OrderHistory = ({ user, products, setProducts, orderHistory }) => {
                     <Row align='middle' gutter={16}>
                       <Col span={2}><Image width={25} height={25} src={data.product_image} preview={false} /></Col>
                       <Col span={10}>{data.name}<br /><Text type='secondary'>{data.brand}</Text></Col>
-                      <Col span={3}>₱{parseFloat(data.price.$numberDecimal).toFixed(2)}</Col>
+                      <Col span={3}>₱{parseFloat(data.price).toFixed(2)}</Col>
                       <Col span={3}>{data.quantity}</Col>
-                      <Col span={3}>₱{parseFloat(data.price.$numberDecimal * data.quantity).toFixed(2)}</Col>
+                      <Col span={3}>₱{parseFloat(data.price * data.quantity).toFixed(2)}</Col>
                       <Col span={3}><Button type='link'><Link to={{pathname: `/product/${data.slug}`}}>More Info</Link></Button><br /><Button type='link' onClick={() => onOpenReview(data.productId)}>Give Feedback</Button></Col>
                       { item.items.length - 1 == i ? <></> : <Divider /> }
                     </Row>
@@ -98,12 +96,12 @@ const OrderHistory = ({ user, products, setProducts, orderHistory }) => {
             <Row gutter={16}>
               <Col span={15}></Col>
               <Col span={3}><Text>Shipping Fee:</Text></Col>
-              <Col span={3}><Text>₱{parseFloat(item.shippingFee.$numberDecimal).toFixed(2)}</Text></Col>
+              <Col span={3}><Text>₱{parseFloat(item.shippingFee).toFixed(2)}</Text></Col>
             </Row>
             <Row gutter={16}>
               <Col span={15}><Text type='secondary'>Date Ordered: {item.dateOrdered}</Text></Col>
               <Col span={3}><Text>Total:</Text></Col>
-              <Col span={3}><Text>₱{parseFloat(item.total.$numberDecimal).toFixed(2)}</Text></Col>
+              <Col span={3}><Text>₱{parseFloat(item.total).toFixed(2)}</Text></Col>
             </Row>
           </Panel>
           )

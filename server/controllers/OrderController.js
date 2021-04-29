@@ -4,7 +4,7 @@ const db = require('../models/database.js');
 // import OrderSchema from `../models/OrderModel.js`
 const Order = require('../models/OrderModel');
 
-const defaultCallback = (res, result={}) => res.status(200).json(result)
+const defaultCallback = (res, result) => res.status(200).json(result)
 
 const OrderController = {
   getAllOrders: (req, res) => {

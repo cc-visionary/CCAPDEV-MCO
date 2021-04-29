@@ -110,8 +110,6 @@ export default class App extends Component {
     const { cart, products, orders, orderHistory, user, users} = this.state;
     const { setUser, setLoggedIn, setUserType, setProducts, setCart, setOrderHistory, setOrders, addToCart } = this;
 
-    console.log(orders)
-
     return (
       <Router>
         <Navigation products={products} cart={cart} user={user} setUser={setUser} setLoggedIn={setLoggedIn} setUserType={setUserType} />
