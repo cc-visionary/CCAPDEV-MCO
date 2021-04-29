@@ -59,7 +59,7 @@ export default class App extends Component {
     console.log(item)
     
     const newCart = cart.map((data) => {
-      if(data.key === item.key) {
+      if(data.productId === item.productId) {
         inCart = true;
         data['quantity'] += item.quantity
       }
@@ -68,7 +68,7 @@ export default class App extends Component {
     })
 
     if(inCart) {
-      let cartToUpdate = newCart[cart.map(c => c.key).indexOf(item.key)]
+      let cartToUpdate = newCart[cart.map(c => c.productId).indexOf(item.productId)]
       CartService.updateCart(cartToUpdate).then(() => {
         this.setState( { cart: newCart });
         message.success('Successfully updated the cart')

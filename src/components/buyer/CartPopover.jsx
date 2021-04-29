@@ -11,7 +11,7 @@ const CartPopover = ({ products, cart }) => {
       {
         cart.length > 0 ?
         cart.map((data, i) => {
-          const product = products[products.map(d => d.key).indexOf(data.key)]
+          const product = products[products.map(d => d.productId).indexOf(data.productId)]
           
           return (
             <Row align='middle' key={i} className='cart-item' gutter={[16, 16]}>

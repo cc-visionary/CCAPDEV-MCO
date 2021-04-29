@@ -36,9 +36,9 @@ const OrderHistory = ({ user, products, setProducts, orderHistory }) => {
       return 1;
     }
     
-    const productKeys = products.map(product => product.productId);
+    const productIds = products.map(product => product.productId);
 
-    if(products[productKeys.indexOf(itemId)].reviews.map((review) => review.userId).includes(user.userId)) {
+    if(products[productIds.indexOf(itemId)].reviews.map((review) => review.userId).includes(user.userId)) {
       message.error('Review failed. User has already submitted a feedback for this product')
       onCloseReview()
       return 1;

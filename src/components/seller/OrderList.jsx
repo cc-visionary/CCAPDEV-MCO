@@ -60,7 +60,7 @@ const OrderList = ({ products, orders }) => {
           <Divider />
           {
             currData.items.map((data, i) => {
-              const product = products[products.map(product => product.key).indexOf(data.key)]; 
+              const product = products[products.map(product => product.productId).indexOf(data.productId)]; 
 
               return <Row key={i} align='middle' gutter={16}>
                 <Col span={2}><Image width={25} height={25} src={product.product_image} preview={false} /></Col>

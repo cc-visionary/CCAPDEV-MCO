@@ -162,10 +162,10 @@ class ProductCatalog extends Component {
             { 
               currentPageElements.map(data => {
                 return (
-                  <Col className='catalog-item' key={data.key} xl={6} md={12} xs={24}>
+                  <Col className='catalog-item' key={data.productId} xl={6} md={12} xs={24}>
                     <Link to={{pathname: `/product/${data.slug}`}}>
                       <Card
-                        key={data.key}
+                        key={data.productId}
                         className='catalog-card'
                       >
                         <Image 

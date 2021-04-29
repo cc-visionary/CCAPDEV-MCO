@@ -60,10 +60,10 @@ class ProductPage extends Component {
               <Title>₱{parseFloat(data.price.$numberDecimal).toFixed(2)}</Title>
             </div>
             {
-              data.stock > 0 && data.stock - (cart.map((c) => c.key).indexOf(data.key) != -1 ? cart[cart.map((c) => c.key).indexOf(data.key)].quantity : 0) > 0 ?
+              data.stock > 0 && data.stock - (cart.map((c) => c.productId).indexOf(data.productId) != -1 ? cart[cart.map((c) => c.productId).indexOf(data.productId)].quantity : 0) > 0 ?
               <div className='add-to-cart'>
-                <div className='quantity'><Text>Quantity: </Text><InputNumber value={quantity} min={1} max={data.stock - (cart.map((c) => c.key).indexOf(data.key) != -1 ? cart[cart.map((c) => c.key).indexOf(data.key)].quantity : 0)} onChange={value => this.setState({ quantity: value })} /></div>
-                <BoxButton onClick={() => addToCart({ key: data.key, quantity })}>Add to Cart</BoxButton>
+                <div className='quantity'><Text>Quantity: </Text><InputNumber value={quantity} min={1} max={data.stock - (cart.map((c) => c.productId).indexOf(data.productId) != -1 ? cart[cart.map((c) => c.productId).indexOf(data.productId)].quantity : 0)} onChange={value => this.setState({ quantity: value })} /></div>
+                <BoxButton onClick={() => addToCart({ productId: data.productId, quantity })}>Add to Cart</BoxButton>
               </div> :
               <div className='out-of-stock'>Out of Stock</div>
             }

@@ -122,7 +122,7 @@ const EditProduct = ({ form, visible, onClose, onSubmit, imageUrl, setImageUrl }
             </Form.Item>
           </Col>
         </Row>
-        <Form.Item name="key">
+        <Form.Item name="productId">
           <Input hidden />
         </Form.Item>
       </Form>

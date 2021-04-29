@@ -12,7 +12,7 @@ const Inventory = ({ cart, setCart, ...props }) => {
   const [products, setProducts] = useState([]);
   const [addDrawerVisible, setAddDrawerVisible] = useState(false);
   const [editDrawerVisible, setEditDrawerVisible] = useState(false);
-  const [uniqueKey, setUniqueKey] = useState(-1);
+  const [uniqueId, setUniqueId] = useState(-1);
   const [searchText, setSearchText] = useState('');
   const [imageUrl, setImageUrl] = useState(null);
   const [editForm] = Form.useForm();
@@ -20,21 +20,21 @@ const Inventory = ({ cart, setCart, ...props }) => {
 
   useEffect(() => {
     setProducts(props.products);
-    if(props.products.length > 0) setUniqueKey(props.products[props.products.length - 1].key + 1)
+    if(props.products.length > 0) setUniqueId(props.products[props.products.length - 1].productId + 1)
   }, [props.products])
 
-  const handleDelete = (key) => {
-    const productKeys = products.map(product => product.key);
-    const currProduct = products[productKeys.indexOf(key)];
+  const handleDelete = (productId) => {
+    const productIds = products.map(product => product.productId);
+    const currProduct = products[productIds.indexOf(productId)];
     ProductService.deleteProduct(currProduct.slug).then(() => {
-      setProducts(products.filter((product) => product.key != key))
+      setProducts(products.filter((product) => product.productId != productId))
       message.success("Successfully deleted " + currProduct.name + " from the database.");
     }).catch(() => {
       message.error("Failed to delete " + currProduct.name + " from the database.");
     });
 
-    CartService.deleteCartByItem(currProduct.key).then(() => {
-      setCart(cart.filter((product) => product.key != key))
+    CartService.deleteCartByItem(currProduct.productId).then(() => {
+      setCart(cart.filter((product) => product.productId != productId))
       message.success("Successfully deleted all items in the cart related to " + currProduct.name + " from the database.");
     }).catch(() => {
       message.error("Failed to delete all items in the cart related to " + currProduct.name + " from the database.");
@@ -57,7 +57,7 @@ const Inventory = ({ cart, setCart, ...props }) => {
   const handleAddProduct = (values) => {
     let newProduct = {
       ...values, 
-      key: uniqueKey, 
+      productId: uniqueId, 
       slug: values.name.replaceAll(' ', '-').toLowerCase(),
       reviews: [], 
       sold: 0
@@ -65,7 +65,7 @@ const Inventory = ({ cart, setCart, ...props }) => {
     newProduct['product_image'] = imageUrl;
     
     ProductService.addProduct(newProduct).then(() => {
-      setUniqueKey(currKey => currKey + 1);
+      setUniqueId(currId => currId + 1);
       setProducts([...products, newProduct]);
       closeAddDrawer();
       message.success("Successfully added " + newProduct.name + " to the database.");
@@ -82,8 +82,8 @@ const Inventory = ({ cart, setCart, ...props }) => {
     addForm.resetFields()
   }
 
-  const showEditDrawer = (key) => {
-    const index = products.map(product => product.key).indexOf(key)
+  const showEditDrawer = (productId) => {
+    const index = products.map(product => product.productId).indexOf(productId)
     editForm.setFieldsValue(products[index]);
     setImageUrl(products[index].product_image)
     setEditDrawerVisible(true);
@@ -109,8 +109,8 @@ const Inventory = ({ cart, setCart, ...props }) => {
 
   const handleEditProduct = (values) => {
     const newProducts = [...products];
-    const index = products.map(product => product.key).indexOf(values.key)
-    newProducts[index] = {...values, product_image: imageUrl, reviews: newProducts[index].reviews, key: newProducts[index].key, sold: newProducts[index].sold};
+    const index = products.map(product => product.productId).indexOf(values.productId)
+    newProducts[index] = {...values, product_image: imageUrl, reviews: newProducts[index].reviews, productId: newProducts[index].productId, sold: newProducts[index].sold};
 
     ProductService.updateProduct(newProducts[index]).then(() => {
       setProducts(newProducts);
@@ -188,7 +188,7 @@ const Inventory = ({ cart, setCart, ...props }) => {
       title: 'Actions',
       dataIndex: 'actions',
       key: 'actions',
-      render: (_, record) => products.length >= 1 ? (<div className="actions"><a onClick={() => showEditDrawer(record.key)}>Edit</a> <Popconfirm title="Are you sure you want to delete?" onConfirm={() => handleDelete(record.key)}><a>Delete</a></Popconfirm></div>) : null
+      render: (_, record) => products.length >= 1 ? (<div className="actions"><a onClick={() => showEditDrawer(record.productId)}>Edit</a> <Popconfirm title="Are you sure you want to delete?" onConfirm={() => handleDelete(record.productId)}><a>Delete</a></Popconfirm></div>) : null
     }
   ];
 
