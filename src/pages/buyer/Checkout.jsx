@@ -5,6 +5,8 @@ import { LeftOutlined } from '@ant-design/icons';
 import axios from 'axios';
 import moment from 'moment';
 
+import { OrderService, CartService, ProductService } from '../../services'
+
 const { Title, Text } = Typography;
 const { Option } = Select;
 
@@ -27,38 +29,51 @@ export default class Checkout extends Component {
   onFinish = (values) => {
     const { user, products, setProducts, shippingFee, cart, orderHistory, setOrderHistory, setCart, orders, setOrders } = this.props;
 
-    const newOrder = {
-      orderId: 112310 + orders.length + 1,
-      key: orderHistory.length + 1,
-      contactInfo: values,
-      total: cart.reduce((sum, item) => sum + products[products.map(data => data.key).indexOf(item.key)].price * item.quantity, 0) + shippingFee,
-      items: cart.map((item) => ({...products[products.map(data => data.key).indexOf(item.key)], quantity: item.quantity})),
-      shippingFee,
-      user,
-      dateOrdered: moment()
-    }
+    const productKeys = products.map(data => data.key);
 
-    this.setState({ redirect: true })
+    const newOrder = {
+      orderId: Math.max(...orders.map(order => order.orderId)) + 1,
+      contactInfo: values,
+      total: cart.reduce((sum, item) => sum + products[productKeys.indexOf(item.key)].price * item.quantity, 0) + shippingFee,
+      items: cart.map((item) => ({...products[productKeys.indexOf(item.key)], quantity: item.quantity})),
+      shippingFee,
+      userId: user.userId,
+      dateOrdered: moment().format('MM-DD-YYYY')
+    }
+    
+    OrderService.addOrder(newOrder)
+    
+    this.setState({ redirect: true });
+
     // add to Order History
     setOrderHistory([newOrder, ...orderHistory])
 
     // add to Order List 
     setOrders([newOrder, ...orders])
 
-    // update item stocks
-    setProducts(products.map(product => {
+    const newProducts = products.map(product => {
       const item_keys = newOrder.items.map(item => item.key);
       if(item_keys.includes(product.key)) {
         const quantity = cart[item_keys.indexOf(product.key)].quantity;
         product['stock'] -= quantity;
-        product['orders'] += quantity;
+        product['sold'] += quantity;
+
+        if(product['_id']) delete product['_id']
+
+        ProductService.updateProduct(product);
       }
 
       return product;
-    }))
+    })
 
-    // empty cart
-    setCart([])
+    // update item stocks
+    setProducts(newProducts)
+
+    CartService.deleteCartByUser(user.userId).then(() => {
+      // empty cart
+      setCart([])
+    })
+
     message.success('Checkout was successful!');
   }
 

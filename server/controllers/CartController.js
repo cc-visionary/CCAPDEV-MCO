@@ -1,22 +1,36 @@
 // import module from `../models/database.js`
 const db = require('../models/database.js');
 
-const collection = 'cart';
+// import CartSchema from `../models/CartModel.js`
+const Cart = require('../models/CartModel');
+
+const defaultCallback = (res, result) => res.status(200).json(result)
 
 const CartController = {
   getItemsFromCart: (req, res) => {
-    db.findMany(collection, { userId: req.params.userId }, result => res.status(200).json(result));
+    const { userId } = req.params;
+    db.findMany(Cart, { userId : parseInt(userId) }, (result) => defaultCallback(res, result));
   },
   addItemToCart: (req, res) => {
-    db.insertOne(collection, req.body);
+    db.insertOne(Cart, req.body, (result) => defaultCallback(res, result));
   },
   updateCartItem: (req, res) => {
-    db.updateOne(collection, { key: req.body.key , userId: req.body.userId }, req)
+    const { key, userId } = req.body
+    
+    db.updateOne(Cart, { key , userId }, req.body, (result) => defaultCallback(res, result))
   },
-  deleteItemFromCart: (req, res) => {
-    const query = req.body.key ? { key : req.body.key } : { userId : req.body.userId }
+  deleteByItem: (req, res) => {
+    const { key } = req.params;
 
-    db.deleteMany(collection, query)
+    db.deleteMany(Cart, { key : parseInt(key) }, (result) => defaultCallback(res, result))
+  },
+  deleteByUser: (req, res) => {
+    const { userId } = req.params;
+    
+    db.deleteMany(Cart, { userId : parseInt(userId) }, (result) => defaultCallback(res, result))
+  },
+  deleteItems: (req, res) => {
+    db.deleteMany(Cart, { key: { $in: req.body.map(item => item.key) }, userId: { $in: req.body.map(item => item.userId)} }, (result) => defaultCallback(res, result))
   }
 };
 /*

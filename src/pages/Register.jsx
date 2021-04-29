@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
-import { Form, Input, Button, DatePicker, Upload, Select, message } from 'antd';
+import { Form, Input, Button, DatePicker, Select, message } from 'antd';
 import { Redirect } from 'react-router-dom';
-import { UploadOutlined } from '@ant-design/icons';
+
+import { ImageUpload } from '../components';
+import { UserService } from '../services';
 
 const layout = {
   labelCol: {
@@ -17,10 +19,14 @@ const { Option } = Select;
 const Register = () => {
   const [ password, setPassword ] = useState('')
   const [ redirect, setRedirect ] = useState(false)
+  const [ imageUrl, setImageUrl ] = useState(null);
 
   const onFinish = (values) => {
-    message.success('Account was registered successfully!');
-    setRedirect(true)
+    values['avatar'] = imageUrl;
+    UserService.createUser(values).then(() => {
+      message.success('Account was registered successfully!');
+      setRedirect(true)
+    })
   }
 
   const compareToFirstPassword = (rule, value, callback) => {
@@ -37,7 +43,7 @@ const Register = () => {
   (
     <Form {...layout} id="register" name="register" onFinish={(e) => onFinish(e)} >
         <Form.Item name='avatar' label="Avatar" rules={[{ required: true, message: 'Please add an avatar' }]}>
-          <Upload accept='.png, .jpg, .jpeg' listType="picture-card" maxCount={1} ><UploadOutlined /> Update</Upload>
+          <ImageUpload imageUrl={imageUrl} setImageUrl={setImageUrl} />
         </Form.Item>
         <Form.Item name='fullname' label="Fullname" rules={[{ required: true, message: 'Please enter your fullname' }]}>
           <Input placeholder='Enter your fullname'/>

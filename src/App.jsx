@@ -1,29 +1,24 @@
 import React, { Component } from 'react';
 import { message } from 'antd';
-import { HashRouter as Router, Switch, Route, BrowsetRouter } from "react-router-dom";
-import axios from 'axios';
-import moment from 'moment';
+import { HashRouter as Router, Switch, Route } from "react-router-dom";
 
 import { Navigation, Footer } from './components';
 import { Profile, Register, LandingPage, PageNotFound, Dashboard, ProductCatalog, ProductPage, Cart, Checkout, OrderHistory } from './pages';
 
-import { UserService, ProductService, CartService } from './services';
+import { UserService, CartService, OrderService, ProductService } from './services';
 
 const shippingFee = 99.99;
-
-const cartDummy = [
-  { key: 1, quantity: 2 },
-  { key: 3, quantity: 1 },
-  { key: 5, quantity: 1 }
-]
 
 export default class App extends Component {
   constructor(props) {
     super(props)
 
     this.state = {
+      users: [],
       user: {},
-      cart: cartDummy,
+      products: [],
+      orders: [],
+      cart: [],
       orderHistory: [],
     }
   }
@@ -60,6 +55,8 @@ export default class App extends Component {
     const { cart } = this.state;
 
     let inCart = false
+
+    console.log(item)
     
     const newCart = cart.map((data) => {
       if(data.key === item.key) {
@@ -70,29 +67,58 @@ export default class App extends Component {
       return data;
     })
 
-    if(inCart) this.setCart(newCart)
-    else this.setCart([...cart, item])  
+    if(inCart) {
+      let cartToUpdate = newCart[cart.map(c => c.key).indexOf(item.key)]
+      CartService.updateCart(cartToUpdate).then(() => {
+        this.setState( { cart: newCart });
+        message.success('Successfully updated the cart')
+      })
+    } else {
+      const newItem = {...item, userId: this.state.user.userId};
+      CartService.addToCart(newItem).then(() => {
+        this.setState({ cart: [...cart, newItem]});
+        message.success('Successfully added the item to cart')
+      })
+    }
 
-    message.success('Successfully added to cart')
   }
 
   componentDidMount = () => {
     UserService.getAllUsers().then(res => {
-      this.setState({ user : res.data[0] })
+      this.setState({ user: res.data[0], users: res.data })
+      return res.data[0];
+    }).then(user => {
+      CartService.getUserCart(user.userId).then(res => {
+        this.setCart(res.data);
+      })
+
+      OrderService.getOrderByUser(user.userId).then(res => {
+        this.setOrderHistory(res.data);
+      })
+    })
+    
+    ProductService.getAllProducts().then(res => {
+      this.setProducts(res.data)
+    })
+
+    OrderService.getAllOrders().then(res => {
+      this.setOrders(res.data)
     })
   }
 
   render() {
-    const { cart, orders, orderHistory, user} = this.state;
+    const { cart, products, orders, orderHistory, user, users} = this.state;
     const { setUser, setLoggedIn, setUserType, setProducts, setCart, setOrderHistory, setOrders, addToCart } = this;
+
+    console.log(orders)
 
     return (
       <Router>
-        <Navigation cart={cart} user={user} setUser={setUser} setLoggedIn={setLoggedIn} setUserType={setUserType} />
+        <Navigation products={products} cart={cart} user={user} setUser={setUser} setLoggedIn={setLoggedIn} setUserType={setUserType} />
         <div id="main">
           {user.userType == 'seller' ? 
           <Switch>
-            <Route exact path="/" component={(props) => <Dashboard cart={cart} setCart={setCart} {...props} />} />
+            <Route exact path="/" component={(props) => <Dashboard products={products} users={users} orders={orders} cart={cart} setCart={setCart} {...props} />} />
             <Route path="/profile" component={(props) => <Profile user={user} setUser={setUser} setLoggedIn={setLoggedIn} {...props} />} />
             <Route component={PageNotFound} />
           </Switch>
@@ -100,12 +126,12 @@ export default class App extends Component {
           <Switch>
             <Route exact path="/" component={LandingPage} className="main" />
             <Route path="/register" component={Register} />
-            <Route path="/products" component={(props) => <ProductCatalog {...props} />} />
-            <Route path="/product/:slug" component={(props) => <ProductPage cart={cart} addToCart={addToCart} {...props} />} />
-            <Route path="/category/:category" component={ProductCatalog} />
-            <Route path="/cart" component={(props) => <Cart shippingFee={shippingFee} cart={cart} setCart={setCart} {...props} />} />
-            <Route path="/checkout" component={(props) => <Checkout user={user} orderHistory={orderHistory} setProducts={setProducts} setOrderHistory={setOrderHistory} shippingFee={shippingFee} cart={cart} setCart={setCart} orders={orders} setOrders={setOrders} {...props} />} />
-            <Route path="/order-history" component={(props) => <OrderHistory user={user} setProducts={setProducts} orderHistory={orderHistory} {...props} />} />
+            <Route path="/products" component={(props) => <ProductCatalog products={products} {...props} />} />
+            <Route path="/product/:slug" component={(props) => <ProductPage products={products} users={users} cart={cart} addToCart={addToCart} {...props} />} />
+            <Route path="/category/:category" component={(props) => <ProductCatalog products={products} {...props} />} />
+            <Route path="/cart" component={(props) => <Cart products={products} shippingFee={shippingFee} cart={cart} setCart={setCart} {...props} />} />
+            <Route path="/checkout" component={(props) => <Checkout user={user} products={products} setProducts={setProducts} orderHistory={orderHistory} setOrderHistory={setOrderHistory} shippingFee={shippingFee} cart={cart} setCart={setCart} orders={orders} setOrders={setOrders} {...props} />} />
+            <Route path="/order-history" component={(props) => <OrderHistory user={user} products={products} setProducts={setProducts} orderHistory={orderHistory} {...props} />} />
             <Route path="/profile" component={(props) => <Profile user={user} setUser={setUser} setLoggedIn={setLoggedIn} {...props} />} />
             <Route component={PageNotFound} />
           </Switch>

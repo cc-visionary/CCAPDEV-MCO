@@ -25,12 +25,21 @@ const Inventory = ({ cart, setCart, ...props }) => {
 
   const handleDelete = (key) => {
     const productKeys = products.map(product => product.key);
-    ProductService.deleteProduct(products[productKeys.indexOf(key)].slug);
-    CartService.deleteCartByItem(products[productKeys.indexOf(key)].key);
+    const currProduct = products[productKeys.indexOf(key)];
+    ProductService.deleteProduct(currProduct.slug).then(() => {
+      setProducts(products.filter((product) => product.key != key))
+      message.success("Successfully deleted " + currProduct.name + " from the database.");
+    }).catch(() => {
+      message.error("Failed to delete " + currProduct.name + " from the database.");
+    });
 
-    setCart(cart.filter((product) => product.key != key))
-    setProducts(products.filter((product) => product.key != key))
-    message.success("Successfully deleted " + products[productKeys.indexOf(key)] + " from the database.");
+    CartService.deleteCartByItem(currProduct.key).then(() => {
+      setCart(cart.filter((product) => product.key != key))
+      message.success("Successfully deleted all items in the cart related to " + currProduct.name + " from the database.");
+    }).catch(() => {
+      message.error("Failed to delete all items in the cart related to " + currProduct.name + " from the database.");
+    });
+
   }
 
   const onSubmitAddProduct = () => {
@@ -51,16 +60,16 @@ const Inventory = ({ cart, setCart, ...props }) => {
       key: uniqueKey, 
       slug: values.name.replaceAll(' ', '-').toLowerCase(),
       reviews: [], 
-      orders: 0
+      sold: 0
     }
     newProduct['product_image'] = imageUrl;
     
-    ProductService.addProduct(newProduct);
-
-    setUniqueKey(currKey => currKey + 1);
-    setProducts([...products, newProduct]);
-    closeAddDrawer();
-    message.success("Successfully added " + newProduct.name + " to the database.");
+    ProductService.addProduct(newProduct).then(() => {
+      setUniqueKey(currKey => currKey + 1);
+      setProducts([...products, newProduct]);
+      closeAddDrawer();
+      message.success("Successfully added " + newProduct.name + " to the database.");
+    });
   }
 
   const showAddDrawer = () => {
@@ -99,15 +108,15 @@ const Inventory = ({ cart, setCart, ...props }) => {
   }
 
   const handleEditProduct = (values) => {
-    const newProduct = [...products];
+    const newProducts = [...products];
     const index = products.map(product => product.key).indexOf(values.key)
-    newProduct[index] = {...values, product_image: imageUrl, reviews: newProduct[index].reviews, key: newProduct[index].key, orders: newProduct[index].orders};
+    newProducts[index] = {...values, product_image: imageUrl, reviews: newProducts[index].reviews, key: newProducts[index].key, sold: newProducts[index].sold};
 
-    ProductService.updateProduct(newProduct)
-    
-    setProducts(newProduct);
-    closeEditDrawer();
-    message.success("Successfully updated item " + newProduct.name + " in the database.");
+    ProductService.updateProduct(newProducts[index]).then(() => {
+      setProducts(newProducts);
+      closeEditDrawer();
+      message.success("Successfully updated item " + newProducts[index].name + " in the database.");
+    })
   }
 
   const handleSearch = (e) => {
@@ -158,10 +167,10 @@ const Inventory = ({ cart, setCart, ...props }) => {
       sorter: (a, b) => a.stock - b.stock,
     },
     {
-      title: 'Orders',
-      dataIndex: 'orders',
-      key: 'orders',
-      sorter: (a, b) => a.orders - b.orders,
+      title: 'Sold',
+      dataIndex: 'sold',
+      key: 'sold',
+      sorter: (a, b) => a.sold - b.sold,
     },
     {
       title: 'Description',

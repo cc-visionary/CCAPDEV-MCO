@@ -3,6 +3,7 @@ import { Row, Col, Image, Collapse, Typography, Divider, Button, Modal, Input, m
 import { Link } from 'react-router-dom';
 import Rater from 'react-rater';
 import moment from 'moment';
+import { ProductService } from '../../services';
 
 const { Title, Text } = Typography;
 const { Panel } = Collapse;
@@ -34,25 +35,35 @@ const OrderHistory = ({ user, products, setProducts, orderHistory }) => {
       message.error('Rating is required')
       return 1;
     }
+    
+    const productKeys = products.map(product => product.productId);
 
-    if(products[products.map(product => product.key).indexOf(itemId)].reviews.map((review) => review.user.userId).includes(user.userId)) {
+    if(products[productKeys.indexOf(itemId)].reviews.map((review) => review.userId).includes(user.userId)) {
       message.error('Review failed. User has already submitted a feedback for this product')
       onCloseReview()
       return 1;
     }
     
-    
-    setProducts(products.map(product => {
-      if(product.key == itemId) {
-        product.reviews.push({user: user, reaction:reaction, rating:rating, dateReviewed: moment()})
-        return product
+    const newProducts = products.map(product => {
+      if(product.productId == itemId) {
+        product.reviews.push({userId: user.userId, reaction:reaction, rating:rating, dateReviewed: moment()});
+
+        delete product['_id'];
+
+        ProductService.updateProduct(product)
+
+        return product;
       }
       return product;
-    }))
+    })
+    
+    setProducts(newProducts);
     
     onCloseReview()
     message.success('Review has been successfully submitted.')
   }
+
+  console.log(orderHistory)
 
   return (
     <div id='order-history'>
@@ -60,7 +71,7 @@ const OrderHistory = ({ user, products, setProducts, orderHistory }) => {
       <Collapse defaultActiveKey={[0]} accordion>
         {
           orderHistory.map((item, i) => 
-            <Panel header={`Order ${item.orderId} from ${item.dateOrdered.format('MM-DD-YYYY')}`} key={i}>
+            <Panel header={`Order ${item.orderId} from ${item.dateOrdered}`} key={i}>
               <Row gutter={16}>
                 <Col span={2}></Col>
                 <Col span={10}>Name</Col>
@@ -75,24 +86,24 @@ const OrderHistory = ({ user, products, setProducts, orderHistory }) => {
                     <Row align='middle' gutter={16}>
                       <Col span={2}><Image width={25} height={25} src={data.product_image} preview={false} /></Col>
                       <Col span={10}>{data.name}<br /><Text type='secondary'>{data.brand}</Text></Col>
-                      <Col span={3}>₱{parseFloat(data.price).toFixed(2)}</Col>
+                      <Col span={3}>₱{parseFloat(data.price.$numberDecimal).toFixed(2)}</Col>
                       <Col span={3}>{data.quantity}</Col>
-                      <Col span={3}>₱{parseFloat(data.price * data.quantity).toFixed(2)}</Col>
-                      <Col span={3}><Button type='link'><Link to={{pathname: `/product/${data.name.toLowerCase().replaceAll(' ', '-')}`, data: data}}>More Info</Link></Button><br /><Button type='link' onClick={() => onOpenReview(data.key)}>Give Feedback</Button></Col>
+                      <Col span={3}>₱{parseFloat(data.price.$numberDecimal * data.quantity).toFixed(2)}</Col>
+                      <Col span={3}><Button type='link'><Link to={{pathname: `/product/${data.slug}`}}>More Info</Link></Button><br /><Button type='link' onClick={() => onOpenReview(data.productId)}>Give Feedback</Button></Col>
                       { item.items.length - 1 == i ? <></> : <Divider /> }
                     </Row>
                 )
               }
             <Divider />
             <Row gutter={16}>
-              <Col span={15}><Text type='secondary'>Date Ordered: {item.dateOrdered.format('MMM DD, YYYY')}</Text></Col>
+              <Col span={15}></Col>
               <Col span={3}><Text>Shipping Fee:</Text></Col>
-              <Col span={3}><Text>₱{parseFloat(item.shippingFee).toFixed(2)}</Text></Col>
+              <Col span={3}><Text>₱{parseFloat(item.shippingFee.$numberDecimal).toFixed(2)}</Text></Col>
             </Row>
             <Row gutter={16}>
-              <Col span={15}><Text type='secondary'>Time Ordered: {item.dateOrdered.format('HH:mm:ss ZZ')}</Text></Col>
+              <Col span={15}><Text type='secondary'>Date Ordered: {item.dateOrdered}</Text></Col>
               <Col span={3}><Text>Total:</Text></Col>
-              <Col span={3}><Text>₱{parseFloat(item.total).toFixed(2)}</Text></Col>
+              <Col span={3}><Text>₱{parseFloat(item.total.$numberDecimal).toFixed(2)}</Text></Col>
             </Row>
           </Panel>
           )

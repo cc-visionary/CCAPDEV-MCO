@@ -19,6 +19,10 @@ app.get('/users', UserController.getAllUsers);
 
 app.post('/users', UserController.addUser);
 
+app.post('/users/login', UserController.login);
+
+app.put('/users', UserController.updateUser);
+
 app.get('/products', ProductController.getAllProducts);
 
 app.post('/products', ProductController.addProduct);
@@ -31,13 +35,21 @@ app.get('/products/:slug', ProductController.getProduct);
 
 app.get('/orders', OrderController.getAllOrders)
 
+app.get('/orders/:userId', OrderController.getOrderByUser)
+
+app.post('/orders', OrderController.addOrderToList)
+
 app.get('/cart/:userId', CartController.getItemsFromCart);
 
-axios.put('/cart', CartController.updateCartItem);
+app.put('/cart', CartController.updateCartItem);
 
 app.post('/cart', CartController.addItemToCart);
 
-app.delete('/cart', CartController.deleteItemFromCart);
+app.delete('/cart/key/:key', CartController.deleteByItem);
+
+app.delete('/cart/userId/:userId', CartController.deleteByUser);
+
+app.delete('/cart', CartController.deleteItems);
 
 /*
     exports the object `app` (defined above)

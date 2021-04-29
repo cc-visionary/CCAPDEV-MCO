@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
-import { Form, Input, Button, DatePicker, Upload, Select, Modal, message } from 'antd';
+import { Form, Input, Button, DatePicker, Select, Modal, message } from 'antd';
 import { Redirect } from 'react-router-dom';
-import { UploadOutlined } from '@ant-design/icons';
 import moment from 'moment';
+
+import { ImageUpload } from '../components';
+import { UserService } from '../services';
 
 const layout = {
   labelCol: {
@@ -21,6 +23,7 @@ export default class Profile extends Component {
     this.props = props;
 
     this.state = {
+      imageUrl: null,
       hasChanged: false,
       showConfirmation: false,
       redirect: false,
@@ -29,24 +32,31 @@ export default class Profile extends Component {
     }
   }
 
-  onChange() {
+  setImageUrl = (imageUrl) => {
+    this.setState({ imageUrl });
+  }
+
+  onChange = () => {
     this.setState({ hasChanged : true })
   }
   
-  onFinish(values) {
+  onFinish = (values) => {
     const { user, setUser } = this.props
 
-    console.log(values)
-
-    
-    this.setState({ hasChanged : false, redirect : true }, () => { setUser({ ...values, loggedIn: user.loggedIn, avatar: user.avatar }) ; message.success('Changes were made successfully') })
+    values['avatar'] = imageUrl;
+    UserService.updateUser(values).then(() => {
+      this.setState({ imageUrl: null, hasChanged : false, redirect : true }, () => { 
+        setUser({ ...values, loggedIn: user.loggedIn, avatar: user.avatar }); 
+        message.success('Changes were made successfully');
+      })
+    })
   }
 
-  onDelete() {
+  onDelete = () => {
     this.setState({ showConfirmation : true })
   }
 
-  onConfirmDelete() {
+  onConfirmDelete = () => {
     const { user, setLoggedIn } = this.props;
 
     if(this.state.confirmPassword == user.password) {
@@ -56,11 +66,19 @@ export default class Profile extends Component {
     }
   }
 
+  componentDidMount = () => {
+    this.setImageUrl(this.props.user.avatar);
+  }
+
   render() {
+    const { user } = this.props;
+
+    user['birthday'] = moment(user['birthday'], 'MM-DD-YYYY');
+
     return this.state.redirect ? <Redirect to='/' /> : (
-      <Form {...layout} id="profile" name="profile" onFinish={(e) => this.onFinish(e)} initialValues={this.props.user} >
+      <Form {...layout} id="profile" name="profile" onFinish={(e) => this.onFinish(e)} initialValues={user} >
         <Form.Item name='avatar' label="Avatar" rules={[{ required: true, message: 'Please add an avatar!' }]}>
-          <Upload accept='.png, .jpg, .jpeg' fileList={this.state.fileList} listType="picture-card" maxCount={1} onChange={({ fileList }) => this.setState({ fileList: fileList, hasChanged: true })} ><UploadOutlined /> Update</Upload>
+          <ImageUpload imageUrl={this.state.imageUrl} setImageUrl={this.setImageUrl} />
         </Form.Item>
         <Form.Item name='fullname' label="Fullname" rules={[{ required: true, message: 'Please enter your fullname!' }]}>
           <Input onChange={() => this.onChange()}/>

@@ -16,7 +16,6 @@ class ProductCatalog extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      products: [],
       offset: 0,
       currentPageElements: [],
       elementsPerPage: 12,  //change as per your need
@@ -30,24 +29,20 @@ class ProductCatalog extends Component {
 
   componentDidMount() {
     const { category } = this.props.params;
+    const { products } = this.props;
 
-    ProductService.getAllProducts().then(res => {
-      const products = res.data;
-      
-      this.setState({ products });
-      if(category) {
-        const filteredProducts = products.filter(data => data.category == category);
-        this.setState({ allElements: filteredProducts }, () => {
-          this.setPaginationStates();
-          this.handleSort('featured');
-        });
-      } else {
-        this.setState({ allElements: products }, () => {
-          this.setPaginationStates();
-          this.handleSort('featured');
-        });
-      }
-    });
+    if(category) {
+      const filteredProducts = products.filter(data => data.category == category);
+      this.setState({ allElements: filteredProducts }, () => {
+        this.setPaginationStates();
+        this.handleSort('featured');
+      });
+    } else {
+      this.setState({ allElements: products }, () => {
+        this.setPaginationStates();
+        this.handleSort('featured');
+      });
+    }
 
   }
 
@@ -88,7 +83,7 @@ class ProductCatalog extends Component {
     } else if(val === 'top_rated') {
       sorted = this.state.allElements.sort((a, b) => a.reviews.length > 0 ? (a.reviews.reduce((sum, review) => sum + review.rating, 0) / a.reviews.length) < (b.reviews.reduce((sum, review) => sum + review.rating, 0) / b.reviews.length) : 0 < (b.reviews.reduce((sum, review) => sum + review.rating, 0) / b.reviews.length));
     } else {
-      sorted = this.state.allElements.sort((a, b) => a.orders < b.orders);
+      sorted = this.state.allElements.sort((a, b) => a.sold < b.sold);
     }
     this.setState({ allElements: sorted }, () => this.setElementsForCurrentPage())
   }
@@ -113,13 +108,13 @@ class ProductCatalog extends Component {
     }
 
     if(filterBrand == 'All') {
-      this.setState({  allElements : this.state.products.filter(data => data.name.toLowerCase().includes(search.toLowerCase())) }, () => {
+      this.setState({  allElements : this.props.products.filter(data => data.name.toLowerCase().includes(search.toLowerCase())) }, () => {
         this.setElementsForCurrentPage()
         this.setPaginationStates()
       })
     }
     else {
-      this.setState({  allElements : this.state.products.filter(data => data.name.toLowerCase().includes(search.toLowerCase())).filter(data => data.brand == filterBrand ) }, () => {
+      this.setState({  allElements : this.props.products.filter(data => data.name.toLowerCase().includes(search.toLowerCase())).filter(data => data.brand == filterBrand ) }, () => {
         this.setElementsForCurrentPage()
         this.setPaginationStates()
       })
@@ -130,11 +125,12 @@ class ProductCatalog extends Component {
     const { allElements, searchValue, filterBrand, totalElementsCount, pagesCount, elementsPerPage, currentPageElements } = this.state;  
     const { category } = this.props.params;
 
-
     let brands = []
-    this.state.products.map((record) => {
-      if(!brands.includes(record.brand)) brands.push(record.brand)
-    })
+    if(this.props.products) {
+      this.props.products.map((record) => {
+        if(!brands.includes(record.brand)) brands.push(record.brand)
+      })
+    }
 
     return (
       <div id="product-catalog">
@@ -167,7 +163,7 @@ class ProductCatalog extends Component {
               currentPageElements.map(data => {
                 return (
                   <Col className='catalog-item' key={data.key} xl={6} md={12} xs={24}>
-                    <Link to={{pathname: `/product/${data.name.toLowerCase().replaceAll(' ', '-')}`}}>
+                    <Link to={{pathname: `/product/${data.slug}`}}>
                       <Card
                         key={data.key}
                         className='catalog-card'
@@ -181,7 +177,7 @@ class ProductCatalog extends Component {
                         />
                         <Title level={3} ellipsis>{data.name}</Title>
                         <Title type='secondary' level={5} ellipsis>{data.brand}</Title>
-                        <Text>{data.stock > 0 ? `₱${parseFloat(data.price).toFixed(2)}` : 'Out of Stock'}</Text>
+                        <Text>{data.stock > 0 ? `₱${parseFloat(data.price.$numberDecimal).toFixed(2)}` : 'Out of Stock'}</Text>
                         <div>{data.reviews.length != 0 ? <Rater rating={data.reviews.reduce((sum, review) => sum + parseFloat(review.rating), 0) / data.reviews.length} interactive={false} /> : <></>}</div>
                       </Card>
                     </Link>

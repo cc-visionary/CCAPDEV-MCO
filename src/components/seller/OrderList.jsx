@@ -61,7 +61,7 @@ const OrderList = ({ products, orders }) => {
           {
             currData.items.map((data, i) => {
               const product = products[products.map(product => product.key).indexOf(data.key)]; 
-              
+
               return <Row key={i} align='middle' gutter={16}>
                 <Col span={2}><Image width={25} height={25} src={product.product_image} preview={false} /></Col>
                 <Col span={10}>{product.name}<br /><Text type='secondary'>{product.brand}</Text></Col>
@@ -69,7 +69,7 @@ const OrderList = ({ products, orders }) => {
                 <Col span={4}>{data.quantity}</Col>
                 <Col span={4}>₱{parseFloat(product.price * data.quantity).toFixed(2)}</Col>
                 { currData.items.length - 1 == i ? <></> : <Divider /> }
-              </Row>
+              </Row> 
             })
           }
           <Divider />

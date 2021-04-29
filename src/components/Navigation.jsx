@@ -4,23 +4,16 @@ import { ShoppingCartOutlined, UserOutlined } from '@ant-design/icons';
 import { Link, Redirect } from 'react-router-dom';
 
 import { BoxButton, Login, CartPopover, ProfileMenu } from './';
-import { ProductService } from '../services';
+import { UserService } from '../services';
 
 import Logo from '../assets/images/logo_light.svg';
 
 const { Text, Title } = Typography;
 
-const Navigation = ({ cart, user, setLoggedIn, setUserType, setUser }) => {
-  const [products, setProducts] = useState([]);
+const Navigation = ({ products, cart, user, setLoggedIn, setUserType, setUser }) => {
   const [loginVisible, setLoginVisible] = useState(false);
   const [redirect, setRedirect] = useState(false);
   const [form] = Form.useForm();
-
-  useEffect(() => {
-    ProductService.getAllProducts().then(res => {
-      setProducts(res.data);
-    })
-  }, [])
    
   const onOk = useCallback((values) => {
     form
@@ -32,7 +25,6 @@ const Navigation = ({ cart, user, setLoggedIn, setUserType, setUser }) => {
       .catch(info => {
         console.log('Validate Failed:', info);
       });
-    console.log(values);
   }, []);
   
   const closePopup = useCallback(() => {
@@ -41,9 +33,9 @@ const Navigation = ({ cart, user, setLoggedIn, setUserType, setUser }) => {
   }, [form]);
 
   const onSubmit = (values) => {
-    console.log(values);
-    setLoginVisible(false);
-    setLoggedIn(true);
+    UserService.login(values);
+    // setLoginVisible(false);
+    // setLoggedIn(true);
   };
 
   const logout = () => {

@@ -1,7 +1,9 @@
 import React, { useState } from 'react'
-import { Button, Checkbox, InputNumber, Typography, Divider, Popconfirm, Empty, Image } from 'antd';
+import { Button, Checkbox, InputNumber, Typography, Divider, Popconfirm, Empty, Image, message } from 'antd';
 import { DeleteOutlined } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
+
+import { CartService } from '../../services';
 
 const { Text, Title } = Typography;
 
@@ -10,7 +12,7 @@ const Cart = ({ products, shippingFee, cart, setCart, ...props }) => {
   const [ checkboxes, setCheckboxes ] = useState(cart.map(() => false))
   const [ indeterminate, setIndeterminate ] = useState(false);
   
-  const totalCost = cart.reduce((sum, data) => sum + products[products.map(d => d.key).indexOf(data.key)].price * data.quantity, 0);
+  const totalCost = cart.reduce((sum, data) => sum + products[products.map(d => d.productId).indexOf(data.productId)].price.$numberDecimal * data.quantity, 0);
 
   const toggleCheckAll = (checked) => {
     if(indeterminate) checked = true
@@ -31,18 +33,28 @@ const Cart = ({ products, shippingFee, cart, setCart, ...props }) => {
   }
 
   const deleteProductFromCart = ( index ) => {
+    CartService.deleteItemsFromCart([cart[index]])
     setCart(cart.filter((_, i) => i != index));
+    message.success('Successfully deleted item from the cart');
   }
 
   const deleteProductsFromCart = ( indexes ) => {
+    indexes = indexes.filter(index => index != null);
+    CartService.deleteItemsFromCart(indexes.map(index => ({productId: cart[index].productId, userId: cart[index].userId})))
+    
     setCart(cart.filter((_, i) => !indexes.includes(i)))
+    message.success('Successfully deleted items from the cart');
   }
 
   const changeCartQuantity = ( index, value ) => {
-    setCart(cart.map((data, i) => { 
-      if (i == index) data['quantity'] = value
-      return data;
-    }))
+    let cartToUpdate = cart[index];
+    cartToUpdate['quantity'] = value;
+    CartService.updateCart(cartToUpdate).then(() => {
+      setCart(cart.map((data, i) => { 
+        if (i == index) data['quantity'] = value
+        return data;
+      }))
+    })  
   }
 
   return (
@@ -56,8 +68,8 @@ const Cart = ({ products, shippingFee, cart, setCart, ...props }) => {
           {
             cart.length > 0 ?
             cart.map((item, i) => {
-              const index = products.map(data => data.key).indexOf(item.key)
-              return <div className="cart-item" key={item.key}>
+              const index = products.map(data => data.productId).indexOf(item.productId)
+              return <div className="cart-item" productId={item.productId}>
                 <div className='contents'>
                   <div className="checkbox"><Checkbox checked={checkboxes[i]} onChange={(e) => toggleACheckbox(i, e.target.checked)} /></div>
                   <div className="image">
@@ -68,7 +80,7 @@ const Cart = ({ products, shippingFee, cart, setCart, ...props }) => {
                     <br />
                     <Text type="secondary">{products[index].brand}</Text>
                   </div>
-                  <div className="price">₱{parseFloat(products[index].price).toFixed(2)}</div>
+                  <div className="price">₱{parseFloat(products[index].price.$numberDecimal).toFixed(2)}</div>
                   <div className="quantity"><InputNumber style={{'width': '100%'}} min={1} max={products[index].stock} defaultValue={item.quantity} onChange={(val) => changeCartQuantity(i, val)} /></div>
                   <div className="delete"><Popconfirm title="Are you sure you want to delete this product?" onConfirm={() => deleteProductFromCart(i)}><Button type="link"><Text type="secondary"><DeleteOutlined /></Text></Button></Popconfirm></div>
                 </div>

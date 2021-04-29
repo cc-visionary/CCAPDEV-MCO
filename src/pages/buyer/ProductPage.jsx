@@ -14,26 +14,16 @@ class ProductPage extends Component {
     super(props)
 
     this.state = {
-      users: [],
-      data: null,
       quantity: 1,
       visible: false
     }
   }
 
-  componentDidMount = () => {
-    ProductService.getProduct(this.props.match.params.slug).then(res => {
-      this.setState({ data: res.data });
-    })
-
-    UserService.getAllUsers().then(res => {
-      this.setState({ users: res.data })
-    });
-  }
-
   render = () => {
-    const { cart, addToCart } = this.props;
-    const { data, users, quantity, visible } = this.state;
+    const { products, users, cart, addToCart } = this.props;
+    const { quantity, visible } = this.state;
+
+    const data = products[products.map(product => product.slug).indexOf(this.props.match.params.slug)]
 
     const averageRating = data ? (data.reviews.reduce((sum, review) => sum + parseFloat(review.rating), 0) / data.reviews.length).toFixed(1) : 0;
 
@@ -54,20 +44,25 @@ class ProductPage extends Component {
               <Title bold>{data.name}</Title>
             </div>
             <Row align='middle' className='reviews-orders'>
-              <Col><Text underline>{averageRating}</Text><Rater interactive={false} rating={data.reviews.length == 0 ? 0 : averageRating} /></Col>
+              { 
+                data.reviews.length > 0 ? 
+                <>
+                  <Col><Text underline>{averageRating}</Text><Rater interactive={false} rating={data.reviews.length == 0 ? 0 : averageRating} /></Col>
+                  <Col><Divider type='vertical' /></Col> 
+                </> : null
+              }
+              <Col><Button style={{'fontSize': '1em'}} disabled={data.reviews.length == 0} onClick={() => this.setState({ visible : true })} type='link'><Text underline>{data.reviews.length == 0 ? 'No' : data.reviews.length}</Text>&nbsp;<Text>reviews</Text></Button></Col>
               <Col><Divider type='vertical' /></Col>
-              <Col><Button style={{'fontSize': '1em'}} onClick={() => this.setState({ visible : true })} type='link'><Text underline>{data.reviews.length == 0 ? 'No' : data.reviews.length}</Text>&nbsp;<Text>reviews</Text></Button></Col>
-              <Col><Divider type='vertical' /></Col>
-              <Col><Text>{data.orders} sold</Text></Col>
+              <Col><Text>{data.sold} sold</Text></Col>
             </Row>
             <Divider />
             <div>
-              <Title>₱{parseFloat(data.price).toFixed(2)}</Title>
+              <Title>₱{parseFloat(data.price.$numberDecimal).toFixed(2)}</Title>
             </div>
             {
               data.stock > 0 && data.stock - (cart.map((c) => c.key).indexOf(data.key) != -1 ? cart[cart.map((c) => c.key).indexOf(data.key)].quantity : 0) > 0 ?
               <div className='add-to-cart'>
-                <div className='quantity'><Text>Quantity: </Text><InputNumber value={quantity} min={1} max={data.stock - (cart.map((c) => c.key).indexOf(data.key) != -1 ? cart[cart.map((c) => c.key).indexOf(data.key)].quantity : 0)} onChange={value => setQuantity(value)} /></div>
+                <div className='quantity'><Text>Quantity: </Text><InputNumber value={quantity} min={1} max={data.stock - (cart.map((c) => c.key).indexOf(data.key) != -1 ? cart[cart.map((c) => c.key).indexOf(data.key)].quantity : 0)} onChange={value => this.setState({ quantity: value })} /></div>
                 <BoxButton onClick={() => addToCart({ key: data.key, quantity })}>Add to Cart</BoxButton>
               </div> :
               <div className='out-of-stock'>Out of Stock</div>

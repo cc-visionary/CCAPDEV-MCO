@@ -7,6 +7,10 @@ class OrderService {
     return axios.get(ORDER_API_BASE_URL);
   }
 
+  getOrderByUser(userId) {
+    return axios.get(ORDER_API_BASE_URL + `/${userId}`)
+  }
+
   addOrder(order) {
     return axios.post(ORDER_API_BASE_URL, order);
   }

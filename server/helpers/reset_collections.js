@@ -1,15 +1,17 @@
 /*
-  This script removes the following collections:
-    1. users
-    2. products
-    3. orders
-    4. cart
+  This script inserts the following:
+    1. 6 users to the collection 'users' 
+    2. 5 products to collection 'products'
+    3. 4 orders to collection 'orderlist'
+    4. 3 items to collection 'cart'
 */
 
 // import module from `./models/database.js`
 const db = require('../models/database.js');
 
-db.dropCollection('users');
-db.dropCollection('products');
-db.dropCollection('orders');
-db.dropCollection('cart');
+db.connect();
+
+db.dropCollection('users', () => console.log(''));
+db.dropCollection('products', () => console.log(''));
+db.dropCollection('orders', () => console.log(''));
+db.dropCollection('carts', () => console.log(''));
