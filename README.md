@@ -53,10 +53,10 @@ Assuming the you have already cloned the repository, do the following:
 ![Product Catalog](./src/assets/screenshots/product_catalog.png)
 
 ### Cart
-![Cart](./src/assets/screenshots/checkout.png)
+![Cart](./src/assets/screenshots/cart.png)
 
 ### Checkout
-![Checkout](./src/assets/screenshots/cart.png)
+![Checkout](./src/assets/screenshots/checkout.png)
 
 ### Page Not Found
 ![Page Not Found](./src/assets/screenshots/page_not_found.png)
