@@ -193,7 +193,11 @@ const Inventory = ({ cart, setCart, products, setProducts, ...props }) => {
     {
       title: 'Reviews',
       dataIndex: 'reviews',
-      sorter: (a, b) => a.reviews.length > 0 ? a.reviews.reduce((sum, val) => sum + val.rating, 0) / a.reviews.length - b.reviews.reduce((sum, val) => sum + val.rating, 0) / b.reviews.length : b > 0 ? 0 - b.reviews.reduce((sum, val) => sum + val.rating, 0) / b.reviews.length : a.reviews.reduce((sum, val) => sum + val.rating, 0) / a.reviews.length - 0,
+      sorter: (a, b) => {
+        const aAve = a.reviews.length > 0 ? a.reviews.reduce((sum, val) => sum + val.rating, 0) / a.reviews.length : 0;
+        const bAve = b.reviews.length > 0 ? b.reviews.reduce((sum, val) => sum + val.rating, 0) / b.reviews.length : 0;
+        return aAve - bAve
+      },
       render: (_, record) => record.reviews.length == 0 ? <Text>No Reviews</Text> : <Rater rating={record.reviews.reduce((sum, val) => sum + val.rating, 0) / record.reviews.length} interactive={false} /> 
     },
     {

@@ -14,12 +14,11 @@ db.connect();
 const shippingFee = 99.99;
 
 const users = [
-  {userId: 1032, avatar: 'https://cdn.iconscout.com/icon/free/png-256/avatar-380-456332.png', fullname: 'John Doe', username: 'buyer', birthday: '03-20-1999', email: 'john-ish-doe-ish@gmail.com', password: 'buyerpass', userType: 'buyer'},
-  {userId: 1033, avatar: 'https://cdn.iconscout.com/icon/free/png-256/avatar-380-456332.png', fullname: 'Kate Meeks', birthday: '05-22-2001', email: 'kate.meek443@gmail.com', username: 'sweetgirl123', password: 'lksad', userType: 'buyer'},
-  {userId: 1034, avatar: 'https://cdn.iconscout.com/icon/free/png-256/avatar-380-456332.png', fullname: 'Joseph Bourne', birthday: '02-12-1980', email: 'joseph.bourne.a.lover143@gmail.com', username: 'xXbatmanXx143', password: 'qweqasd', userType: 'buyer'},
-  {userId: 1035, avatar: 'https://cdn.iconscout.com/icon/free/png-256/avatar-380-456332.png', fullname: 'Mark Edwards', birthday: '12-04-1995', email: 'cool.mark.edwards@gmail.com', username: 'coolkidXD', password: 'axzcas', userType: 'buyer'},
-  {userId: 1036, avatar: 'https://cdn.iconscout.com/icon/free/png-256/avatar-380-456332.png', fullname: 'Hazel Nut', birthday: '08-02-2002', email: 'hazel.nut.coffee@gmail.com', username:'coffeelover42', password: 'asda1231', userType: 'buyer'},
-  {userId: 1037, avatar: 'https://cdn.iconscout.com/icon/free/png-256/avatar-380-456332.png', fullname: 'James Jones Junior', birthday: '11-15-1992', email: 'james.jones.junior@gmail.com', username: 'seller', password: 'sellerpass', userType: 'seller'},
+  {userId: 1031, avatar: 'https://cdn.iconscout.com/icon/free/png-256/avatar-380-456332.png', fullname: 'John Doe', username: 'buyer', birthday: '03-20-1999', email: 'john-ish-doe-ish@gmail.com', password: 'buyerpass', userType: 'buyer'},
+  {userId: 1032, avatar: 'https://cdn.iconscout.com/icon/free/png-256/avatar-380-456332.png', fullname: 'Kate Meeks', birthday: '05-22-2001', email: 'kate.meek443@gmail.com', username: 'sweetgirl123', password: 'lksad', userType: 'buyer'},
+  {userId: 1033, avatar: 'https://cdn.iconscout.com/icon/free/png-256/avatar-380-456332.png', fullname: 'Joseph Bourne', birthday: '02-12-1980', email: 'joseph.bourne.a.lover143@gmail.com', username: 'xXbatmanXx143', password: 'qweqasd', userType: 'buyer'},
+  {userId: 1034, avatar: 'https://cdn.iconscout.com/icon/free/png-256/avatar-380-456332.png', fullname: 'Mark Edwards', birthday: '12-04-1995', email: 'cool.mark.edwards@gmail.com', username: 'coolkidXD', password: 'axzcas', userType: 'buyer'},
+  {userId: 1035, avatar: 'https://cdn.iconscout.com/icon/free/png-256/avatar-380-456332.png', fullname: 'James Jones Junior', birthday: '11-15-1992', email: 'james.jones.junior@gmail.com', username: 'seller', password: 'sellerpass', userType: 'seller'},
 ]
 
 const products = [
@@ -60,7 +59,7 @@ const products = [
     stock: 150,
     description: 'Cool Scan',
     reviews: [],
-    sold: 0
+    sold: 14
   },
   {
     productId: 4,
@@ -106,7 +105,7 @@ const orderlist = [
     total: [{...products[3], quantity: 1}, {...products[1], quantity: 1}].reduce((sum, product) => sum + product.price * product.quantity, 0) + shippingFee,
     items: [{...products[3], quantity: 1}, {...products[1], quantity: 1}],
     shippingFee: shippingFee,
-    dateOrdered: '03-27-2021',
+    dateOrdered: '02-19-2021',
   },
   {
     orderId: 102,
@@ -114,7 +113,7 @@ const orderlist = [
     total: [{...products[4], quantity: 1}].reduce((sum, product) => sum + product.price * product.quantity, 0) + shippingFee,
     items: [{...products[4], quantity: 1}],
     shippingFee: shippingFee,
-    dateOrdered: '03-27-2021',
+    dateOrdered: '05-27-2020',
   },
   {
     orderId: 103,
@@ -124,12 +123,22 @@ const orderlist = [
     shippingFee: shippingFee,
     dateOrdered: '03-27-2021',
   },
+  {
+    orderId: 104,
+    userId: users[0].userId,
+    total: [{...products[2], quantity: 14}].reduce((sum, product) => sum + product.price * product.quantity, 0) + shippingFee,
+    items: [{...products[2], quantity: 14}],
+    shippingFee: shippingFee,
+    dateOrdered: '04-22-2021',
+  },
 ];
 
 const cart = [
   { productId: 1, quantity: 2, userId: users[0].userId },
   { productId: 3, quantity: 1, userId: users[0].userId },
-  { productId: 5, quantity: 1, userId: users[0].userId }
+  { productId: 5, quantity: 2, userId: users[0].userId },
+  { productId: 4, quantity: 4, userId: users[1].userId },
+  { productId: 1, quantity: 3, userId: users[2].userId },
 ]
 
 const User = require('../models/UserModel');

@@ -98,17 +98,19 @@ export default class App extends Component {
   }
 
   /* 
-    gets the user's cart and orderHistory then set those to the app's curernt cart and orderHistory. 
+    gets the user's cart and orderHistory then set those to the app's current cart and orderHistory if the user is a buyer. 
     then sets the `this.state.user` to the parameter `user` and `this.state.loggedIn` to true.
   */
   logUserIn = ( user ) => {
-    CartService.getUserCart(user.userId).then(res => {
-      this.setCart(res.data);
-    })
-
-    OrderService.getOrderByUser(user.userId).then(res => {
-      this.setOrderHistory(res.data);
-    })
+    if(user.userType == 'buyer') {
+      CartService.getUserCart(user.userId).then(res => {
+        this.setCart(res.data);
+      })
+  
+      OrderService.getOrderByUser(user.userId).then(res => {
+        this.setOrderHistory(res.data);
+      })
+    }
 
     this.setUser(user);
     this.setLoggedIn(true);
