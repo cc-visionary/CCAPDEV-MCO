@@ -74,9 +74,9 @@ class ProductCatalog extends Component {
   handleSort = (val) => {
     let sorted;
     if(val === 'low_to_high') {
-      sorted = this.state.allElements.sort((a, b) => parseFloat(a.price.$numberDecimal) > parseFloat(b.price.$numberDecimal));
+      sorted = this.state.allElements.sort((a, b) => parseFloat(a.price.$numberDecimal ? a.price.$numberDecimal : a.price) > parseFloat(b.price.$numberDecimal ? b.price.$numberDecimal : b.price));
     } else if(val === 'high_to_low') {
-      sorted = this.state.allElements.sort((a, b) => parseFloat(a.price.$numberDecimal) < parseFloat(b.price.$numberDecimal));
+      sorted = this.state.allElements.sort((a, b) => parseFloat(a.price.$numberDecimal ? a.price.$numberDecimal : a.price) < parseFloat(b.price.$numberDecimal ? b.price.$numberDecimal : b.price));
     } else if(val === 'top_rated') {
       sorted = this.state.allElements.sort((a, b) => a.reviews.length > 0 ? (a.reviews.reduce((sum, review) => sum + review.rating, 0) / a.reviews.length) < (b.reviews.reduce((sum, review) => sum + review.rating, 0) / b.reviews.length) : 0 < (b.reviews.reduce((sum, review) => sum + review.rating, 0) / b.reviews.length));
     } else {
@@ -176,7 +176,7 @@ class ProductCatalog extends Component {
                         />
                         <Title level={3} ellipsis>{data.name}</Title>
                         <Title type='secondary' level={5} ellipsis>{data.brand}</Title>
-                        <Text>{data.stock > 0 ? `₱${parseFloat(data.price.$numberDecimal).toFixed(2)}` : 'Out of Stock'}</Text>
+                        <Text>{data.stock > 0 ? `₱${parseFloat(data.price.$numberDecimal ? data.price.$numberDecimal : data.price   ).toFixed(2)}` : 'Out of Stock'}</Text>
                         <div>{data.reviews.length != 0 ? <Rater rating={data.reviews.reduce((sum, review) => sum + parseFloat(review.rating), 0) / data.reviews.length} interactive={false} /> : <></>}</div>
                       </Card>
                     </Link>

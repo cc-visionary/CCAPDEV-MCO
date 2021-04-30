@@ -85,7 +85,7 @@ const EditProduct = ({ form, visible, onClose, onSubmit, imageUrl, setImageUrl }
               label="Price"
               rules={[{ required: true, message: 'Please enter the price' }]}
             >
-              <InputNumber style={{'width': '100%'}} formatter={value => `₱ ${value}`} />
+              <InputNumber style={{'width': '100%'}} min={0} formatter={value => `₱ ${value}`} />
             </Form.Item>
           </Col>
           <Col span={6}>
@@ -94,7 +94,7 @@ const EditProduct = ({ form, visible, onClose, onSubmit, imageUrl, setImageUrl }
               label="Stock"
               rules={[{ required: true, message: 'Please enter the number of stocks' }]}
             >
-              <InputNumber style={{'width': '100%'}} />
+              <InputNumber style={{'width': '100%'}} min={1} />
             </Form.Item>
           </Col>
         </Row>

@@ -8,7 +8,7 @@ import { ProductService, CartService } from '../../services';
 
 const { Text, Title } = Typography;
 
-const Inventory = ({ cart, setCart, products, ...props }) => {
+const Inventory = ({ cart, setCart, products, setProducts, ...props }) => {
   const [addDrawerVisible, setAddDrawerVisible] = useState(false);
   const [editDrawerVisible, setEditDrawerVisible] = useState(false);
   const [uniqueId, setUniqueId] = useState(Math.max(...products.map(product => product.productId)) + 1);
@@ -23,7 +23,8 @@ const Inventory = ({ cart, setCart, products, ...props }) => {
     ProductService.deleteProduct(currProduct.slug).then(() => {
       setProducts(products.filter((product) => product.productId != productId))
       message.success("Successfully deleted " + currProduct.name + " from the database.");
-    }).catch(() => {
+    }).catch((err) => {
+      console.log(err)
       message.error("Failed to delete " + currProduct.name + " from the database.");
     });
 
@@ -40,28 +41,33 @@ const Inventory = ({ cart, setCart, products, ...props }) => {
     addForm
       .validateFields()
       .then(values => {
+        let newProduct = {
+          ...values, 
+          productId: uniqueId, 
+          slug: values.name.replaceAll(' ', '-').toLowerCase(),
+          reviews: [], 
+          sold: 0
+        }
+
+        newProduct['product_image'] = imageUrl;
+        const index = products.map(product => product.slug).indexOf(values.name.toLowerCase().replaceAll(' ', '-'));
+        if(index >= 0 && products[index].productId != newProduct.productId) {
+          message.error('Item name already exists...');
+          return;
+        }
+        closeAddDrawer();
         addForm.resetFields();
-        handleAddProduct(values)
+        handleAddProduct(newProduct)
       })
       .catch(info => {
         console.log('Validate Failed:', info);
       });
   }
 
-  const handleAddProduct = (values) => {
-    let newProduct = {
-      ...values, 
-      productId: uniqueId, 
-      slug: values.name.replaceAll(' ', '-').toLowerCase(),
-      reviews: [], 
-      sold: 0
-    }
-    newProduct['product_image'] = imageUrl;
-    
+  const handleAddProduct = (newProduct) => {
     ProductService.addProduct(newProduct).then(() => {
       setUniqueId(currId => currId + 1);
       setProducts([...products, newProduct]);
-      closeAddDrawer();
       message.success("Successfully added " + newProduct.name + " to the database.");
     });
   }
@@ -93,6 +99,12 @@ const Inventory = ({ cart, setCart, products, ...props }) => {
     editForm
     .validateFields()
     .then(values => {
+      const index = products.map(product => product.slug).indexOf(values.name.toLowerCase().replaceAll(' ', '-'));
+      if(index >= 0 && products[index].productId != values.productId) {
+        message.error('Item name already exists...');
+        return;
+      }
+      closeEditDrawer();
       editForm.resetFields();
       handleEditProduct(values);
     })
@@ -104,11 +116,10 @@ const Inventory = ({ cart, setCart, products, ...props }) => {
   const handleEditProduct = (values) => {
     const newProducts = [...products];
     const index = products.map(product => product.productId).indexOf(values.productId)
-    newProducts[index] = {...values, product_image: imageUrl, reviews: newProducts[index].reviews, productId: newProducts[index].productId, sold: newProducts[index].sold, slug: newProducts[index].slug};
+    newProducts[index] = {...values, product_image: imageUrl, reviews: newProducts[index].reviews, productId: newProducts[index].productId, sold: newProducts[index].sold, slug: newProducts[index].name.toLowerCase().replaceAll(' ', '-')};
 
     ProductService.updateProduct(newProducts[index]);
     setProducts(newProducts);
-    closeEditDrawer();
     message.success("Successfully updated item " + newProducts[index].name + " in the database.");
   }
 

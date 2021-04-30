@@ -4,7 +4,7 @@ import { DollarOutlined, UserOutlined, TagOutlined, ShoppingOutlined } from '@an
 
 import { Inventory, OrderList } from '../../components';
 
-const Dashboard = ({ users, products, orders, cart, setCart }) => {
+const Dashboard = ({ users, products, setProducts, orders, cart, setCart }) => {
   return (
     <div id="dashboard">
       <Row align='middle' className="statistics">
@@ -21,7 +21,7 @@ const Dashboard = ({ users, products, orders, cart, setCart }) => {
           <Statistic title="Total Sold" value={orders.reduce((sum, order) => sum + parseFloat(order.total.$numberDecimal), 0).toFixed(2)} prefix={<DollarOutlined />} />
         </Col>
       </Row>
-      <Inventory cart={cart} setCart={setCart} products={products} />
+      <Inventory cart={cart} setCart={setCart} products={products} setProducts={setProducts} />
       <OrderList orders={orders} products={products} />
     </div>
   );
