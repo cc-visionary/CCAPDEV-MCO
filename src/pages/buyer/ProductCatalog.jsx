@@ -29,8 +29,7 @@ class ProductCatalog extends Component {
     const { products } = this.props;
 
     if(category) {
-      const filteredProducts = products.filter(data => data.category == category);
-      this.setState({ allElements: filteredProducts }, () => {
+      this.setState({ allElements: products.filter(data => data.category == category) }, () => {
         this.setPaginationStates();
         this.handleSort('featured');
       });
@@ -46,6 +45,7 @@ class ProductCatalog extends Component {
   setPaginationStates = () => {
     const { allElements, elementsPerPage } = this.state;
     this.setState({
+      totalElementsCount: allElements.length,
       pagesCount: Math.ceil(allElements.length / elementsPerPage)
     }, () => {
       this.setElementsForCurrentPage();
@@ -192,7 +192,6 @@ class ProductCatalog extends Component {
           <Title >{category ? 'No product is available in this category...' : searchValue == '' ? 'No product is available...' : `Product '${searchValue}' does not exist...`}</Title>
         </div>
         }
-        
         {
           pagesCount > 1 && 
           <Pagination 
@@ -202,7 +201,6 @@ class ProductCatalog extends Component {
             total={totalElementsCount}
             showTotal={(total, range) => `${range[0]}-${range[1]} of ${total} items`}
             pageSize={elementsPerPage}
-            showSizeChanger={false}
           />
         }
       </div>
