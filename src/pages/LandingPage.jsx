@@ -1,3 +1,8 @@
+/* 
+  This file contains the view for the Landing page.
+  This page will be shown if the url path is '/'.
+*/
+
 import React from 'react';
 import { Row, Col, Typography, Card, Image } from 'antd';
 import { AiOutlineLaptop, AiFillDatabase, AiOutlinePrinter, AiOutlineMenu } from 'react-icons/ai';

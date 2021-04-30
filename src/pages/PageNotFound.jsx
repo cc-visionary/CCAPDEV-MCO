@@ -1,3 +1,7 @@
+/* 
+  This file contains the view when the url path is not registered.
+*/
+
 import React from 'react';
 import { Typography, Image } from 'antd';
 

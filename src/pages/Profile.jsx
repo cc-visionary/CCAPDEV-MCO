@@ -1,3 +1,8 @@
+/* 
+  This file contains the view and functions for the Profile page.
+  This page will be shown if the url path is '/profile' and loggedIn is true.
+*/
+
 import React, { Component } from 'react';
 import { Form, Input, Button, DatePicker, Select, Modal, message } from 'antd';
 import { Redirect } from 'react-router-dom';
@@ -32,14 +37,17 @@ export default class Profile extends Component {
     }
   }
 
+  // sets the `this.state.imageUrl` to the parameter `imageUrl` and `this.state.hasChanged` to true
   setImageUrl = (imageUrl) => {
     this.setState({ imageUrl, hasChanged: true });
   }
 
+  // sets `this.state.hasChanged` to true
   onChange = () => {
     this.setState({ hasChanged : true })
   }
   
+  // if all condition are met, the user will successfully be updated both locally and in the database.
   onFinish = (values) => {
     const { setUser } = this.props
 
@@ -62,10 +70,12 @@ export default class Profile extends Component {
     })
   }
 
+  // shows the confirmation modal
   onDelete = () => {
     this.setState({ showConfirmation : true })
   }
 
+  // if the password inputted is the same from the user password, the user is deleted and will be logged out.
   onConfirmDelete = () => {
     const { user, logUserOut } = this.props;
 
@@ -84,6 +94,7 @@ export default class Profile extends Component {
     }
   }
 
+  // When the page has mounted, it sets `this.state.imageUrl` to the user's avatar
   componentDidMount = () => {
     this.setState({ imageUrl: this.props.user.avatar })
   }
@@ -91,6 +102,7 @@ export default class Profile extends Component {
   render() {
     const { user } = this.props;
 
+    // converts the user birthday to a moment js object
     user['birthday'] = moment(user['birthday']);
 
     return this.state.redirect ? <Redirect to='/' /> : (

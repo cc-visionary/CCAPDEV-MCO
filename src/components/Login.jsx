@@ -1,3 +1,8 @@
+/* 
+  This component contains the view for login modal.
+  Used in the Navigation component.
+*/
+
 import React from "react";
 import { Modal, Form, Input, Checkbox } from "antd";
 import { UserOutlined, LockOutlined } from '@ant-design/icons';

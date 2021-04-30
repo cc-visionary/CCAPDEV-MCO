@@ -1,3 +1,7 @@
+/*
+  This component shows the cart popover in the navigatioon
+*/
+
 import React, { useEffect, useState } from 'react';
 import { Button, Row, Col, Image, Typography, Empty } from 'antd';
 import { Link } from 'react-router-dom';

@@ -1,3 +1,8 @@
+/* 
+  This component contains the view for the adding a product.
+  Used in the Inventory component.
+*/
+
 import React from 'react';
 import { Drawer, Button, Form, Row, Col, Input, InputNumber, Select } from 'antd';
 

@@ -1,3 +1,8 @@
+/* 
+  This component contains the view of the list of all orders.
+  Used in the Dashboard page.
+*/
+
 import React, { useState } from 'react';
 import { Row, Col, Divider, Modal, Image, Button, Collapse, Table, Typography } from 'antd';
 import moment from 'moment';
@@ -9,11 +14,13 @@ const OrderList = ({ orders }) => {
   const [ visible, setVisible ] = useState(false)
   const [ currData, setCurrData ] = useState(orders[0])
 
+  // opens the order modal to view more info on the specific order 
   const onOpen = (record) => {
     setVisible(true);
     setCurrData(record);
   }
 
+  // closes the currently opened modal
   const onClose = () => {
     setVisible(false);
   }

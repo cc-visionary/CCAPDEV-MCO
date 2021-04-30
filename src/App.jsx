@@ -1,7 +1,14 @@
+/* 
+  Main file which controls the whole Website
+  Main Purpose:
+    1. Routes the pages to their respective paths through react-router-dom
+    2. Requests the datas needed from the database (users, cart, orders, and products) and passes those as props to the pages that needs those 
+    3. Contains the functions that can be reused by different pages (ex. setUser, etc.)
+*/
+
 import React, { Component } from 'react';
 import { message } from 'antd';
 import { HashRouter as Router, Switch, Route } from "react-router-dom";
-import axios from 'axios';
 
 import { Navigation, Footer } from './components';
 import { Profile, Register, LandingPage, PageNotFound, Dashboard, ProductCatalog, ProductPage, Cart, Checkout, OrderHistory } from './pages';
@@ -9,7 +16,6 @@ import { Profile, Register, LandingPage, PageNotFound, Dashboard, ProductCatalog
 import { UserService, CartService, OrderService, ProductService } from './services';
 
 const shippingFee = 99.99;
-
 export default class App extends Component {
   constructor(props) {
     super(props)
@@ -25,37 +31,47 @@ export default class App extends Component {
     }
   }
 
+  // sets the `this.state.user` value to the parameter `user` that was passed
   setUser = ( user ) => {
     if(user === null) user = {};
     this.setState({ user })
   }
 
+  // sets the `this.state.loggedIn` value to the parameter `loggedIn` that was passed
   setLoggedIn = ( loggedIn ) => {
     this.setState({ loggedIn });
   }
 
+  // sets the `this.state.products` value to the parameter `products` that was passed
   setProducts = ( products ) => {
     this.setState({ products });
   }
 
+  // sets the `this.state.cart` value to the parameter `cart` that was passed
   setCart = ( cart ) => {
     this.setState({ cart });
   }
 
+  // sets the `this.state.orderHistory` value to the parameter `orderHistory` that was passed
   setOrderHistory = ( orderHistory ) => {
     this.setState({ orderHistory });
   }
 
+  // sets the `this.state.orders` value to the parameter `orders` that was passed
   setOrders = ( orders ) => {
     this.setState({ orders })
   }
 
+  /*
+    adds the parameter `item` to the cart. 
+    this checks if the parameter `item` is already in the cart.
+      if it is, then it'll just add the `item`'s quantity to the existing item in the cart
+      if not it'll simply add that item to the cart
+  */ 
   addToCart = (item) => {
     const { cart } = this.state;
 
     let inCart = false
-
-    console.log(item)
     
     const newCart = cart.map((data) => {
       if(data.productId === item.productId) {
@@ -81,6 +97,10 @@ export default class App extends Component {
     }
   }
 
+  /* 
+    gets the user's cart and orderHistory then set those to the app's curernt cart and orderHistory. 
+    then sets the `this.state.user` to the parameter `user` and `this.state.loggedIn` to true.
+  */
   logUserIn = ( user ) => {
     CartService.getUserCart(user.userId).then(res => {
       this.setCart(res.data);
@@ -95,6 +115,9 @@ export default class App extends Component {
     message.success('Logged in successfully!');
   }
 
+  /*
+    logs the user our then set all the related this.state variable to empty/null then set `this.state.loggedIn` to false
+  */
   logUserOut = () => {
     UserService.logout().then(res => {
       this.setUser(null);
@@ -105,6 +128,13 @@ export default class App extends Component {
     })
   }
 
+  /*
+    When the page has been mounted, do the following:
+    1. Get all the users from the database then assign it to `this.state.users`
+    2. Check if there is a current user logged in
+    3. Get all the products from the database then assign it to `this.state.products`
+    4. Get all the orders from the database then assign it to `this.state.orders`
+  */
   componentDidMount = () => {
     UserService.getAllUsers().then(res => {
       this.setState({ users: res.data })

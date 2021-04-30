@@ -1,3 +1,8 @@
+/* 
+  This component contains the view of the website's footer.
+  Used in App.js
+*/
+
 import React from 'react';
 import { Typography } from 'antd';
 import { FaCcPaypal, FaCcVisa, FaCcMastercard, FaCcDiscover } from 'react-icons/fa'

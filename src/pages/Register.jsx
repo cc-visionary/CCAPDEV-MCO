@@ -1,3 +1,8 @@
+/* 
+  This file contains the view and functions for the Register page.
+  This page will be shown if the url path is '/register' and loggedIn is false.
+*/
+
 import React, { useState } from 'react';
 import { Form, Input, Button, DatePicker, Select, message } from 'antd';
 import { Redirect } from 'react-router-dom';
@@ -21,6 +26,15 @@ const Register = ({ users, uniqueUserId, logUserIn }) => {
   const [ redirect, setRedirect ] = useState(false)
   const [ imageUrl, setImageUrl ] = useState(null);
 
+  /* 
+    This function does the following procedure:
+    1. checks if there is an avatar.
+    2. checks if the username already exists.
+    3. if all conditions are met, then the user will be created and added to the database and the user will automatically be logged in.
+    4. if not, then the function will not continue.
+
+    The function is to be used when the user wants to press submit on creating the new user. 
+  */  
   const onFinish = (values) => {
     if(imageUrl === null) {
       message.error('Please add an avatar...');
@@ -47,6 +61,7 @@ const Register = ({ users, uniqueUserId, logUserIn }) => {
     })
   }
 
+  // handles the checking to determine if the second/confirm password is the same with the first/original
   const compareToFirstPassword = (rule, value, callback) => {
     if (value && value !== password) {
       callback('Two passwords that you enter is inconsistent!');

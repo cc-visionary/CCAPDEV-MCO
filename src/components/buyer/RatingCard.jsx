@@ -1,3 +1,8 @@
+/*
+  This component contains the RatingCard modal to view the ratings and comments of users about a certain product.
+  Used in ProductPage.
+*/
+
 import React from 'react';
 import { Modal, Typography, Progress, List, Comment, Tooltip } from 'antd';
 import { UserOutlined } from '@ant-design/icons';

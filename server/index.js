@@ -1,3 +1,7 @@
+/* 
+  Sets up the session and connection to backend, then listens to those connection.
+*/
+
 // import module `express`, `cors`, `session`, `cors`, `connect-mongo`, `body-parser`, `path`
 const fs = require('fs');
 const cors = require('cors');
@@ -8,6 +12,7 @@ const express = require('express');
 const session = require('express-session');
 const mongoose = require('mongoose');
 const MongoStore = require('connect-mongo')(session);
+
 // import module `routes` from `./routes/routes.js`
 const routes = require('./routes/routes.js');
 

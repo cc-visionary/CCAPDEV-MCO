@@ -1,3 +1,5 @@
+// this file allows all .js files in `pages` folder to be imported easily 
+
 import Cart from './buyer/Cart';
 import Checkout from './buyer/Checkout';
 import OrderHistory from './buyer/OrderHistory';

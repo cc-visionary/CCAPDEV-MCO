@@ -1,3 +1,8 @@
+/* 
+  This component contains the view for the navigation bar and functions to log the user in and out.
+  Used in App.js
+*/
+
 import React, { useState, useCallback }  from 'react';
 import { Button, Typography, Form, Dropdown, Popover, Badge, Image, message } from 'antd';
 import { ShoppingCartOutlined, UserOutlined } from '@ant-design/icons';
@@ -15,6 +20,7 @@ const Navigation = ({ products, cart, user, loggedIn, logUserIn, logUserOut }) =
   const [redirect, setRedirect] = useState(false);
   const [form] = Form.useForm();
    
+  // validates the login modal, if it meets all conditions, calls the onSubmit function
   const onOk = useCallback((values) => {
     form
       .validateFields()
@@ -27,11 +33,13 @@ const Navigation = ({ products, cart, user, loggedIn, logUserIn, logUserOut }) =
       });
   }, []);
   
+  // whenever the modal is closed, it resets its fields 
   const closePopup = useCallback(() => {
     form.resetFields();
     setLoginVisible(false);
   }, [form]);
 
+  // logs the user in
   const onSubmit = (values) => {
     UserService.login(values).then(res => {
       const { success, user, errorMessage } = res.data;
@@ -45,6 +53,7 @@ const Navigation = ({ products, cart, user, loggedIn, logUserIn, logUserOut }) =
     })
   };
 
+  // logs the user out
   const logout = () => {
     logUserOut()
     setRedirect(true);

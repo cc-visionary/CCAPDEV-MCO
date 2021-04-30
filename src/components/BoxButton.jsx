@@ -1,3 +1,9 @@
+/* 
+  This component contains the view of the BoxButton.
+  Used in the Landing Page.
+  used in the Navigation Component.
+*/
+
 import React from 'react';
 import { Link } from 'react-router-dom';
 

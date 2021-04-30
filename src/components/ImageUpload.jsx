@@ -1,3 +1,9 @@
+/* 
+  This component contains the view and functions for the image upload.
+  Used is AddProduct and EditProduct components.
+  Used in Profile and Register pages.
+*/
+
 import React, { Component } from 'react';
 import { Upload } from 'antd';
 
@@ -10,6 +16,11 @@ const getBase64 = (img, callback) => {
   reader.readAsDataURL(img);
 }
 
+/* 
+  called before uploading the file and checks the following
+    1. makes sure that the file types are only jpg or png.
+    2. makes sure that the file is less than 2mb
+*/
 const beforeUpload = (file) => {
   const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/jpg' || file.type === 'image/png';
   if (!isJpgOrPng) {
@@ -23,17 +34,11 @@ const beforeUpload = (file) => {
 }
 
 const ImageUpload = ({ imageUrl, setImageUrl }) => {
-
+  // whenever an image has been uploaded, it converts that image to its data url.
   const handleChange = info => {
     // Get this url from response in real world.
     getBase64(info.file.originFileObj, imageUrl => setImageUrl(imageUrl));
   };
-  
-  const UploadButton = (
-    <div>
-      <UploadOutlined /><div style={{ marginTop: 8 }}>Upload</div>
-    </div>
-  );
 
   return (
     <Upload 
@@ -44,7 +49,7 @@ const ImageUpload = ({ imageUrl, setImageUrl }) => {
       beforeUpload={beforeUpload}
       onChange={handleChange}
     >
-      {imageUrl ? <img src={imageUrl} alt="avatar" style={{ width: '100%' }} /> : UploadButton}
+      {imageUrl ? <img src={imageUrl} alt="avatar" style={{ width: '100%' }} /> : <div><UploadOutlined /><div style={{ marginTop: 8 }}>Upload</div></div>}
     </Upload>
   )
 }

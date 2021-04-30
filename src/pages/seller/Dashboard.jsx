@@ -1,3 +1,9 @@
+
+/* 
+  This file contains the view for the Dashboard page.
+  This page will be shown if the url path is '/' and user's userType is a 'seller'.
+*/
+
 import React, { Component } from 'react';
 import { Statistic, Row, Col } from 'antd';
 import { DollarOutlined, UserOutlined, TagOutlined, ShoppingOutlined } from '@ant-design/icons';
@@ -9,7 +15,7 @@ const Dashboard = ({ users, products, setProducts, orders, cart, setCart }) => {
     <div id="dashboard">
       <Row align='middle' className="statistics">
         <Col span={6}>
-          <Statistic title="Customers" value={users.length} prefix={<UserOutlined />} />
+          <Statistic title="Users" value={users.length} prefix={<UserOutlined />} />
         </Col>
         <Col span={6}>
           <Statistic title="Products" value={products.length} prefix={<TagOutlined />} />

@@ -1,3 +1,5 @@
+// this file allows all .js files in `components` folder to be imported easily 
+
 import CartPopover from './buyer/CartPopover';
 import RatingCard from './buyer/RatingCard';
 

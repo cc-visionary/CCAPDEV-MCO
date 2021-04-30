@@ -1,3 +1,5 @@
+/* Contains the functions to requests to URL Paths in relation to the `carts` collection */
+
 import axios from 'axios';
 
 const CART_API_BASE_URL = "http://localhost:3000/cart";

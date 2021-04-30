@@ -1,3 +1,8 @@
+/* 
+  This file contains the view and functions for the Cart page.
+  This page will be shown if the url path is '/cart', the user's userType is a 'buyer' loggedIn is true.
+*/
+
 import React, { useState } from 'react'
 import { Button, Checkbox, InputNumber, Typography, Divider, Popconfirm, Empty, Image, message } from 'antd';
 import { DeleteOutlined } from '@ant-design/icons';
@@ -14,6 +19,7 @@ const Cart = ({ products, shippingFee, cart, setCart, ...props }) => {
   
   const totalCost = cart.reduce((sum, data) => sum + products[products.map(d => d.productId).indexOf(data.productId)].price.$numberDecimal * data.quantity, 0);
 
+  // toggles the checkall checkbox for all cart items
   const toggleCheckAll = (checked) => {
     if(indeterminate) checked = true
     setCheckAll(checked)
@@ -21,6 +27,7 @@ const Cart = ({ products, shippingFee, cart, setCart, ...props }) => {
     setIndeterminate(false)
   }
 
+  // toggles a single checkbox for each cart item
   const toggleACheckbox = (index, checked) => {
     const newCheckboxes = checkboxes.map((val, i) => index == i ? checked : val )
     setCheckboxes(newCheckboxes)
@@ -32,12 +39,14 @@ const Cart = ({ products, shippingFee, cart, setCart, ...props }) => {
     else setIndeterminate(false)
   }
 
+  // deletes a product from the cart locally as well as in the database
   const deleteProductFromCart = ( index ) => {
     CartService.deleteItemsFromCart([cart[index]])
     setCart(cart.filter((_, i) => i != index));
     message.success('Successfully deleted item from the cart');
   }
 
+  // deletes a group of products based on the paramter `indexes` locally as well as in the database
   const deleteProductsFromCart = ( indexes ) => {
     indexes = indexes.filter(index => index != null);
     CartService.deleteItemsFromCart(indexes.map(index => ({productId: cart[index].productId, userId: cart[index].userId})))
@@ -46,6 +55,10 @@ const Cart = ({ products, shippingFee, cart, setCart, ...props }) => {
     message.success('Successfully deleted items from the cart');
   }
 
+  /*
+    changes the quantity of an item determined by the parameter `item` in the cart
+    then updates the local value of the item's quantity as well as in the database.s
+  */
   const changeCartQuantity = ( index, value ) => {
     let cartToUpdate = cart[index];
     cartToUpdate['quantity'] = value;

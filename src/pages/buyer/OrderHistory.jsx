@@ -1,3 +1,8 @@
+/* 
+  This file contains the view and functions for the OrderHistory page.
+  This page will be shown if the url path is '/order-history', the user's userType is a 'buyer', and loggedIn is true.
+*/
+
 import React, { useState } from 'react'
 import { Row, Col, Image, Collapse, Typography, Divider, Button, Modal, Input, message } from 'antd';
 import { Link } from 'react-router-dom';
@@ -14,11 +19,13 @@ const OrderHistory = ({ user, products, setProducts, orderHistory }) => {
   const [ reaction, setReaction ] = useState('');
   const [ rating, setRating ] = useState(0);
 
+  // opens the review modal of a product
   const onOpenReview = (id) => {
     setReviewVisible(true);
     setItemId(id);
   }
 
+  // closes the review modal of a product
   const onCloseReview = () => {
     setReviewVisible(false);
     setItemId(null);
@@ -26,6 +33,7 @@ const OrderHistory = ({ user, products, setProducts, orderHistory }) => {
     setRating(0);
   }
 
+  // checks if the review field's conditions are met, if so the review is added to that product locally as well as in the database.
   const confirmReview = () => {
     if(reaction == '') {
       message.error('Reaction is required')

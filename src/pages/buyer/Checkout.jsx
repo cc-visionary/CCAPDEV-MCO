@@ -1,3 +1,8 @@
+/* 
+  This file contains the view and functions for the Cart page.
+  This page will be shown if the url path is '/cart', the user's userType is a 'buyer' loggedIn is true.
+*/
+
 import React, { Component } from 'react';
 import { Image, Button, Row, Col, Divider, Typography, Form, Input, InputNumber, Select, message } from 'antd';
 import { Link, Redirect } from 'react-router-dom';
@@ -20,12 +25,21 @@ export default class Checkout extends Component {
     }
   }
 
+  // when the page mounts, it sets `this.state.countries` to the requested list of countries
   componentDidMount = () => {
     // get the countries through a third party api
     axios.get('https://restcountries.eu/rest/v2/all?fields=name')
       .then(res => this.setState({ countries: res.data }))
   }
 
+  /* 
+    called when the user intends to checkout and does the following:
+    1. Creates the newOrder object, then add that to the orders database
+    2. Redirect to the url path '/'
+    3. Change values locally
+    4. For each product in the order, update their stock and sold value locally as well as in the database.
+       Then if the stock is less than or equal to 0, it deletes that product from all of the user's carts 
+  */
   onFinish = (values) => {
     const { user, products, setProducts, shippingFee, cart, orderHistory, setOrderHistory, setCart, orders, setOrders } = this.props;
 

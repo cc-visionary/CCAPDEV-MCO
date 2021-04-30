@@ -1,3 +1,8 @@
+/* 
+  This component contains the view of the list of all the products and functions for adding, editing, and deleting a product.
+  Used in the Dashboard page.
+*/
+
 import React, { useState } from 'react';
 import { Table, Popconfirm, Form, Button, Typography, Input, Row, Col, message } from 'antd';
 import { SearchOutlined, PlusOutlined } from '@ant-design/icons';
@@ -17,6 +22,7 @@ const Inventory = ({ cart, setCart, products, setProducts, ...props }) => {
   const [editForm] = Form.useForm();
   const [addForm] = Form.useForm();
 
+  // handles the deletion of a product
   const handleDelete = (productId) => {
     const productIds = products.map(product => product.productId);
     const currProduct = products[productIds.indexOf(productId)];
@@ -64,6 +70,7 @@ const Inventory = ({ cart, setCart, products, setProducts, ...props }) => {
       });
   }
 
+  // handles the adding of a product
   const handleAddProduct = (newProduct) => {
     ProductService.addProduct(newProduct).then(() => {
       setUniqueId(currId => currId + 1);
@@ -113,6 +120,7 @@ const Inventory = ({ cart, setCart, products, setProducts, ...props }) => {
     });
   }
 
+  // hanadles the editing of a product
   const handleEditProduct = (values) => {
     const newProducts = [...products];
     const index = products.map(product => product.productId).indexOf(values.productId)
@@ -125,10 +133,6 @@ const Inventory = ({ cart, setCart, products, setProducts, ...props }) => {
     if(newProducts[index].stock <= 0) {
       CartService.deleteCartByItem(newProducts[index].productId)
     }
-  }
-
-  const handleSearch = (e) => {
-    setSearchText(() => e.target.value)
   }
 
   let categories = []
@@ -207,7 +211,7 @@ const Inventory = ({ cart, setCart, products, setProducts, ...props }) => {
           <Row gutter={16} align='middle' className="table-title">
             <Col span={15}><Title level={3}>Inventory</Title></Col>
             <Col span={6}>
-              <Input value={searchText} placeholder="Search product by name" prefix={<SearchOutlined />} onChange={(e) => handleSearch(e)} />
+              <Input value={searchText} placeholder="Search product by name" prefix={<SearchOutlined />} onChange={(e) => setSearchText(e.target.value)} />
             </Col>
             <Col span={3}>
               <Button onClick={() => showAddDrawer()}><PlusOutlined /> New Product</Button>

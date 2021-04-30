@@ -1,3 +1,8 @@
+/* 
+  This component shows the menu to lead the different types of user to different pages.
+  Used in the Navigation component.
+*/
+
 import React from 'react';
 import { Menu } from 'antd';
 import { Link } from 'react-router-dom'

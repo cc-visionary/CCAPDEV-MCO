@@ -1,3 +1,8 @@
+/* 
+  This file contains the view and functions for the ProductCatalog page.
+  This page will be shown if the url path is '/products', the user's userType is a 'buyer', and loggedIn is true.
+*/
+
 import React, { Component } from 'react';
 import { Card, Pagination, Typography, Row, Col, Image, Input, Select } from 'antd';
 import { Link } from 'react-router-dom';
@@ -23,7 +28,7 @@ class ProductCatalog extends Component {
       filterBrand: 'All',
     }
   }
-
+ 
   componentDidMount() {
     const { category } = this.props.params;
     const { products } = this.props;
@@ -42,6 +47,7 @@ class ProductCatalog extends Component {
 
   }
 
+  // initializes the page states
   setPaginationStates = () => {
     const { allElements, elementsPerPage } = this.state;
     this.setState({
@@ -52,6 +58,7 @@ class ProductCatalog extends Component {
     });
   } 
 
+  // sets the products for the current page
   setElementsForCurrentPage = () => {
     const { offset, allElements, elementsPerPage } = this.state;
     const currentPageElements = allElements.slice(offset, offset + elementsPerPage);
@@ -60,6 +67,7 @@ class ProductCatalog extends Component {
     });
   }
 
+  // handles the change in page
   handlePageClick = (pageNumber) => {
     const { elementsPerPage } = this.state;
     const currentPage = pageNumber - 1;
@@ -71,6 +79,7 @@ class ProductCatalog extends Component {
     });
   }
 
+  // handles the sorting of the products
   handleSort = (val) => {
     let sorted;
     if(val === 'low_to_high') {
@@ -86,14 +95,17 @@ class ProductCatalog extends Component {
     this.setState({ allElements: sorted }, () => this.setElementsForCurrentPage())
   }
 
+  // handles the searching by filtering based on the `this.state.searchValue`
   handleSearch = (e) => {
     this.setState({ searchValue : e.target.value }, () => this.handleFilter('search', e.target.value))
   }
 
+  // handles the filtering by brand
   handleFilterBrand = (val) => {
     this.setState({ filterBrand : val }, () => this.handleFilter('brand', val))
   }
 
+  // combines the different filters together
   handleFilter = (type, val) => {
     let search;
     let filterBrand;
