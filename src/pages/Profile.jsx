@@ -41,14 +41,14 @@ export default class Profile extends Component {
   }
   
   onFinish = (values) => {
-    const { user, setUser } = this.props
+    const { setUser } = this.props
 
-    if(imageUrl === null) {
+    if(this.state.imageUrl === null) {
       message.error('Please add an avatar...');
       return;
     }
 
-    values['avatar'] = imageUrl;
+    values['avatar'] = this.state.imageUrl;
     UserService.updateUser(values).then((res) => {
       const { success, errorMessage } = res.data;
       if(success) {
@@ -95,6 +95,9 @@ export default class Profile extends Component {
 
     return this.state.redirect ? <Redirect to='/' /> : (
       <Form {...layout} id="profile" name="profile" onFinish={(e) => this.onFinish(e)} initialValues={user} >
+        <Form.Item name="userId">
+          <Input hidden />
+        </Form.Item>
         <Form.Item name='avatar' label="Avatar">
           <ImageUpload imageUrl={this.state.imageUrl} setImageUrl={this.setImageUrl} />
         </Form.Item>

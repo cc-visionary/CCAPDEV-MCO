@@ -84,7 +84,7 @@ const Inventory = ({ cart, setCart, ...props }) => {
 
   const showEditDrawer = (productId) => {
     const index = products.map(product => product.productId).indexOf(productId)
-    editForm.setFieldsValue(products[index]);
+    editForm.setFieldsValue({...products[index], price: products[index].price.$numberDecimal ? products[index].price.$numberDecimal : products[index].price});
     setImageUrl(products[index].product_image)
     setEditDrawerVisible(true);
   }
@@ -110,13 +110,13 @@ const Inventory = ({ cart, setCart, ...props }) => {
   const handleEditProduct = (values) => {
     const newProducts = [...products];
     const index = products.map(product => product.productId).indexOf(values.productId)
-    newProducts[index] = {...values, product_image: imageUrl, reviews: newProducts[index].reviews, productId: newProducts[index].productId, sold: newProducts[index].sold};
+    newProducts[index] = {...values, product_image: imageUrl, reviews: newProducts[index].reviews, productId: newProducts[index].productId, sold: newProducts[index].sold, slug: newProducts[index].slug};
 
-    ProductService.updateProduct(newProducts[index]).then(() => {
-      setProducts(newProducts);
-      closeEditDrawer();
-      message.success("Successfully updated item " + newProducts[index].name + " in the database.");
-    })
+    ProductService.updateProduct(newProducts[index]);
+    
+    setProducts(newProducts);
+    closeEditDrawer();
+    message.success("Successfully updated item " + newProducts[index].name + " in the database.");
   }
 
   const handleSearch = (e) => {
@@ -156,9 +156,9 @@ const Inventory = ({ cart, setCart, ...props }) => {
       title: 'Price',
       dataIndex: 'price',
       key: 'price',
-      sorter: (a, b) => a.price - b.price,
+      sorter: (a, b) => parseFloat(a.price.$numberDecimal ? a.price.$numberDecimal : a.price) - parseFloat(b.price.$numberDecimal ? b.price.$numberDecimal : b.price),
       ellipsis: true,
-      render: (_, record) => <Text>₱{parseFloat(record.price).toFixed(2)}</Text>
+      render: (_, record) => <Text>₱{parseFloat(record.price.$numberDecimal ? record.price.$numberDecimal : record.price).toFixed(2)}</Text>
     },
     {
       title: 'Stock',

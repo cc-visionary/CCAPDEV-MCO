@@ -69,7 +69,7 @@ const OrderHistory = ({ user, products, setProducts, orderHistory }) => {
       <Collapse defaultActiveKey={[0]} accordion>
         {
           orderHistory.map((item, i) => 
-            <Panel header={`Order ${item.orderId} from ${item.dateOrdered}`} key={i}>
+            <Panel header={`Order ${item.orderId} from ${moment(item.dateOrdered, 'YYYY-MM-DDTHH:mm:ss.SSZ').format('MM-DD-YYYY HH:mm:ss')}`} key={i}>
               <Row gutter={16}>
                 <Col span={2}></Col>
                 <Col span={10}>Name</Col>
@@ -82,7 +82,7 @@ const OrderHistory = ({ user, products, setProducts, orderHistory }) => {
               {
                 item.items.map((data, i) => 
                     <Row align='middle' gutter={16}>
-                      <Col span={2}><Image width={25} height={25} src={data.product_image} preview={false} /></Col>
+                      <Col span={2}><Image width={50} height={50} src={data.product_image} preview={false} /></Col>
                       <Col span={10}>{data.name}<br /><Text type='secondary'>{data.brand}</Text></Col>
                       <Col span={3}>₱{parseFloat(data.price).toFixed(2)}</Col>
                       <Col span={3}>{data.quantity}</Col>
@@ -96,12 +96,12 @@ const OrderHistory = ({ user, products, setProducts, orderHistory }) => {
             <Row gutter={16}>
               <Col span={15}></Col>
               <Col span={3}><Text>Shipping Fee:</Text></Col>
-              <Col span={3}><Text>₱{parseFloat(item.shippingFee.$numberDecimal).toFixed(2)}</Text></Col>
+              <Col span={3}><Text>₱{parseFloat(item.shippingFee.$numberDecimal ? item.shippingFee.$numberDecimal : item.shippingFee).toFixed(2)}</Text></Col>
             </Row>
             <Row gutter={16}>
-              <Col span={15}><Text type='secondary'>Date Ordered: {item.dateOrdered}</Text></Col>
+              <Col span={15}><Text type='secondary'>Date Ordered: {moment(item.dateOrdered, 'YYYY-MM-DDTHH:mm:ss.SSZ').format('MM-DD-YYYY HH:mm:ss')}</Text></Col>
               <Col span={3}><Text>Total:</Text></Col>
-              <Col span={3}><Text>₱{parseFloat(item.total.$numberDecimal).toFixed(2)}</Text></Col>
+              <Col span={3}><Text>₱{parseFloat(item.total.$numberDecimal ? item.total.$numberDecimal : item.total).toFixed(2)}</Text></Col>
             </Row>
           </Panel>
           )

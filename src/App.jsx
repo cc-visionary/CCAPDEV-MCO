@@ -130,8 +130,8 @@ export default class App extends Component {
 
   render() {
     const { cart, products, orders, orderHistory, user, users, loggedIn } = this.state;
-    const { setProducts, setCart, setOrderHistory, setOrders, addToCart, logUserIn, logUserOut } = this;
-
+    const { setProducts, setCart, setOrderHistory, setOrders, addToCart, logUserIn, logUserOut, setUser } = this;
+    console.log(users)
     return (
       <Router>
         <Navigation logUserIn={logUserIn} logUserOut={logUserOut} products={products} cart={cart} user={user} loggedIn={loggedIn} />
@@ -147,12 +147,12 @@ export default class App extends Component {
               <Switch>
                 <Route exact path="/" component={LandingPage} className="main" />
                 <Route path="/products" component={(props) => <ProductCatalog products={products} {...props} />} />
-                <Route path="/product/:slug" component={(props) => <ProductPage products={products} users={users} cart={cart} addToCart={addToCart} {...props} />} />
+                <Route path="/product/:slug" component={(props) => <ProductPage loggedIn={loggedIn} products={products} users={users} cart={cart} addToCart={addToCart} {...props} />} />
                 <Route path="/category/:category" component={(props) => <ProductCatalog products={products} {...props} />} />
                 <Route path="/cart" component={(props) => <Cart products={products} shippingFee={shippingFee} cart={cart} setCart={setCart} {...props} />} />
                 <Route path="/checkout" component={(props) => <Checkout user={user} products={products} setProducts={setProducts} orderHistory={orderHistory} setOrderHistory={setOrderHistory} shippingFee={shippingFee} cart={cart} setCart={setCart} orders={orders} setOrders={setOrders} {...props} />} />
                 <Route path="/order-history" component={(props) => <OrderHistory user={user} products={products} setProducts={setProducts} orderHistory={orderHistory} {...props} />} />
-                <Route path="/profile" component={(props) => <Profile user={user} logUserOut={logUserOut} {...props} />} />
+                <Route path="/profile" component={(props) => <Profile user={user} setUser={setUser} logUserOut={logUserOut} {...props} />} />
                 <Route component={PageNotFound} />
               </Switch>
               :

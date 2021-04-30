@@ -34,11 +34,11 @@ export default class Checkout extends Component {
     const newOrder = {
       orderId: Math.max(...orders.map(order => order.orderId)) + 1,
       contactInfo: values,
-      total: cart.reduce((sum, item) => sum + products[productIds.indexOf(item.productId)].price * item.quantity, 0) + shippingFee,
-      items: cart.map((item) => ({...products[productIds.indexOf(item.productId)], quantity: item.quantity})),
+      total: cart.reduce((sum, item) => sum + products[productIds.indexOf(item.productId)].price.$numberDecimal * item.quantity, 0) + shippingFee,
+      items: cart.map((item) => ({...products[productIds.indexOf(item.productId)], price: products[productIds.indexOf(item.productId)].price.$numberDecimal, quantity: item.quantity})),
       shippingFee,
       userId: user.userId,
-      dateOrdered: moment().format('MM-DD-YYYY')
+      dateOrdered: new Date(moment())
     }
     
     OrderService.addOrder(newOrder)

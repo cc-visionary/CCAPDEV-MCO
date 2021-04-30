@@ -96,7 +96,7 @@ const Cart = ({ products, shippingFee, cart, setCart, ...props }) => {
         <div className="container">
           <div className="location">
             <Title level={4}>Location</Title>
-            <Text>1144 Soler Street, Binondo, Manila, Metro Manila City, Philippines</Text>
+            <Text>Metro Manila City, Philippines</Text>
           </div>
           <Divider />
           <div className="summary">

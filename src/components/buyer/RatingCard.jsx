@@ -30,7 +30,7 @@ const RatingCard = ({ users, reviews, visible, onClose }) => {
 
             return (
               <li key={i}>
-                <Comment author={user.username} content={item.reaction} avatar={user.avatar ? user.avatar : <UserOutlined />} datetime={<Tooltip title={item.dateReviewed}><span>{moment(item.dateReviewed, 'MM-DD-YYYY').fromNow()}</span></Tooltip>} />
+                <Comment author={user ? user.username : 'Deleted User'} content={item.reaction} avatar={user && user.avatar ? user.avatar : <UserOutlined />} datetime={<Tooltip title={moment(item.dateReviewed, 'YYYY-MM-DDTHH:mm:ss.SSZ').format('MM-DD-YYYY HH:mm:ss')}><span>{moment(item.dateReviewed, 'YYYY-MM-DDTHH:mm:ss.SSZ').fromNow()}</span></Tooltip>} />
               </li>
             )}
           ) : null } 

@@ -12,13 +12,13 @@ class CartService {
   }
 
   updateCart(cartItem) {
-    const { key, userId, quantity } = cartItem
+    const { productId, userId, quantity } = cartItem
 
-    return axios.put(CART_API_BASE_URL, { key: parseInt(key), userId: parseInt(userId), quantity: parseInt(quantity) });
+    return axios.put(CART_API_BASE_URL, { productId: parseInt(productId), userId: parseInt(userId), quantity: parseInt(quantity) });
   }
 
-  deleteCartByItem(key) {
-    return axios.delete(CART_API_BASE_URL + `/key/${key}`);
+  deleteCartByItem(productId) {
+    return axios.delete(CART_API_BASE_URL + `/productId/${productId}`);
   }
 
   deleteCartByUser(userId) {

@@ -20,7 +20,7 @@ class ProductPage extends Component {
   }
 
   render = () => {
-    const { products, users, cart, addToCart } = this.props;
+    const { loggedIn, products, users, cart, addToCart } = this.props;
     const { quantity, visible } = this.state;
 
     const data = products[products.map(product => product.slug).indexOf(this.props.match.params.slug)]
@@ -63,7 +63,7 @@ class ProductPage extends Component {
               data.stock > 0 && data.stock - (cart.map((c) => c.productId).indexOf(data.productId) != -1 ? cart[cart.map((c) => c.productId).indexOf(data.productId)].quantity : 0) > 0 ?
               <div className='add-to-cart'>
                 <div className='quantity'><Text>Quantity: </Text><InputNumber value={quantity} min={1} max={data.stock - (cart.map((c) => c.productId).indexOf(data.productId) != -1 ? cart[cart.map((c) => c.productId).indexOf(data.productId)].quantity : 0)} onChange={value => this.setState({ quantity: value })} /></div>
-                <BoxButton onClick={() => addToCart({ productId: data.productId, quantity })}>Add to Cart</BoxButton>
+                {loggedIn ? <BoxButton onClick={() => addToCart({ productId: data.productId, quantity })}>Add to Cart</BoxButton> : null }
               </div> :
               <div className='out-of-stock'>Out of Stock</div>
             }

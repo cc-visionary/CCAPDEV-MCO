@@ -51,7 +51,7 @@ app.put('/cart', CartController.updateCartItem);
 
 app.post('/cart', CartController.addItemToCart);
 
-app.delete('/cart/key/:key', CartController.deleteByItem);
+app.delete('/cart/productId/:productId', CartController.deleteByItem);
 
 app.delete('/cart/userId/:userId', CartController.deleteByUser);
 

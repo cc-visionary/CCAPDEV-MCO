@@ -38,6 +38,7 @@ const Navigation = ({ products, cart, user, loggedIn, logUserIn, logUserOut }) =
       if(success) {
         logUserIn(user)
         setLoginVisible(false);
+        if(user.userType === 'seller') setRedirect(true);
       } else {
         message.error(errorMessage);
       }

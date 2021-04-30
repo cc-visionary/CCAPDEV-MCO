@@ -46,7 +46,7 @@ const products = [
     price: 999,
     stock: 300,
     description: 'Bad Mouse',
-    reviews: [{userId: users[1].userId, reaction: 'cool', rating: 4, dateReviewed: '01-25-2021'}],
+    reviews: [{userId: users[1].userId, reaction: 'cool', rating: 4, dateReviewed: '2021-01-25T16:00:00.000Z'}],
     sold: 1
   },
   {
@@ -72,7 +72,7 @@ const products = [
     price: 25000,
     stock: 200,
     description: 'Cool Print',
-    reviews: [{userId: users[0].userId, reaction: 'not satisfied', rating: 2, dateReviewed: '01-22-2021'}, {userId: users[1].userId, reaction: 'not satisfied', rating: 2, dateReviewed: '01-22-2021'}, {userId: users[3].userId, reaction: 'fair', rating: 3, dateReviewed: '03-04-2021'}],
+    reviews: [{userId: users[0].userId, reaction: 'not satisfied', rating: 2, dateReviewed: '2021-01-22T16:00:00.000Z'}, {userId: users[1].userId, reaction: 'not satisfied', rating: 2, dateReviewed: '2021-01-22T16:00:00.000Z'}, {userId: users[3].userId, reaction: 'fair', rating: 3, dateReviewed: '2021-03-04T16:00:00.000Z'}],
     sold: 3
   },
   {
@@ -86,7 +86,7 @@ const products = [
     stock: 20,
     description: 'Cool laptop',
     rating: 0,
-    reviews: [{userId: users[1].userId, reaction: 'awesome', rating: 5, dateReviewed: '01-24-2021'}, {userId: users[2].userId, reaction: 'nice!', rating: 4, dateReviewed: '01-24-2021'}],
+    reviews: [{userId: users[1].userId, reaction: 'awesome', rating: 5, dateReviewed: '2021-01-24T16:00:00.000Z'}, {userId: users[2].userId, reaction: 'nice!', rating: 4, dateReviewed: '2021-01-24T16:00:00.000Z'}],
     sold: 2
   },
 ]

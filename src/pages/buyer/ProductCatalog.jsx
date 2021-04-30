@@ -3,9 +3,6 @@ import { Card, Pagination, Typography, Row, Col, Image, Input, Select } from 'an
 import { Link } from 'react-router-dom';
 import { useParams } from 'react-router-dom'
 import Rater from 'react-rater'
-import { ConsoleView } from 'react-device-detect';
-
-import { ProductService } from '../../services';
 
 import ProductNotFoundImage from '../../assets/images/product_not_found.svg';
 

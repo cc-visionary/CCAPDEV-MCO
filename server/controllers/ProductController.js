@@ -20,7 +20,7 @@ const ProductController = {
     db.insertOne(Product, req.body, (result) => defaultCallback(res, result))
   },
   updateProduct: (req, res) => {
-    db.updateOne(Product, { key: parseInt(req.body.key) }, req.body, (result) => defaultCallback(res, result))
+    db.updateOne(Product, { productId: parseInt(req.body.productId), slug: req.body.slug  }, req.body, (result) => defaultCallback(res, result))
   },
   deleteProduct: (req, res) => {
     const { slug } = req.params;
