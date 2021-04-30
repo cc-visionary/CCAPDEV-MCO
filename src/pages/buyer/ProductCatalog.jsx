@@ -74,13 +74,14 @@ class ProductCatalog extends Component {
   handleSort = (val) => {
     let sorted;
     if(val === 'low_to_high') {
-      sorted = this.state.allElements.sort((a, b) => a.price > b.price);
+      sorted = this.state.allElements.sort((a, b) => parseFloat(a.price.$numberDecimal) > parseFloat(b.price.$numberDecimal));
     } else if(val === 'high_to_low') {
-      sorted = this.state.allElements.sort((a, b) => a.price < b.price);
+      sorted = this.state.allElements.sort((a, b) => parseFloat(a.price.$numberDecimal) < parseFloat(b.price.$numberDecimal));
     } else if(val === 'top_rated') {
       sorted = this.state.allElements.sort((a, b) => a.reviews.length > 0 ? (a.reviews.reduce((sum, review) => sum + review.rating, 0) / a.reviews.length) < (b.reviews.reduce((sum, review) => sum + review.rating, 0) / b.reviews.length) : 0 < (b.reviews.reduce((sum, review) => sum + review.rating, 0) / b.reviews.length));
     } else {
       sorted = this.state.allElements.sort((a, b) => a.sold < b.sold);
+      sorted = sorted.sort((a, b) => a.reviews.length > 0 ? (a.reviews.reduce((sum, review) => sum + review.rating, 0) / a.reviews.length) < (b.reviews.reduce((sum, review) => sum + review.rating, 0) / b.reviews.length) : 0 < (b.reviews.reduce((sum, review) => sum + review.rating, 0) / b.reviews.length));
     }
     this.setState({ allElements: sorted }, () => this.setElementsForCurrentPage())
   }
@@ -120,11 +121,12 @@ class ProductCatalog extends Component {
 
   render() {
     const { allElements, searchValue, filterBrand, totalElementsCount, pagesCount, elementsPerPage, currentPageElements } = this.state;  
+    const { products } = this.props;
     const { category } = this.props.params;
 
     let brands = []
-    if(this.props.products) {
-      this.props.products.map((record) => {
+    if(products) {
+      products.map((record) => {
         if(!brands.includes(record.brand)) brands.push(record.brand)
       })
     }
@@ -136,16 +138,16 @@ class ProductCatalog extends Component {
             <Title>&nbsp;{category ? category : 'Products'}</Title>
           </Col>
           <Col span={7}>
-            <Input placeholder="Search product by name" value={searchValue} onChange={this.handleSearch} />
+            <Input placeholder="Search product by name" value={searchValue} onChange={this.handleSearch} disabled={products.length == 0} />
           </Col>
           <Col span={5}>
-            <Select style={{ display: 'block' }} value={filterBrand} onChange={this.handleFilterBrand} placeholder='Filter by Brand'>
+            <Select style={{ display: 'block' }} value={filterBrand} onChange={this.handleFilterBrand} placeholder='Filter by Brand' disabled={products.length == 0}>
               <Option value='All'>All Brands</Option>
               {brands.map(brand => <Option value={brand}>{brand}</Option>)}
             </Select>
           </Col>
           <Col span={5}>
-            <Select style={{ display: 'block' }} onChange={this.handleSort} defaultValue='featured'>
+            <Select style={{ display: 'block' }} onChange={this.handleSort} defaultValue='featured' disabled={products.length == 0}>
                 <Option value='featured'>Featured</Option>
                 <Option value='low_to_high'>Price: Low to High</Option>
                 <Option value='high_to_low'>Price: High to Low</Option>
@@ -187,7 +189,7 @@ class ProductCatalog extends Component {
         :
         <div className='product-not-exist'>
           <Image src={ProductNotFoundImage} preview={false} />
-          <Title >{searchValue == '' && category ? 'No product exists in this category...' : `Product '${searchValue}' does not exist...`}</Title>
+          <Title >{category ? 'No product is available in this category...' : searchValue == '' ? 'No product is available...' : `Product '${searchValue}' does not exist...`}</Title>
         </div>
         }
         

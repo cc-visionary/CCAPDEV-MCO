@@ -5,7 +5,7 @@ import moment from 'moment';
 const { Text, Title } = Typography;
 const { Panel } = Collapse;
 
-const OrderList = ({ products, orders }) => {
+const OrderList = ({ orders }) => {
   const [ visible, setVisible ] = useState(false)
   const [ currData, setCurrData ] = useState(orders[0])
 
@@ -60,13 +60,12 @@ const OrderList = ({ products, orders }) => {
           <Divider />
           {
             currData.items.map((data, i) => {
-              const product = products[products.map(product => product.productId).indexOf(data.productId)]; 
               return <Row key={i} align='middle' gutter={16}>
-                <Col span={2}><Image width={25} height={25} src={product.product_image} preview={false} /></Col>
-                <Col span={10}>{product.name}<br /><Text type='secondary'>{product.brand}</Text></Col>
-                <Col span={4}>₱{parseFloat(product.price.$numberDecimal).toFixed(2)}</Col>
+                <Col span={2}><Image width={25} height={25} src={data.product_image} preview={false} /></Col>
+                <Col span={10}>{data.name}<br /><Text type='secondary'>{data.brand}</Text></Col>
+                <Col span={4}>₱{parseFloat(data.price.$numberDecimal ? data.price.$numberDecimal : data.price).toFixed(2)}</Col>
                 <Col span={4}>{data.quantity}</Col>
-                <Col span={4}>₱{(parseFloat(product.price.$numberDecimal) * data.quantity).toFixed(2)}</Col>
+                <Col span={4}>₱{(parseFloat(data.price.$numberDecimal ? data.price.$numberDecimal : data.price) * data.quantity).toFixed(2)}</Col>
                 { currData.items.length - 1 == i ? <></> : <Divider /> }
               </Row> 
             })

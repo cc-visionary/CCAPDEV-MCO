@@ -85,7 +85,7 @@ export default class Profile extends Component {
   }
 
   componentDidMount = () => {
-    this.setImageUrl(this.props.user.avatar);
+    this.setState({ imageUrl: this.props.user.avatar })
   }
 
   render() {

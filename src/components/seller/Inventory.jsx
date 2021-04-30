@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Table, Popconfirm, Form, Button, Typography, Input, Row, Col, message } from 'antd';
 import { SearchOutlined, PlusOutlined } from '@ant-design/icons';
 import Rater from 'react-rater';
@@ -8,20 +8,14 @@ import { ProductService, CartService } from '../../services';
 
 const { Text, Title } = Typography;
 
-const Inventory = ({ cart, setCart, ...props }) => {
-  const [products, setProducts] = useState([]);
+const Inventory = ({ cart, setCart, products, ...props }) => {
   const [addDrawerVisible, setAddDrawerVisible] = useState(false);
   const [editDrawerVisible, setEditDrawerVisible] = useState(false);
-  const [uniqueId, setUniqueId] = useState(-1);
+  const [uniqueId, setUniqueId] = useState(Math.max(...products.map(product => product.productId)) + 1);
   const [searchText, setSearchText] = useState('');
   const [imageUrl, setImageUrl] = useState(null);
   const [editForm] = Form.useForm();
   const [addForm] = Form.useForm();
-
-  useEffect(() => {
-    setProducts(props.products);
-    if(props.products.length > 0) setUniqueId(props.products[props.products.length - 1].productId + 1)
-  }, [props.products])
 
   const handleDelete = (productId) => {
     const productIds = products.map(product => product.productId);
@@ -113,7 +107,6 @@ const Inventory = ({ cart, setCart, ...props }) => {
     newProducts[index] = {...values, product_image: imageUrl, reviews: newProducts[index].reviews, productId: newProducts[index].productId, sold: newProducts[index].sold, slug: newProducts[index].slug};
 
     ProductService.updateProduct(newProducts[index]);
-    
     setProducts(newProducts);
     closeEditDrawer();
     message.success("Successfully updated item " + newProducts[index].name + " in the database.");

@@ -131,7 +131,7 @@ export default class App extends Component {
   render() {
     const { cart, products, orders, orderHistory, user, users, loggedIn } = this.state;
     const { setProducts, setCart, setOrderHistory, setOrders, addToCart, logUserIn, logUserOut, setUser } = this;
-    console.log(users)
+    
     return (
       <Router>
         <Navigation logUserIn={logUserIn} logUserOut={logUserOut} products={products} cart={cart} user={user} loggedIn={loggedIn} />
@@ -140,7 +140,7 @@ export default class App extends Component {
             user.userType == 'seller' ? 
               <Switch>
                 <Route exact path="/" component={(props) => <Dashboard products={products} users={users} orders={orders} cart={cart} setCart={setCart} {...props} />} />
-                <Route path="/profile" component={(props) => <Profile user={user} logUserOut={logUserOut} {...props} />} />
+                <Route path="/profile" component={(props) => <Profile user={user} setUser={setUser} logUserOut={logUserOut} {...props} />} />
                 <Route component={PageNotFound} />
               </Switch>
               : 
