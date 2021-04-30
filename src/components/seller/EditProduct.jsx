@@ -94,7 +94,7 @@ const EditProduct = ({ form, visible, onClose, onSubmit, imageUrl, setImageUrl }
               label="Stock"
               rules={[{ required: true, message: 'Please enter the number of stocks' }]}
             >
-              <InputNumber style={{'width': '100%'}} min={1} />
+              <InputNumber style={{'width': '100%'}} min={0} />
             </Form.Item>
           </Col>
         </Row>

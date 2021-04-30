@@ -121,6 +121,10 @@ const Inventory = ({ cart, setCart, products, setProducts, ...props }) => {
     ProductService.updateProduct(newProducts[index]);
     setProducts(newProducts);
     message.success("Successfully updated item " + newProducts[index].name + " in the database.");
+
+    if(newProducts[index].stock <= 0) {
+      CartService.deleteCartByItem(newProducts[index].productId)
+    }
   }
 
   const handleSearch = (e) => {

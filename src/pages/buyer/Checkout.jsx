@@ -56,11 +56,18 @@ export default class Checkout extends Component {
       if(productIds.includes(product.productId)) {
         const quantity = cart[productIds.indexOf(product.productId)].quantity;
         product['stock'] -= quantity;
+        // if stock is negative, set it to 0
+        product['stock'] = Math.max(product['stock'], 0);
         product['sold'] += quantity;
 
         if(product['_id']) delete product['_id']
 
         ProductService.updateProduct(product);
+
+        // if stock lowers to 0, delete it to all the other user's cart
+        if(product.stock <= 0) {
+          CartService.deleteCartByItem(product.productId)
+        }
       }
 
       return product;

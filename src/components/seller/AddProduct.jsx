@@ -88,7 +88,7 @@ const AddProduct = ({ form, visible, onClose, onSubmit, imageUrl, setImageUrl })
               label="Price"
               rules={[{ required: true, message: 'Please enter the price' }]}
             >
-              <InputNumber style={{'width': '100%'}} min={1} formatter={value => `₱ ${value}`} />
+              <InputNumber style={{'width': '100%'}} min={0} formatter={value => `₱ ${value}`} />
             </Form.Item>
           </Col>
           <Col span={6}>
@@ -97,7 +97,7 @@ const AddProduct = ({ form, visible, onClose, onSubmit, imageUrl, setImageUrl })
               label="Stock"
               rules={[{ required: true, message: 'Please enter the number of stocks' }]}
             >
-              <InputNumber style={{'width': '100%'}} min={1} />
+              <InputNumber style={{'width': '100%'}} min={0} />
             </Form.Item>
           </Col>
         </Row>
