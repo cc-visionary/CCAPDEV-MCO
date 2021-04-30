@@ -113,7 +113,7 @@ export default class Profile extends Component {
         <Form.Item name='username' label="Username" rules={[{ required: true, message: 'Please enter your username!' }]}>
           <Input disabled />
         </Form.Item>
-        <Form.Item name='password' label="Password" rules={[{ required: true, message: 'Please enter your password!' }]} >
+        <Form.Item name='password' label="Password" rules={[{ required: true, message: 'Please enter your password!' }, { min: 8, message: 'Password must be atleast 8 characters' }]} >
           <Input.Password onChange={() => this.onChange()} />
         </Form.Item>
         <Form.Item name='userType' label="User Type" rules={[{ required: true, message: 'Please enter your user type!' }]}>

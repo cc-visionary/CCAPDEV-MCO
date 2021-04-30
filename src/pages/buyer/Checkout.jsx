@@ -81,7 +81,8 @@ export default class Checkout extends Component {
     const { redirect } = this.state;
     const { user, products, cart, shippingFee } = this.props;
 
-    const subtotal = cart.reduce((sum, item) => sum + parseFloat(products[products.map(data => data.productId).indexOf(item.productId)].price * item.quantity), 0).toFixed(2);
+    const productIds = products.map(data => data.productId);
+    const subtotal = cart.reduce((sum, item) => sum + parseFloat(parseFloat(products[productIds.indexOf(item.productId)].price.$numberDecimal ? products[productIds.indexOf(item.productId)].price.$numberDecimal : products[productIds.indexOf(item.productId)].price) * parseFloat(item.quantity.$numberDecimal ? item.quantity.$numberDecimal : item.quantity)), 0).toFixed(2);
 
     return redirect ? 
     <Redirect to='/' />
@@ -137,13 +138,13 @@ export default class Checkout extends Component {
             </Row>
             <Row gutter={16}>
               <Col span={6}>
-                <Form.Item name='postal-code' label='Postal Code' rules={[{ required: true, message: 'Please enter your postal code' }]}  >
-                  <InputNumber style={{'width': '100%'}} step={false} placeholder='Enter your postal code' />
+                <Form.Item name='postal-code' label='Postal Code' rules={[{ required: true, message: 'Please enter your postal code' }, { pattern: /^(?:\d*)$/, message: 'Postal Code must consists only of numbers' }]}  >
+                  <Input placeholder='Enter your postal code' />
                 </Form.Item>
               </Col>
               <Col span={6}>
-                <Form.Item name='telephone' label='Telephone' rules={[{ required: true, message: 'Please enter your phone number' }]}  >
-                  <InputNumber style={{'width': '100%'}} step={false} placeholder='Enter your telephone' />
+                <Form.Item name='phone' label='Phone Number' rules={[{ required: true, message: 'Please enter your phone number' }, { pattern: /^(?:\d*)$/, message: 'Phone Number must consists only of numbers' }, { pattern: /^[\d]{11}$/, message: 'Phone Number must be 11 digits only' }]}  >
+                  <Input placeholder='Enter your phone number' />
                 </Form.Item>
               </Col>
               <Col span={12}>
@@ -166,7 +167,7 @@ export default class Checkout extends Component {
             return <Row gutter={16} key={data.productId}>
               <Col span={3}><Image width={50} height={50} preview={false} src={products[index].product_image} /></Col>
               <Col span={14}><Text>{products[index].name}</Text><br /><Text type='secondary'>{products[index].brand}</Text></Col>
-              <Col span={7}><Text className='prices'>₱{parseFloat(products[index].price * data.quantity).toFixed(2)}</Text></Col>
+              <Col span={7}><Text className='prices'>₱{parseFloat(parseFloat(products[index].price.$numberDecimal ? products[index].price.$numberDecimal : products[index].price) * data.quantity).toFixed(2)}</Text></Col>
             </Row>
           })}
           <Divider/>

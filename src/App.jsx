@@ -158,7 +158,7 @@ export default class App extends Component {
               :
             <Switch>
               <Route exact path="/" component={LandingPage} className="main" />
-              <Route path="/register" component={(props) => <Register uniqueUserId={Math.max(...users.map(user => user.userId)) + 1} logUserIn={logUserIn} {...props} />} />
+              <Route path="/register" component={(props) => <Register users={users} uniqueUserId={Math.max(...users.map(user => user.userId)) + 1} logUserIn={logUserIn} {...props} />} />
               <Route path="/products" component={(props) => <ProductCatalog products={products} {...props} />} />
               <Route path="/product/:slug" component={(props) => <ProductPage products={products} users={users} cart={cart} addToCart={addToCart} {...props} />} />
               <Route path="/category/:category" component={(props) => <ProductCatalog products={products} {...props} />} />
