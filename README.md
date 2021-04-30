@@ -44,22 +44,22 @@ Assuming the you have already cloned the repository, do the following:
 
 ## Screenshots
 ### Landing Page
-![Landing Page](src/assets/images/screenshots/landing_page.png)
+![Landing Page](./src/assets/screenshots/landing_page.png)
 
 ### Seller Dashboard
-![Seller Dashboard](src/assets/images/screenshots/seller_dashboard.png)
+![Seller Dashboard](./src/assets/screenshots/seller_dashboard.png)
 
 ### Product Catalog
-![Product Catalog](src/assets/images/screenshots/product_catalog.png)
+![Product Catalog](./src/assets/screenshots/product_catalog.png)
 
 ### Cart
-![Cart](src/assets/images/screenshots/checkout.png)
+![Cart](./src/assets/screenshots/checkout.png)
 
 ### Checkout
-![Checkout](src/assets/images/screenshots/cart.png)
+![Checkout](./src/assets/screenshots/cart.png)
 
 ### Page Not Found
-![Page Not Found](src/assets/images/screenshots/page_not_found.png)
+![Page Not Found](./src/assets/screenshots/page_not_found.png)
 ## Credits
 
 ## Author(s)
