@@ -76,23 +76,25 @@ const UserController = {
     }
   },
   login: (req, res) => {
-    const { username, password, rememberMe } = req.body;
+    const { username, password, remember } = req.body;
     db.findOne(User, { username }, (result) => {
       if(result) {
         if(password === result.password) {
-          req.session.userId = result.userId;
-          req.session.avatar = result.avatar;
-          req.session.username = result.username;
-          req.session.fullname = result.fullname;
-          req.session.email = result.email;
-          req.session.birthday = result.birthday;
-          req.session.userType = result.userType;
-
+          // only keep the user logged in, if user asked to be `remember` is true
+          if(remember) {
+            req.session.userId = result.userId;
+            req.session.avatar = result.avatar;
+            req.session.username = result.username;
+            req.session.fullname = result.fullname;
+            req.session.email = result.email;
+            req.session.birthday = result.birthday;
+            req.session.userType = result.userType;
+          }
           res.status(200).json({success: true, user : result})
         } else {
           res.json({success: false, errorMessage: 'Incorrect password...'})
         }
-      } else {
+      } else {  
         res.json({success: false, errorMessage: 'Username doesn\'t exist...'})
       }
     })

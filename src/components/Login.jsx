@@ -12,16 +12,15 @@ const Login = ({ visible, onCancel, onOk, form }) => {
       onCancel={onCancel}
       onOk={onOk}
     >
-      <Form id="loginForm" form={form} layout="vertical" initialValues={{ 'remember': false }} > 
+      <Form id="loginForm" name='loginForm' form={form} layout="vertical" initialValues={{ 'remember': true }} > 
         <Form.Item prefix={<UserOutlined />} label="Username" name="username" rules={[{'required': true, message: "Please input your username!"}]}>
           <Input />
         </Form.Item>
         <Form.Item prefix={<LockOutlined />} label="Password" name="password" rules={[{'required': true, message: "Please input your password!"}]} >
           <Input.Password />
         </Form.Item>
-        <Form.Item name="remember"  valuePropName="checked">
-          <Checkbox>Remember me</Checkbox>
-          <Link to='/register' onClick={onCancel}>or register now!</Link>
+        <Form.Item name="remember" valuePropName="checked">
+          <Checkbox >Remember me <Link to='/register' onClick={onCancel}>or register now!</Link></Checkbox>
         </Form.Item>
       </Form>
     </Modal>
