@@ -107,6 +107,8 @@ class ProductCatalog extends Component {
 
   // combines the different filters together
   handleFilter = (type, val) => {
+    const { products } = this.props;
+    const { category } = this.props.params;
     let search;
     let filterBrand;
     if(type == 'search') {
@@ -116,15 +118,17 @@ class ProductCatalog extends Component {
       search = this.state.searchValue;
       filterBrand = val;
     }
+    var currElement = products;
+    if (category) currElement = products.filter(data => data.category == category)
 
     if(filterBrand == 'All') {
-      this.setState({  allElements : this.props.products.filter(data => data.name.toLowerCase().includes(search.toLowerCase())) }, () => {
+      this.setState({  allElements : currElement.filter(data => data.name.toLowerCase().includes(search.toLowerCase())) }, () => {
         this.setElementsForCurrentPage()
         this.setPaginationStates()
       })
     }
     else {
-      this.setState({  allElements : this.props.products.filter(data => data.name.toLowerCase().includes(search.toLowerCase())).filter(data => data.brand == filterBrand ) }, () => {
+      this.setState({  allElements : currElement.filter(data => data.name.toLowerCase().includes(search.toLowerCase())).filter(data => data.brand == filterBrand ) }, () => {
         this.setElementsForCurrentPage()
         this.setPaginationStates()
       })
