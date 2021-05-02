@@ -83,14 +83,22 @@ class ProductCatalog extends Component {
   handleSort = (val) => {
     let sorted;
     if(val === 'low_to_high') {
-      sorted = this.state.allElements.sort((a, b) => parseFloat(a.price.$numberDecimal ? a.price.$numberDecimal : a.price) > parseFloat(b.price.$numberDecimal ? b.price.$numberDecimal : b.price));
-    } else if(val === 'high_to_low') {
-      sorted = this.state.allElements.sort((a, b) => parseFloat(a.price.$numberDecimal ? a.price.$numberDecimal : a.price) < parseFloat(b.price.$numberDecimal ? b.price.$numberDecimal : b.price));
+      sorted = this.state.allElements.sort((a, b) => parseFloat(a.price.$numberDecimal ? a.price.$numberDecimal : a.price) - parseFloat(b.price.$numberDecimal ? b.price.$numberDecimal : b.price));
+    } else if(val === 'high_to_low') { 
+      sorted = this.state.allElements.sort((a, b) => parseFloat(b.price.$numberDecimal ? b.price.$numberDecimal : b.price) - parseFloat(a.price.$numberDecimal ? a.price.$numberDecimal : a.price));
     } else if(val === 'top_rated') {
-      sorted = this.state.allElements.sort((a, b) => a.reviews.length > 0 ? (a.reviews.reduce((sum, review) => sum + review.rating, 0) / a.reviews.length) < (b.reviews.reduce((sum, review) => sum + review.rating, 0) / b.reviews.length) : 0 < (b.reviews.reduce((sum, review) => sum + review.rating, 0) / b.reviews.length));
+      sorted = this.state.allElements.sort((a, b) => {
+        const aReviews = a.reviews.length > 0 ? (a.reviews.reduce((sum, review) => sum + review.rating, 0) / a.reviews.length) : 0
+        const bReviews = b.reviews.length > 0 ? (b.reviews.reduce((sum, review) => sum + review.rating, 0) / b.reviews.length) : 0
+        return bReviews - aReviews;
+      });
     } else {
       sorted = this.state.allElements.sort((a, b) => a.sold < b.sold);
-      sorted = sorted.sort((a, b) => a.reviews.length > 0 ? (a.reviews.reduce((sum, review) => sum + review.rating, 0) / a.reviews.length) < (b.reviews.reduce((sum, review) => sum + review.rating, 0) / b.reviews.length) : 0 < (b.reviews.reduce((sum, review) => sum + review.rating, 0) / b.reviews.length));
+      sorted = this.state.allElements.sort((a, b) => {
+        const aReviews = a.reviews.length > 0 ? (a.reviews.reduce((sum, review) => sum + review.rating, 0) / a.reviews.length) : 0
+        const bReviews = b.reviews.length > 0 ? (b.reviews.reduce((sum, review) => sum + review.rating, 0) / b.reviews.length) : 0
+        return bReviews - aReviews;
+      });
     }
     this.setState({ allElements: sorted }, () => this.setElementsForCurrentPage())
   }
