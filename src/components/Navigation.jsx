@@ -21,7 +21,7 @@ const Navigation = ({ products, cart, user, loggedIn, logUserIn, logUserOut }) =
   const [form] = Form.useForm();
    
   // validates the login modal, if it meets all conditions, calls the onSubmit function
-  const onOk = useCallback((values) => {
+  const onOk = useCallback(() => {
     form
       .validateFields()
       .then(values => {
