@@ -2,7 +2,7 @@
 
 import axios from 'axios';
 
-const PRODUCT_API_BASE_URL = "http://localhost:3000/products";
+const PRODUCT_API_BASE_URL = "http://localhost:31954/products";
 
 class ProductService {
   getAllProducts() {
