@@ -2,7 +2,7 @@
 
 import axios from 'axios';
 
-const ORDER_API_BASE_URL = "/orders";
+const ORDER_API_BASE_URL = "/api/orders";
 
 class OrderService {
   getAllOrders() {

@@ -2,7 +2,7 @@
 
 import axios from 'axios';
 
-const CART_API_BASE_URL = "/cart";
+const CART_API_BASE_URL = "/api/cart";
 
 class CartService {
   getUserCart(userId) {
