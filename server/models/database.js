@@ -2,10 +2,7 @@
 // import module `mongoose`
 const mongoose = require('mongoose');
 
-const url = 'mongodb://localhost:27017/tech-titan';
-
-// name of the database
-const dbName = 'tech-titan';
+const uri = process.env.MONGODB_URI;
 
 // additional connection options
 const options = {
@@ -18,9 +15,9 @@ const database = {
     connects to database
   */
   connect: () => {
-    mongoose.connect(url, options, (err) => {
+    mongoose.connect(uri, options, (err) => {
       if(err) throw err;
-      console.log('Connected to ' + url)
+      console.log('Connected to ' + uri)
     });
   },
   dropCollection: (collection, callback) => {
