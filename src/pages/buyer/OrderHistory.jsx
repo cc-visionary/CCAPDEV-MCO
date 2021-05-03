@@ -78,7 +78,7 @@ const OrderHistory = ({ user, products, setProducts, orderHistory }) => {
       <Title level={3}>&nbsp;Order History</Title>
       <Collapse defaultActiveKey={[0]} accordion>
         {
-          orderHistory.map((item, i) => 
+          orderHistory.sort((a, b) => moment(b.dateOrdered, 'YYYY-MM-DDTHH:mm:ss.SSZ') - moment(a.dateOrdered, 'YYYY-MM-DDTHH:mm:ss.SSZ')).map((item, i) => 
             <Panel header={`Order ${item.orderId} from ${moment(item.dateOrdered, 'YYYY-MM-DDTHH:mm:ss.SSZ').format('MM-DD-YYYY HH:mm:ss')}`} key={i}>
               <Row gutter={16}>
                 <Col span={2}></Col>
