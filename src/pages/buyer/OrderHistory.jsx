@@ -19,6 +19,8 @@ const OrderHistory = ({ user, products, setProducts, orderHistory }) => {
   const [ reaction, setReaction ] = useState('');
   const [ rating, setRating ] = useState(0);
 
+  const productIds = products.map(product => product.productId);
+
   // opens the review modal of a product
   const onOpenReview = (id) => {
     setReviewVisible(true);
@@ -95,7 +97,7 @@ const OrderHistory = ({ user, products, setProducts, orderHistory }) => {
                       <Col span={3}>₱{parseFloat(data.price).toFixed(2)}</Col>
                       <Col span={3}>{data.quantity}</Col>
                       <Col span={3}>₱{parseFloat(data.price * data.quantity).toFixed(2)}</Col>
-                      <Col span={3}><Button type='link'><Link to={{pathname: `/product/${data.slug}`}}>More Info</Link></Button><br /><Button type='link' onClick={() => onOpenReview(data.productId)}>Give Feedback</Button></Col>
+                      <Col span={3}><Button type='link' disabled={productIds.indexOf(data.productId) < 0}><Link to={{pathname: `/product/${data.slug}`}}>More Info</Link></Button><br /><Button type='link' onClick={() => onOpenReview(data.productId)} disabled={productIds.indexOf(data.productId) < 0}>Give Feedback</Button></Col>
                       { item.items.length - 1 == i ? <></> : <Divider /> }
                     </Row>
                 )
