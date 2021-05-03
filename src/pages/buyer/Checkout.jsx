@@ -4,7 +4,7 @@
 */
 
 import React, { Component } from 'react';
-import { Image, Button, Row, Col, Divider, Typography, Form, Input, InputNumber, Select, message } from 'antd';
+import { Image, Button, Row, Col, Divider, Typography, Form, Input, Select, message } from 'antd';
 import { Link, Redirect } from 'react-router-dom';
 import { LeftOutlined } from '@ant-design/icons';
 import axios from 'axios';
@@ -48,8 +48,8 @@ export default class Checkout extends Component {
     const newOrder = {
       orderId: Math.max(...orders.map(order => order.orderId)) + 1,
       contactInfo: values,
-      total: cart.reduce((sum, item) => sum + products[productIds.indexOf(item.productId)].price.$numberDecimal * item.quantity, 0) + shippingFee,
-      items: cart.map((item) => ({...products[productIds.indexOf(item.productId)], price: products[productIds.indexOf(item.productId)].price.$numberDecimal, quantity: item.quantity})),
+      total: cart.reduce((sum, item) => sum + parseFloat(products[productIds.indexOf(item.productId)].price.$numberDecimal ? products[productIds.indexOf(item.productId)].price.$numberDecimal : products[productIds.indexOf(item.productId)].price) * item.quantity, 0) + shippingFee,
+      items: cart.map((item) => ({...products[productIds.indexOf(item.productId)], price: parseFloat(products[productIds.indexOf(item.productId)].price.$numberDecimal ? products[productIds.indexOf(item.productId)].price.$numberDecimal : products[productIds.indexOf(item.productId)].price), quantity: item.quantity})),
       shippingFee,
       userId: user.userId,
       dateOrdered: new Date(moment())
@@ -147,7 +147,7 @@ export default class Checkout extends Component {
               <Col span={12}>
                 <Form.Item name='country' label='Country' rules={[{ required: true, message: 'Please select your country' }]} initialValue='Philippines' >
                   <Select showSearch>
-                    {this.state.countries.map(data => <Option value={data.name}>{data.name}</Option>)}
+                    {this.state.countries.map((data, i) => <Option value={data.name} key={i}>{data.name}</Option>)}
                   </Select>
                 </Form.Item>
               </Col>

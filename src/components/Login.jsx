@@ -41,7 +41,7 @@ class Login extends Component {
       >
         <Form id="loginForm" name='loginForm' form={form} layout="vertical" initialValues={{ 'remember': true }} > 
           <Form.Item prefix={<UserOutlined />} label="Username" name="username" rules={[{'required': true, message: "Please input your username!"}]}>
-            <Input />
+            <Input autoFocus />
           </Form.Item>
           <Form.Item prefix={<LockOutlined />} label="Password" name="password" rules={[{'required': true, message: "Please input your password!"}]} >
             <Input.Password />

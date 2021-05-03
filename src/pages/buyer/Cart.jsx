@@ -12,12 +12,13 @@ import { CartService } from '../../services';
 
 const { Text, Title } = Typography;
 
-const Cart = ({ products, shippingFee, cart, setCart, ...props }) => {
+const Cart = ({ products, shippingFee, cart, setCart }) => {
   const [ checkAll, setCheckAll] = useState(false)
   const [ checkboxes, setCheckboxes ] = useState(cart.map(() => false))
   const [ indeterminate, setIndeterminate ] = useState(false);
   
-  const totalCost = cart.reduce((sum, data) => sum + products[products.map(d => d.productId).indexOf(data.productId)].price.$numberDecimal * data.quantity, 0);
+  const productIds = products.map(d => d.productId);
+  const totalCost = cart.reduce((sum, data) => sum + parseFloat(products[productIds.indexOf(data.productId)].price.$numberDecimal ? products[productIds.indexOf(data.productId)].price.$numberDecimal : products[productIds.indexOf(data.productId)].price) * data.quantity, 0);
 
   // toggles the checkall checkbox for all cart items
   const toggleCheckAll = (checked) => {
@@ -81,8 +82,8 @@ const Cart = ({ products, shippingFee, cart, setCart, ...props }) => {
           {
             cart.length > 0 ?
             cart.map((item, i) => {
-              const index = products.map(data => data.productId).indexOf(item.productId)
-              return <div className="cart-item" productId={item.productId}>
+              const index = productIds.indexOf(item.productId)
+              return <div key={i} className="cart-item" productId={item.productId}>
                 <div className='contents'>
                   <div className="checkbox"><Checkbox checked={checkboxes[i]} onChange={(e) => toggleACheckbox(i, e.target.checked)} /></div>
                   <div className="image">
@@ -93,7 +94,7 @@ const Cart = ({ products, shippingFee, cart, setCart, ...props }) => {
                     <br />
                     <Text type="secondary">{products[index].brand}</Text>
                   </div>
-                  <div className="price">₱{parseFloat(products[index].price.$numberDecimal).toFixed(2)}</div>
+                  <div className="price">₱{parseFloat(products[index].price.$numberDecimal ? products[index].price.$numberDecimal : products[index].price).toFixed(2)}</div>
                   <div className="quantity"><InputNumber style={{'width': '100%'}} min={1} max={products[index].stock} defaultValue={item.quantity} onChange={(val) => changeCartQuantity(i, val)} /></div>
                   <div className="delete"><Popconfirm title="Are you sure you want to delete this product?" onConfirm={() => deleteProductFromCart(i)}><Button type="link"><Text type="secondary"><DeleteOutlined /></Text></Button></Popconfirm></div>
                 </div>

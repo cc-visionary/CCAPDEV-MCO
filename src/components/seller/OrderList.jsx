@@ -38,8 +38,8 @@ const OrderList = ({ orders }) => {
     {
       title: 'Total',
       dataIndex: 'total',
-      sorter: (a, b) => parseFloat(a.total.$numberDecimal) - parseFloat(b.total.$numberDecimal),
-      render: (_, record) => <Text>₱{parseFloat(record.total.$numberDecimal).toFixed(2)}</Text>
+      sorter: (a, b) => parseFloat(a.total.$numberDecimal ? a.total.$numberDecimal : a.total) - parseFloat(b.total.$numberDecimal ? b.total.$numberDecimal : b.total),
+      render: (_, record) => <Text>₱{parseFloat(record.total.$numberDecimal ? record.total.$numberDecimal : record.total).toFixed(2)}</Text>
     },
     {
       title: 'Date Ordered',
@@ -81,12 +81,12 @@ const OrderList = ({ orders }) => {
           <Row gutter={16}>
             <Col span={16}><Text type='secondary'>Date Ordered: {moment(currData.dateOrdered, 'YYYY-MM-DDTHH:mm:ss.SSZ').format('MM-DD-YYYY')}</Text></Col>
             <Col span={4}><Text>Shipping Fee:</Text></Col>
-            <Col span={4}><Text>₱{parseFloat(currData.shippingFee.$numberDecimal).toFixed(2)}</Text></Col>
+            <Col span={4}><Text>₱{parseFloat(currData.shippingFee.$numberDecimal ? currData.shippingFee.$numberDecimal : currData.shippingFee).toFixed(2)}</Text></Col>
           </Row>
           <Row gutter={16}>
             <Col span={16}><Text type='secondary'>Time Ordered: {moment(currData.dateOrdered, 'YYYY-MM-DDTHH:mm:ss.SSZ').format('HH:mm:ss')}</Text></Col>
             <Col span={4}><Text>Total:</Text></Col>
-            <Col span={4}><Text>₱{parseFloat(currData.total.$numberDecimal).toFixed(2)}</Text></Col>
+            <Col span={4}><Text>₱{parseFloat(currData.total.$numberDecimal ? currData.total.$numberDecimal : currData.total).toFixed(2)}</Text></Col>
           </Row>
         </Modal>
         :
