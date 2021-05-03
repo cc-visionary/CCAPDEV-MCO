@@ -46,7 +46,7 @@ app.use(session({
 }));
 
 // define the paths contained in `./routes/routes.js`
-app.use('/', routes);
+app.use('/api', routes);
 
 // All other GET requests not handled before will return our React app
 app.get('*', (req, res) => {
