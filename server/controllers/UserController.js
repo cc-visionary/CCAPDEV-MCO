@@ -4,6 +4,9 @@ const db = require('../models/database.js');
 // import UserSchema from `../models/UserModel.js`
 const User = require('../models/UserModel');
 
+const bcrypt = require('bcrypt');
+const saltRounds = bcrypt.genSaltSync();
+
 const defaultCallback = (res, result) => res.status(200).json(result)
 
 const UserController = {
@@ -18,7 +21,7 @@ const UserController = {
       username: req.body.username,
       birthday: req.body.birthday,
       email: req.body.email,
-      password: req.body.password,
+      password: bcrypt.hashSync(req.body.password, saltRounds),
       userType: req.body.userType,
     };
 
@@ -38,7 +41,6 @@ const UserController = {
       username: req.body.username,
       birthday: req.body.birthday,
       email: req.body.email,
-      password: req.body.password,
       userType: req.body.userType,
     };
 
@@ -79,7 +81,8 @@ const UserController = {
     const { username, password, remember } = req.body;
     db.findOne(User, { username }, (result) => {
       if(result) {
-        if(password === result.password) {
+        
+        if(bcrypt.compareSync(password, result.password)) {
           // only keep the user logged in, if user asked to be `remember` is true
           if(remember) {
             req.session.userId = result.userId;
@@ -94,7 +97,7 @@ const UserController = {
         } else {
           res.json({success: false, errorMessage: 'Incorrect password...'})
         }
-      } else {  
+      } else {
         res.json({success: false, errorMessage: 'Username doesn\'t exist...'})
       }
     })
@@ -108,6 +111,15 @@ const UserController = {
 
       res.json({ success: true });
   });
+  },
+  verifyPassword: (req, res) => {
+    const { username, password } = req.query;
+
+    db.findOne(User, { username }, (result) => {
+      if(bcrypt.compareSync(password, result.password)) {
+        res.status(200).json({success: true})
+      } else res.status(200).json({success: false})
+    })
   }
 };
 /*

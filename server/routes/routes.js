@@ -27,6 +27,8 @@ app.post('/users/login', UserController.login);
 
 app.post('/users/logout', UserController.logout);
 
+app.get('/users/verify', UserController.verifyPassword);
+
 app.put('/users', UserController.updateUser);
 
 app.get('/products', ProductController.getAllProducts);

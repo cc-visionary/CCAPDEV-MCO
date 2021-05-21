@@ -65,9 +65,7 @@ const Register = ({ users, uniqueUserId, logUserIn }) => {
   const compareToFirstPassword = (rule, value, callback) => {
     if (value && value !== password) {
       callback('Two passwords that you enter is inconsistent!');
-    } else {
-      callback();
-    }
+    } else callback();
   };
 
   return redirect ? 

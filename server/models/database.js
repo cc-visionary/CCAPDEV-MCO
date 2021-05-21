@@ -2,7 +2,7 @@
 // import module `mongoose`
 const mongoose = require('mongoose');
 
-const uri = process.env.MONGODB_URI;
+const uri = 'mongodb://localhost:27017/tech-titan';
 
 // additional connection options
 const options = {
@@ -11,9 +11,7 @@ const options = {
 };
 
 const database = {
-  /*
-    connects to database
-  */
+  /* connects to database */
   connect: () => {
     mongoose.connect(uri, options, (err) => {
       if(err) throw err;

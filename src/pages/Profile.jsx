@@ -33,7 +33,7 @@ export default class Profile extends Component {
       showConfirmation: false,
       redirect: false,
       confirmPassword: '',
-      fileList: [{url: this.props.user.avatar}]
+      fileList: [{url: this.props.user.avatar}],
     }
   }
 
@@ -79,19 +79,17 @@ export default class Profile extends Component {
   onConfirmDelete = () => {
     const { user, logUserOut } = this.props;
 
-    if(this.state.confirmPassword == user.password) {
-      UserService.deleteUser(user.userId).then(res => {
-        const { success, errorMessage } = res.data;
-        if(success) {
-          this.setState({ showConfirmation : false, confirmPassword : '', redirect : true }, () => message.success('Account deleted successfully'));
-          logUserOut()
-        } else {
-          message.error(errorMessage)
-        }
-      }) 
-    } else {
-      message.error('Delete failed. Password was doesn\'t match')
-    }
+    UserService.verifyPassword({'username': user.username, 'password': this.state.confirmPassword}).then(res => {
+      if(res.data.success) {
+        UserService.deleteUser(user.userId).then(res => {
+          const { success, errorMessage } = res.data;
+          if(success) {
+            this.setState({ showConfirmation : false, confirmPassword : '', redirect : true }, () => message.success('Account deleted successfully'));
+            logUserOut()
+          } message.error(errorMessage)
+        }) 
+      } else message.error('Delete failed. Password was doesn\'t match')
+    })
   }
 
   // When the page has mounted, it sets `this.state.imageUrl` to the user's avatar
@@ -101,17 +99,18 @@ export default class Profile extends Component {
 
   render() {
     const { user } = this.props;
+    const {showConfirmation, confirmPassword, hasChanged, redirect, imageUrl } = this.state;
 
     // converts the user birthday to a moment js object
     user['birthday'] = moment(user['birthday']);
 
-    return this.state.redirect ? <Redirect to='/' /> : (
+    return redirect ? <Redirect to='/' /> : (
       <Form {...layout} id="profile" name="profile" onFinish={(e) => this.onFinish(e)} initialValues={user} >
         <Form.Item name="userId">
           <Input hidden />
         </Form.Item>
         <Form.Item name='avatar' label="Avatar">
-          <ImageUpload imageUrl={this.state.imageUrl} setImageUrl={this.setImageUrl} />
+          <ImageUpload imageUrl={imageUrl} setImageUrl={this.setImageUrl} />
         </Form.Item>
         <Form.Item name='fullname' label="Fullname" rules={[{ required: true, message: 'Please enter your fullname!' }]}>
           <Input onChange={() => this.onChange()}/>
@@ -125,9 +124,6 @@ export default class Profile extends Component {
         <Form.Item name='username' label="Username" rules={[{ required: true, message: 'Please enter your username!' }]}>
           <Input disabled />
         </Form.Item>
-        <Form.Item name='password' label="Password" rules={[{ required: true, message: 'Please enter your password!' }, { min: 8, message: 'Password must be atleast 8 characters' }]} >
-          <Input.Password onChange={() => this.onChange()} />
-        </Form.Item>
         <Form.Item name='userType' label="User Type" rules={[{ required: true, message: 'Please enter your user type!' }]}>
           <Select disabled>
             <Option value='buyer'>Buyer</Option>
@@ -136,12 +132,10 @@ export default class Profile extends Component {
         </Form.Item>
         <Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 8 }}>
           <Button type="danger" style={{'marginRight' : '10px'}} onClick={() => this.onDelete()} disabled={user.userType === 'seller'}>Delete</Button>
-          <Button type="primary" htmlType="submit" disabled={!this.state.hasChanged}>
-            Submit
-          </Button>
+          <Button type="primary" htmlType="submit" disabled={!hasChanged}>Submit</Button>
         </Form.Item>
-        <Modal visible={this.state.showConfirmation} onCancel={() => this.setState({ showConfirmation: false })} onOk={() => this.onConfirmDelete()} title="Please confirm deletion with your password">
-          <Input.Password value={this.state.confirmPassword} onChange={(e) => this.setState({ confirmPassword : e.target.value })} />
+        <Modal visible={showConfirmation} onCancel={() => this.setState({ showConfirmation: false })} onOk={() => this.onConfirmDelete()} title="Please confirm deletion with your password">
+          <Input.Password value={confirmPassword} onChange={(e) => this.setState({ confirmPassword : e.target.value })} />
         </Modal>
       </Form>
     )

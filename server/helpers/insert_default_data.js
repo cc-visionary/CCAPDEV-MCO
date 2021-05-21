@@ -8,17 +8,19 @@
 
 // import module from `./models/database.js`
 const db = require('../models/database.js');
+const bcrypt = require('bcrypt');
+const saltRounds = bcrypt.genSaltSync();
 
 db.connect();
 
 const shippingFee = 99.99;
 
 const users = [
-  {userId: 1031, avatar: 'https://cdn.iconscout.com/icon/free/png-256/avatar-380-456332.png', fullname: 'John Doe', username: 'buyer', birthday: '03-20-1999', email: 'john-ish-doe-ish@gmail.com', password: 'buyerpass', userType: 'buyer'},
-  {userId: 1032, avatar: 'https://cdn.iconscout.com/icon/free/png-256/avatar-380-456332.png', fullname: 'Kate Meeks', birthday: '05-22-2001', email: 'kate.meek443@gmail.com', username: 'sweetgirl123', password: 'lksad', userType: 'buyer'},
-  {userId: 1033, avatar: 'https://cdn.iconscout.com/icon/free/png-256/avatar-380-456332.png', fullname: 'Joseph Bourne', birthday: '02-12-1980', email: 'joseph.bourne.a.lover143@gmail.com', username: 'xXbatmanXx143', password: 'qweqasd', userType: 'buyer'},
-  {userId: 1034, avatar: 'https://cdn.iconscout.com/icon/free/png-256/avatar-380-456332.png', fullname: 'Mark Edwards', birthday: '12-04-1995', email: 'cool.mark.edwards@gmail.com', username: 'coolkidXD', password: 'axzcas', userType: 'buyer'},
-  {userId: 1035, avatar: 'https://cdn.iconscout.com/icon/free/png-256/avatar-380-456332.png', fullname: 'James Jones Junior', birthday: '11-15-1992', email: 'james.jones.junior@gmail.com', username: 'seller', password: 'sellerpass', userType: 'seller'},
+  {userId: 1031, avatar: 'https://cdn.iconscout.com/icon/free/png-256/avatar-380-456332.png', fullname: 'John Doe', username: 'buyer', birthday: '03-20-1999', email: 'john-ish-doe-ish@gmail.com', password: bcrypt.hashSync('buyerpass', saltRounds), userType: 'buyer'},
+  {userId: 1032, avatar: 'https://cdn.iconscout.com/icon/free/png-256/avatar-380-456332.png', fullname: 'Kate Meeks', birthday: '05-22-2001', email: 'kate.meek443@gmail.com', username: 'sweetgirl123', password: bcrypt.hashSync('lksad', saltRounds), userType: 'buyer'},
+  {userId: 1033, avatar: 'https://cdn.iconscout.com/icon/free/png-256/avatar-380-456332.png', fullname: 'Joseph Bourne', birthday: '02-12-1980', email: 'joseph.bourne.a.lover143@gmail.com', username: 'xXbatmanXx143', password: bcrypt.hashSync('qweqasd', saltRounds), userType: 'buyer'},
+  {userId: 1034, avatar: 'https://cdn.iconscout.com/icon/free/png-256/avatar-380-456332.png', fullname: 'Mark Edwards', birthday: '12-04-1995', email: 'cool.mark.edwards@gmail.com', username: 'coolkidXD', password: bcrypt.hashSync('axzcas', saltRounds), userType: 'buyer'},
+  {userId: 1035, avatar: 'https://cdn.iconscout.com/icon/free/png-256/avatar-380-456332.png', fullname: 'James Jones Junior', birthday: '11-15-1992', email: 'james.jones.junior@gmail.com', username: 'seller', password: bcrypt.hashSync('sellerpass', saltRounds), userType: 'seller'},
 ]
 
 const products = [

@@ -2,7 +2,7 @@
 
 import axios from 'axios';
 
-const USER_API_BASE_URL = "/api/users";
+const USER_API_BASE_URL = "http://localhost:3000/api/users";
 
 class UserService {
   getAllUsers() {
@@ -23,6 +23,10 @@ class UserService {
 
   getLogin() {
     return axios.get(USER_API_BASE_URL + '/login');
+  }
+
+  verifyPassword(user) {
+    return axios.get(USER_API_BASE_URL + '/verify', { params: user })
   }
 
   login(user) {
