@@ -2,7 +2,7 @@
 // import module `mongoose`
 const mongoose = require('mongoose');
 
-const uri = 'mongodb://localhost:27017/tech-titan';
+const uri = process.env.MONGODB_URI || 'mongodb+srv://root:BaAOteqTAfE2tsu5@tech-titan.hjyww.mongodb.net/tech-titan?retryWrites=true&w=majority';
 
 // additional connection options
 const options = {

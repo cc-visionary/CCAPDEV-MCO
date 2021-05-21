@@ -4,8 +4,8 @@
 */
 
 import React from 'react';
-import { Row, Col, Typography, Card, Image } from 'antd';
-import { AiOutlineLaptop, AiFillDatabase, AiOutlinePrinter, AiOutlineMenu } from 'react-icons/ai';
+import { Row, Col, Typography, Card, Image, Button } from 'antd';
+import { AiOutlineLaptop, AiFillDatabase, AiOutlinePrinter, AiOutlineInfoCircle } from 'react-icons/ai';
 import { BiMouseAlt } from 'react-icons/bi';
 import { FiMonitor } from 'react-icons/fi';
 import { FaNetworkWired } from 'react-icons/fa';
@@ -42,6 +42,7 @@ const LandingPage = () => {
             </div>
             <div className="buttons">
               <BoxButton path={'/products'} link>Shop Now</BoxButton>
+              <Button id="info-button" type="link"><Link to="/about"><AiOutlineInfoCircle /></Link></Button>
             </div>
           </Col>
           <Col className="right" xl={12}><Image preview={false} src={MainImage} alt="Main Image" /></Col>

@@ -12,5 +12,6 @@ import LandingPage from './LandingPage';
 import PageNotFound from './PageNotFound';
 import Profile from './Profile';
 import Register from './Register';
+import About from './About';
 
-export { Cart, Checkout, OrderHistory, ProductCatalog, ProductPage, Dashboard, LandingPage, PageNotFound, Profile, Register };
+export { Cart, Checkout, OrderHistory, ProductCatalog, ProductPage, Dashboard, LandingPage, PageNotFound, Profile, Register , About};

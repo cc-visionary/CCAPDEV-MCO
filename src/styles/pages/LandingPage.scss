@@ -26,6 +26,15 @@
       margin: 50px 100px;
       margin-bottom: 50px;
     }    
+
+    .buttons {
+      display: flex;
+
+      #info-button {
+        font-size: 2em;
+        color: $primary;
+      }
+    }
   }
 
   .category {

@@ -11,7 +11,7 @@ import { message } from 'antd';
 import { HashRouter as Router, Switch, Route } from "react-router-dom";
 
 import { Navigation, Footer } from './components';
-import { Profile, Register, LandingPage, PageNotFound, Dashboard, ProductCatalog, ProductPage, Cart, Checkout, OrderHistory } from './pages';
+import { About, Profile, Register, LandingPage, PageNotFound, Dashboard, ProductCatalog, ProductPage, Cart, Checkout, OrderHistory } from './pages';
 
 import { UserService, CartService, OrderService, ProductService } from './services';
 
@@ -173,6 +173,7 @@ export default class App extends Component {
               <Switch>
                 <Route exact path="/" component={(props) => <Dashboard products={products} setProducts={setProducts} users={users} orders={orders} cart={cart} setCart={setCart} {...props} />} />
                 <Route path="/profile" component={(props) => <Profile user={user} setUser={setUser} logUserOut={logUserOut} {...props} />} />
+                <Route path="/about" component={About} />
                 <Route component={PageNotFound} />
               </Switch>
               : 
@@ -185,6 +186,7 @@ export default class App extends Component {
                 <Route path="/checkout" component={(props) => <Checkout user={user} products={products} setProducts={setProducts} orderHistory={orderHistory} setOrderHistory={setOrderHistory} shippingFee={shippingFee} cart={cart} setCart={setCart} orders={orders} setOrders={setOrders} {...props} />} />
                 <Route path="/order-history" component={(props) => <OrderHistory user={user} products={products} setProducts={setProducts} orderHistory={orderHistory} {...props} />} />
                 <Route path="/profile" component={(props) => <Profile user={user} setUser={setUser} logUserOut={logUserOut} {...props} />} />
+                <Route path="/about" component={About} />
                 <Route component={PageNotFound} />
               </Switch>
               :
@@ -194,6 +196,7 @@ export default class App extends Component {
               <Route path="/products" component={(props) => <ProductCatalog products={products} {...props} />} />
               <Route path="/product/:slug" component={(props) => <ProductPage products={products} users={users} cart={cart} addToCart={addToCart} {...props} />} />
               <Route path="/category/:category" component={(props) => <ProductCatalog products={products} {...props} />} />
+              <Route path="/about" component={About} />
               <Route component={PageNotFound} />
             </Switch>
           }
