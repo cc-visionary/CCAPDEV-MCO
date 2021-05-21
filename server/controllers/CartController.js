@@ -4,6 +4,9 @@ const db = require('../models/database.js');
 // import CartSchema from `../models/CartModel.js`
 const Cart = require('../models/CartModel');
 
+// import module `validationResult` from `express-validator`
+const { validationResult } = require('express-validator');
+
 const defaultCallback = (res, result) => res.status(200).json(result)
 
 const CartController = {
@@ -12,7 +15,12 @@ const CartController = {
     db.findMany(Cart, { userId : parseInt(userId) }, (result) => defaultCallback(res, result));
   },
   addItemToCart: (req, res) => {
-    db.insertOne(Cart, req.body, (result) => defaultCallback(res, result));
+    // checks if there are validation errors
+    var errors = validationResult(req);
+
+    if(errors.isEmpty()) {
+      db.insertOne(Cart, req.body, (result) => defaultCallback(res, result));
+    }
   },
   updateCartItem: (req, res) => {
     const { productId, userId } = req.body

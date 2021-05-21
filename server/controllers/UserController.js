@@ -4,6 +4,8 @@ const db = require('../models/database.js');
 // import UserSchema from `../models/UserModel.js`
 const User = require('../models/UserModel');
 
+// import module `validationResult` from `express-validator`
+const { validationResult } = require('express-validator');
 const bcrypt = require('bcrypt');
 const saltRounds = bcrypt.genSaltSync();
 
@@ -34,23 +36,29 @@ const UserController = {
     });
   },
   updateUser: (req, res) => {
-    const user = {
-      userId: req.body.userId,
-      avatar: req.body.avatar,
-      fullname: req.body.fullname,
-      username: req.body.username,
-      birthday: req.body.birthday,
-      email: req.body.email,
-      userType: req.body.userType,
-    };
+    // checks if there are validation errors
+    var errors = validationResult(req);
 
-    db.updateOne(User, { userId : req.body.userId }, user, (result) => {
-      if(result) {
-        res.status(200).json({ success: true })
-      } else {
-        res.json({ success: false, errorMessage: 'Failed to update profile...' })
-      }
-    });
+    // if there are validation errors
+    if (errors.isEmpty()) {
+      const user = {
+        userId: req.body.userId,
+        avatar: req.body.avatar,
+        fullname: req.body.fullname,
+        username: req.body.username,
+        birthday: req.body.birthday,
+        email: req.body.email,
+        userType: req.body.userType,
+      };
+  
+      db.updateOne(User, { userId : req.body.userId }, user, (result) => {
+        if(result) {
+          res.status(200).json({ success: true })
+        } else {
+          res.json({ success: false, errorMessage: 'Failed to update profile...' })
+        }
+      });
+    }
   },
   deleteUser: (req, res) => {
     db.deleteOne(User, { userId: parseInt(req.params.userId) }, (result) => {
@@ -78,29 +86,35 @@ const UserController = {
     }
   },
   login: (req, res) => {
-    const { username, password, remember } = req.body;
-    db.findOne(User, { username }, (result) => {
-      if(result) {
-        
-        if(bcrypt.compareSync(password, result.password)) {
-          // only keep the user logged in, if user asked to be `remember` is true
-          if(remember) {
-            req.session.userId = result.userId;
-            req.session.avatar = result.avatar;
-            req.session.username = result.username;
-            req.session.fullname = result.fullname;
-            req.session.email = result.email;
-            req.session.birthday = result.birthday;
-            req.session.userType = result.userType;
+    // checks if there are validation errors
+    var errors = validationResult(req);
+
+    if(errors.isEmpty()) {
+      const { username, password, remember } = req.body;
+
+      db.findOne(User, { username }, (result) => {
+        if(result) {
+          
+          if(bcrypt.compareSync(password, result.password)) {
+            // only keep the user logged in, if user asked to be `remember` is true
+            if(remember) {
+              req.session.userId = result.userId;
+              req.session.avatar = result.avatar;
+              req.session.username = result.username;
+              req.session.fullname = result.fullname;
+              req.session.email = result.email;
+              req.session.birthday = result.birthday;
+              req.session.userType = result.userType;
+            }
+            res.status(200).json({success: true, user : result})
+          } else {
+            res.json({success: false, errorMessage: 'Incorrect password...'})
           }
-          res.status(200).json({success: true, user : result})
         } else {
-          res.json({success: false, errorMessage: 'Incorrect password...'})
+          res.json({success: false, errorMessage: 'Username doesn\'t exist...'})
         }
-      } else {
-        res.json({success: false, errorMessage: 'Username doesn\'t exist...'})
-      }
-    })
+      })
+    }
   },
   logout: (req, res) => {
     req.session.destroy((err) => {
@@ -113,13 +127,18 @@ const UserController = {
   });
   },
   verifyPassword: (req, res) => {
-    const { username, password } = req.query;
+    // checks if there are validation errors
+    var errors = validationResult(req);
 
-    db.findOne(User, { username }, (result) => {
-      if(bcrypt.compareSync(password, result.password)) {
-        res.status(200).json({success: true})
-      } else res.status(200).json({success: false})
-    })
+    if(errors.isEmpty()) {
+      const { username, password } = req.query;
+
+      db.findOne(User, { username }, (result) => {
+        if(bcrypt.compareSync(password, result.password)) {
+          res.status(200).json({success: true})
+        } else res.status(200).json({success: false})
+      })
+    }
   }
 };
 /*

@@ -4,6 +4,9 @@ const db = require('../models/database.js');
 // import ProductSchema from `../models/ProductModel.js`
 const Product = require('../models/ProductModel');
 
+// import module `validationResult` from `express-validator`
+const { validationResult } = require('express-validator');
+
 const defaultCallback = (res, result) => res.status(200).json(result)
 
 const ProductController = {
@@ -17,7 +20,12 @@ const ProductController = {
     db.findOne(Product, { slug }, (result) => defaultCallback(res, result));
   },
   addProduct: (req, res) => {
-    db.insertOne(Product, req.body, (result) => defaultCallback(res, result))
+    // checks if there are validation errors
+    var errors = validationResult(req);
+
+    if(errors.isEmpty()) {
+      db.insertOne(Product, req.body, (result) => defaultCallback(res, result))
+    }
   },
   updateProduct: (req, res) => {
     db.updateOne(Product, { productId: parseInt(req.body.productId), slug: req.body.slug  }, req.body, (result) => defaultCallback(res, result))

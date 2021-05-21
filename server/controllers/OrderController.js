@@ -4,6 +4,9 @@ const db = require('../models/database.js');
 // import OrderSchema from `../models/OrderModel.js`
 const Order = require('../models/OrderModel');
 
+// import module `validationResult` from `express-validator`
+const { validationResult } = require('express-validator');
+
 const defaultCallback = (res, result) => res.status(200).json(result)
 
 const OrderController = {
@@ -16,7 +19,12 @@ const OrderController = {
     db.findMany(Order, { userId : parseInt(userId) }, (result) => defaultCallback(res, result), {dateOrdered : -1})
   },
   addOrderToList: (req, res) => {
-    db.insertOne(Order, req.body, (result) => defaultCallback(res, result))
+    // checks if there are validation errors
+    var errors = validationResult(req);
+
+    if(errors.isEmpty()) {
+      db.insertOne(Order, req.body, (result) => defaultCallback(res, result))
+    }
   },
 };
 /*
